@@ -53,6 +53,12 @@
         width="180">
       </el-table-column>
       <el-table-column
+        prop="type"
+        label="status"
+        width="180"
+        :formatter="formatType">
+      </el-table-column>
+      <el-table-column
         label="operate"
         width="120">
             <template slot-scope="scope">
@@ -150,7 +156,15 @@
         });
       },
 
-
+      //类别显示
+      formatType(order) {
+        const typeMap = {
+          0: 'Pending',
+          1: 'Delivering',
+          2: 'Completed'
+        };
+        return typeMap[order.type] || 'Unknown'; // 默认返回 'Unknown'
+      },
       // 类别查询
       cHandleClick() {
         if(this.activeName === 'Pending'){
