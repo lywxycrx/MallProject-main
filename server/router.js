@@ -541,11 +541,12 @@ router.get("/delCart", (req, res) => {
 router.get("/addOrder", (req, res) => {        
     var uid = req.query.uid;
     var detail = req.query.detail;
-    var prcie = req.query.prcie  + '￥';
+    var prcie = '$' + req.query.prcie;
     var address = req.query.address;
     var time = new Date();
-    const sql = "insert into orders values (null,?,?,?,?,?,'0')"
-    var arr = [uid, detail, prcie, address, time.toLocaleDateString()]
+    var subtotal = req.query.subtotal;
+    const sql = "insert into orders values (null,?,?,?,?,?,'0',?)"
+    var arr = [uid, detail, prcie, address, time.toLocaleDateString(), subtotal]
     sqlFn(sql, arr, result => {
         if (result.affectedRows > 0) {
             res.send({

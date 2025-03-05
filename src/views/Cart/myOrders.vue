@@ -25,22 +25,22 @@
       <el-table-column
         prop="oid"
         label="serial number"
-        width="60">
+        width="150">
       </el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         prop="uid"
         label="User ID"
-        width="110">
-      </el-table-column>
+        width="80">
+      </el-table-column> -->
       <el-table-column
         prop="detail"
         label="Checklist"
-        width="450">
+        width="200">
       </el-table-column>
       <el-table-column
         prop="price"
         label="total price"
-        width="90">
+        width="120">
       </el-table-column>
       <el-table-column
         prop="address"
@@ -59,9 +59,16 @@
         :formatter="formatType">
       </el-table-column>
       <el-table-column
-        label="operate"
+        label="oprate"
         width="120">
             <template slot-scope="scope">
+              <el-button
+                size="mini"
+                type="info"
+                @click="handleDetails(scope.row)"
+                icon="el-icon-view">
+                Details
+              </el-button>
               <el-button
                 size="mini"
                 type="danger"
@@ -76,6 +83,40 @@
 
     <MyPage :total="total" :pageSize="pageSize" @changePage="changePage" class="page" :current-page="currentPage"></MyPage>
     <!-- <Dialog ref="dialog" :title="title" :rowData="rowData"></Dialog> -->
+
+
+
+    <el-dialog :visible.sync="dialogVisible" title="Order Details">
+      <h3>Order No. {{ rowData.oid }}</h3>
+      <p>Delivering Address: {{ rowData.address }}</p>
+      <p>Createing Time: {{ rowData.time }}</p>
+      <p>Type: {{ rowData.status }}</p>
+
+      <table border="1" style="width: 100%; border-collapse: collapse;">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Quentity</th>
+            <th>Unit Price</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item) of rowData.detail">
+            <td>{{ item.name }}</td>
+            <td>{{ item.num }}</td>
+            <td>{{ item.unit_price }}</td>
+            <td>{{ item.subtotal }}</td>
+          </tr>
+          <tr>
+            <td><strong>total</strong></td>
+            <td colspan="3" style="text-align: right;"><strong>{{ rowData.total }}</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </el-dialog>
+
+
   </div>
 </template>
 
@@ -100,7 +141,14 @@
         dialogVisible: false,
         currentPage: 1, // 页面改变时的变量
         type: 0,
-        rowData:{},     // 当前行的数据对象
+        rowData:{
+          oid: 0,
+          address: '',
+          total: 0,
+          time: '',
+          status: '',
+          detail: []
+        },     // 当前行的数据对象
 
         dType: false,   // 控制删除按钮是否显示
       }
@@ -218,7 +266,41 @@
         });
       },
 
+      handleDetails(row){
+        this.rowData.oid=row['oid']
+        this.rowData.time=row['time']
+        this.rowData.address=row['address']
+        this.rowData.total=row['price']
+
+        this.rowData.status=row['type']
+        if(this.rowData.status == 0){
+          this.rowData.status = 'Pending'
+        }else if(this.rowData.status == 1){
+          this.rowData.status = 'Delivering'
+        }else{
+          this.rowData.status = 'Completed'
+        }
+
+        let subtotalList = row['subtotal'].split(',')
+
+        let checklist = row['detail'].split(',')
+        for(let i = 0; i < checklist.length; i++){
+          let parts = checklist[i].split('×')
+          checklist[i] = {
+            name: parts[0],
+            num: parts[1],
+            unit_price: (subtotalList[i]/parts[1]).toFixed(2),
+            subtotal: subtotalList[i]
+          }
+        }
+        this.rowData.detail = []
+        this.rowData.detail = this.rowData.detail.concat(checklist)
+
+        this.dialogVisible = true;
+      },
     },
+
+    
 
     created() {
       console.log('dType:', this.dType)

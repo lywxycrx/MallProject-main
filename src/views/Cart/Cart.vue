@@ -41,6 +41,7 @@ export default {
       idList: [],     // 选中的商品id
       numList: [],    // 选中的数量num
       stockList: [],  // 库存数量列表
+      sumPriceList: []
     };
   },
 
@@ -87,11 +88,15 @@ export default {
       this.byte = itemName + '×' + sumNum
       if(checked === true){
         this.sum = this.sum + sumPrice
+        this.sumPriceList = this.sumPriceList.concat(sumPrice)
+        console.log(this.sumPriceList)
         this.gList = this.gList.concat(this.byte)
         this.idList = this.idList.concat(itemGid)
         this.numList = this.numList.concat(sumNum)
       } else {
         this.sum = this.sum - sumPrice
+        this.sumPriceList.splice(this.sumPriceList.indexOf(sumPrice), 1);
+        console.log(this.sumPriceList)
         this.gList.splice(this.gList.indexOf(this.byte), 1);
         this.idList.splice(this.idList.indexOf(itemGid), 1);
         this.numList.splice(this.numList.indexOf(sumNum), 1);
@@ -108,6 +113,9 @@ export default {
           const x = this.gList[i].lastIndexOf('×');
           const str = this.gList[i].substring(0, x) + '×' + num
           this.$set(this.gList, i, str);
+
+          this.$set(this.sumPriceList, i, num * itemPrice);
+          console.log(this.sumPriceList)
         }
       }
     },
@@ -146,6 +154,7 @@ export default {
         gid: this.idList,
         detail: this.totalNum,
         prcie: this.totalPrice,
+        subtotal: this.sumPriceList.join(",")
       })
       .then((res) => {
       if(res.status == 200){
