@@ -7,7 +7,7 @@
         <el-button type="danger" round class="tBtn" @click="selectStock">Checkout</el-button>
       </div>
     </div>
-    <CartList :cartList="cartList" @sumPrice="sumPrice"></CartList>
+    <CartList :cartList="cartList" @sumPrice="sumPrice"  @synchronization="synchronization"></CartList>
     <MyPage :total="total" :pageSize="pageSize" @changePage="changePage" class="page" :current-page="currentPage"></MyPage>
     
   </div>
@@ -95,6 +95,20 @@ export default {
         this.gList.splice(this.gList.indexOf(this.byte), 1);
         this.idList.splice(this.idList.indexOf(itemGid), 1);
         this.numList.splice(this.numList.indexOf(sumNum), 1);
+      }
+    },
+    synchronization(num, itemPrice, checked, sumNum, itemGid) {
+      for(let i = 0; i < this.idList.length; i++){
+        if(this.idList[i] == itemGid){
+          let originalnum = this.numList[i]
+          this.numList[i] = num
+          let difference = num - originalnum
+          this.sum += difference * itemPrice
+
+          const x = this.gList[i].lastIndexOf('×');
+          const str = this.gList[i].substring(0, x) + '×' + num
+          this.$set(this.gList, i, str);
+        }
       }
     },
 

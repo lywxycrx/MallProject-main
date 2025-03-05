@@ -1,7 +1,7 @@
 <template>
   <div id="shop-item">
     <div class="item-selector">
-      <CheckButton :itemPrice="itemPrice" :itemGid="itemGid" :itemName="itemName" @sumPrice="sumPrice" :num="num"></CheckButton>
+      <CheckButton :itemPrice="itemPrice" :itemGid="itemGid" :itemName="itemName" @sumPrice="sumPrice" :num="num" ></CheckButton>
     </div>
     <div class="item-img">
       <img :src="itemInfo.img" alt="Product pictures">
@@ -11,11 +11,11 @@
       <div class="item-title">{{itemInfo.name}}</div>
       <div class="item-desc">Product description: {{itemInfo.introduction}}</div>
       <div class="info-bottom">
-        <div class="item-price left">¥{{itemInfo.price}}</div>
+        <div class="item-price left">${{itemInfo.price}}</div>
       </div>
     </div>
 
-    <el-input-number class="numSelect" size="small" v-model="num" :min="1"></el-input-number>
+    <el-input-number class="numSelect" size="small" v-model="num" :min="1" @change="synchronization"></el-input-number>
   </div>
 </template>
 
@@ -32,6 +32,7 @@
         num: this.itemInfo.number,
         sum: 0,
         gNum: '',
+        checked: false
       }
     },
 
@@ -50,6 +51,12 @@
     methods: {
       sumPrice(itemGid, sumPrice, itemName, sumNum, checked) {
         this.$emit('sumPrice',itemGid, sumPrice, itemName, sumNum, checked)
+        this.checked = checked
+        this.sumNum = sumNum
+        this.itemGid = itemGid
+      },
+      synchronization(num, itemPrice, checked, sumNum, itemGid){
+        this.$emit('synchronization', num, this.itemPrice, this.checked, this.sumNum, this.itemGid)
       }
     }
   }
