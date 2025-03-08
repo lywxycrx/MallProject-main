@@ -41,7 +41,8 @@ export default {
       idList: [],     // 选中的商品id
       numList: [],    // 选中的数量num
       stockList: [],  // 库存数量列表
-      sumPriceList: []
+      sumPriceList: [],
+      disabled: ''
     };
   },
 
@@ -77,6 +78,30 @@ export default {
       }).then(res => {
         if(res.status == 200){
           this.cartList = res.data.data
+          console.log(this.cartList)
+          for(let i = 0; i < this.cartList.length; i++){
+            let status = this.cartList[i].isEnabled
+            console.log(status)
+            if(status != 0){
+              console.log(`${this.cartList[i].name}已停售`)
+              this.disabled = "您购物车中的" + this.disabled + this.cartList[i].name + " 已停售"
+              
+              this.$api.delCart({
+                gid: this.cartList[i].gid,
+                uid: this.cartList[i].uid,
+              }).then(res => {
+                if(res.data.status === 200) {
+                  this.cartList.splice(i, 1)
+                  this.reload()                  // 更新视图
+                }
+              }).catch(err => {
+                console.log(err)
+              })
+            }
+          }
+          if(this.disabled != ''){
+            alert(this.disabled)
+          }
           this.total = res.data.total;
           this.pageSize = res.data.pageSize;
         }
@@ -196,6 +221,8 @@ export default {
         this.pageSize = this.pageSize;
         this.getCart(num);                //列表分页
     },
+
+    //商品停售
 
   },
 };

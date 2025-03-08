@@ -213,6 +213,13 @@ const api = {
         })
     },
 
+    //禁用商品
+    enableGoods(params) {
+        return axios.get(base.enableGoods, {
+            params 
+        })
+    },
+
 
 // =================================== 用户管理部分 ===================================  
 

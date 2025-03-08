@@ -45,6 +45,9 @@ import store from '../store/index'
         CommentList,
         Dialog,
       },
+      mounted() {
+        document.addEventListener('visibilitychange', this.handleVisibilityChange);
+      },
       data(){
         return {
           gid: null,
@@ -159,6 +162,11 @@ import store from '../store/index'
             return {background: 'red !important' }
           }
         },
+        handleVisibilityChange() {
+          if (document.visibilityState === 'visible') {
+          window.location.reload();
+          }
+        }
       }
   }
   </script>

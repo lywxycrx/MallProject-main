@@ -19,6 +19,7 @@ const base ={
     updateSales: '/api/updateSales',                // 更新销量
     selectStock: '/api/selectStock',                // 查询库存
     updateStock: '/api/updateStock',                // 更新库存
+    enableGoods: '/api/enableGoods',
 
 // ============================================================================================    
     getCart: '/api/getCart',                        // 获取购物车数据

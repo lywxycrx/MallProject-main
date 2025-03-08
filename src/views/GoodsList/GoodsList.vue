@@ -28,6 +28,7 @@
   
   import GoodsList from '../../components/ShowList/List.vue'
   import MyPage from '../../components/MyPage.vue'
+
   
   export default {
     components: {

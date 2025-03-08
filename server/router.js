@@ -441,7 +441,33 @@ router.get("/updateStock", (req, res) => {
         }
     })
 })
-
+//商品禁用
+router.get('/enableGoods', (req, res) => {
+    var gid = req.query.gid;
+    var status = req.query.isEnabled;
+    if(status==0){
+        status=1
+    }else if(status==1){
+        status=0
+    }else{
+        console.log('状态异常')
+    }
+    var sql = "update goods set isEnabled = " + status + " where gid = " + gid;
+    sqlFn(sql, null, result => {
+        console.log("状态更新：", sql);
+        if (result.affectedRows > 0) {
+            res.send({
+                status: 200,
+                msg: "修改成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "修改失败"
+            })
+        }
+    })
+})
 
 // ============================================= 购物车 ================================================
 
@@ -452,7 +478,7 @@ router.get('/getCart', (req, res) => {
     const sqlLen = "select * from cart where uid = "+ uid;
     sqlFn(sqlLen, null, data => {
         let len = data.length;
-        const sql = "select uid, cart.number, goods.gid, goods.name, goods.img, goods.price, goods.introduction " +
+        const sql = "select uid, cart.number, goods.gid, goods.name, goods.img, goods.price, goods.introduction, goods.isEnabled " +
         "from cart,goods where cart.uid =" + uid + 
         " and cart.gid = goods.gid order by goods.gid asc limit 5 offset " + (page - 1) * 7
         sqlFn(sql, null, result => {

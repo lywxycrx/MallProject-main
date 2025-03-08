@@ -1,5 +1,5 @@
 <template>
-  <div class="imgItem">
+  <div class="imgItem" v-if="imgItem.isEnabled == 0">
       <div class="imgDiv">
         <img :src="imgItem.img" @click="itemClick">
       </div>
@@ -7,13 +7,12 @@
        <div class="imgInfo" >
            <el-link @click="itemClick">
                 <p>{{imgItem.name}}</p>
-                <span>{{imgItem.price}}￥</span>
+                <span>${{imgItem.price}}</span>
            </el-link>
       </div>  
   </div>
   
 </template>
-
 <script>
 import GoodsDetail from '../GoodsDetail'
 

@@ -60,12 +60,23 @@
       </el-table-column>
       <el-table-column
         label="操作"
-        width="300">
+        width="380">
             <template slot-scope="scope">
               <el-button size="mini" 
                 @click="handleDetail(scope.$index, scope.row)">
                 查看
-            </el-button>
+              </el-button>
+              <el-button size="mini" 
+                @click="handleEnable(scope.$index, scope.row)">
+                {{ getStatusText(scope.row.isEnabled) }}
+              </el-button>
+              <!-- <el-table-column
+                prop="status"
+                label="状态">
+                <template #default="scope">
+                  <span></span>
+                </template>
+              </el-table-column> -->
               <el-button
                 type="primary"
                 size="mini"
@@ -213,6 +224,20 @@
         window.open(routeData.href, '_blank')
       },
 
+      getStatusText(status) {
+      const statusMap = {
+          0: '禁用',
+          1: '启用'
+        };
+        return statusMap[status] || '未知状态';
+      },
+
+      handleEnable(index, row){
+        console.log(this.tableData)
+        console.log(row.isEnabled)
+        this.$api.enableGoods(row)
+        this.showGoods(1)
+      },
 
       // 删除操作
       handleDelete(index, row){
