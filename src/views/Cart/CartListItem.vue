@@ -4,15 +4,19 @@
       <CheckButton :itemPrice="itemPrice" :itemGid="itemGid" :itemName="itemName" @sumPrice="sumPrice" :num="num" ></CheckButton>
     </div>
     <div class="item-img">
-      <img :src="itemInfo.img" alt="Product pictures">
+      <el-link @click="itemClick">
+        <img :src="itemInfo.img" alt="Product pictures">
+      </el-link>
     </div>
 
     <div class="item-info">
+      <el-link @click="itemClick">
       <div class="item-title">{{itemInfo.name}}</div>
-      <div class="item-desc">Product description: {{itemInfo.introduction}}</div>
-      <div class="info-bottom">
-        <div class="item-price left">${{itemInfo.price}}</div>
-      </div>
+        <div class="item-desc">Product description: {{itemInfo.introduction}}</div>
+        <div class="info-bottom">
+          <div class="item-price left">${{itemInfo.price}}</div>
+        </div>
+      </el-link>
     </div>
 
     <el-input-number class="numSelect" size="small" v-model="num" :min="1" @change="synchronization"></el-input-number>
@@ -21,6 +25,7 @@
 
 <script>
   import CheckButton from './CheckButton.vue'
+  import GoodsDetail from '../../components/GoodsDetail.vue'
 
   export default {
     name: "ShopCartItem",
@@ -40,7 +45,8 @@
       itemInfo: Object
     },
     components: {
-      CheckButton
+      CheckButton,
+      GoodsDetail
     },
 
 
@@ -57,7 +63,13 @@
       },
       synchronization(num, itemPrice, checked, sumNum, itemGid){
         this.$emit('synchronization', num, this.itemPrice, this.checked, this.sumNum, this.itemGid)
-      }
+      },
+      itemClick() {
+        let routeData = this.$router.resolve({
+          path: '/GoodsDetail/' + this.itemGid,
+        })
+        window.open(routeData.href, '_blank')
+      },
     }
   }
 </script>

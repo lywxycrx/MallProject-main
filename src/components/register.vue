@@ -1,43 +1,36 @@
 <template>
     <div>
         <el-dialog
-        title="注册"
+        title="register"
         :visible.sync="dialogVisible"
         :modal-append-to-body='false'
         width="50%"> 
 
              <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-                <el-form-item label="账号" prop="uid">
+                <el-form-item label="account" prop="uid">
                   <el-input v-model="ruleForm.uid"></el-input>
                 </el-form-item>
 
-                <el-form-item label="密码" prop="pwd">
+                <el-form-item label="password" prop="pwd">
                   <el-input v-model="ruleForm.pwd"></el-input>
                 </el-form-item>
 
-                <el-form-item label="昵称" prop="name">
+                <el-form-item label="nick name" prop="name">
                   <el-input v-model="ruleForm.name"></el-input>
                 </el-form-item>
 
 
-                <!--<el-form-item label="性别" prop="sex">
-                    <el-select v-model="ruleForm.sex" placeholder="请选择性别">
-                      <el-option label="男" value="男"></el-option>
-                      <el-option label="女" value="女"></el-option>
-                    </el-select>
-                </el-form-item>-->
-
-                <el-form-item label="地址" prop="address">
+                <el-form-item label="address" prop="address">
                   <el-input v-model="ruleForm.address"></el-input>
                 </el-form-item>
 
-                <el-form-item label="手机号" prop="phone">
+                <el-form-item label="email" prop="phone">
                   <el-input v-model="ruleForm.phone"></el-input>
                 </el-form-item>
 
 
                 <el-form-item>
-                <el-button type="primary" @click="submitForm('ruleForm')" style="float: right; margin-top: 30px">立即注册</el-button>
+                <el-button type="primary" @click="submitForm('ruleForm')" style="float: right; margin-top: 30px">register now</el-button>
                 </el-form-item>
             </el-form>
         </el-dialog>

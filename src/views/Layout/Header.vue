@@ -23,7 +23,7 @@
         </div></el-col>
         <div class="userDiv">
           <div class="uImg"></div>
-          您好，{{userinfo.name}}
+          Hello, {{userinfo.name}}
           <li class="el-icon-switch-button" @click="exit" style="margin-left: 5px"></li>
         </div>
       </el-row>

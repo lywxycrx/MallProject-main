@@ -597,7 +597,7 @@ router.get('/searchMyorders', (req, res) => {
 router.get("/showOrders", (req, res) => {
     const page = req.query.page || 1;
     const type = req.query.type;
-    const sql = "select * from orders where type = " + type + " order by oid asc limit 12 offset " + (page - 1) * 12
+    const sql = "select * from orders where type = " + type + " order by oid desc limit 12 offset " + (page - 1) * 12
     sqlFn(sql, null, (result) => {
         const len = result.length;
         if (result.length > 0) {
@@ -621,7 +621,7 @@ router.get("/myOrders", (req, res) => {
     const page = req.query.page || 1;
     const uid = req.query.uid;
     const type = req.query.type;
-    const sql = "select * from orders where uid =" + uid + " and type = " + type + " order by oid asc limit 12 offset " + (page - 1) * 12
+    const sql = "select * from orders where uid =" + uid + " and type = " + type + " order by oid desc limit 12 offset " + (page - 1) * 12
     sqlFn(sql, null, (result) => {
         const len = result.length;
         if (result.length > 0) {

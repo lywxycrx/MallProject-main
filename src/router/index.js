@@ -43,33 +43,48 @@ const routes = [
     path: '/home',
     component: Header,
     meta: {
-      isLogin: true
+      isLogin: false
     },
     children: [
       {
         path: '/home',
         name: 'home',
-        component: Home
+        component: Home,
+        meta: {
+          isLogin: false // 公开页面
+        }
       },
       {
         path: '/center',
         name: 'center',
-        component: Center
+        component: Center,
+        meta: {
+          isLogin: true
+        }
       },
       {
         path: '/goodsList',
         name: 'goodsList',
-        component: GoodsList
+        component: GoodsList,
+        meta: {
+          isLogin: false // 公开页面
+        }
       },
       {
         path: '/cart',
         name: 'cart',
-        component: Cart
+        component: Cart,
+        meta: {
+          isLogin: true
+        }
       },
       {
         path: '/myOrders',
         name: 'myOrders',
-        component: MyOrders
+        component: MyOrders,
+        meta: {
+          isLogin: true
+        }
       },
     ]
   },
