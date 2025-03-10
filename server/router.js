@@ -718,7 +718,13 @@ router.get('/searchOrder', (req, res) => {
 // 变更订单状态
 router.get("/changeOrder", (req, res) => {
     var oid = req.query.oid;
+    var type = req.query.type;
     var sql = "update orders set type = type + 1 where oid = " + oid;
+    if(type == '异常'){
+        sql = "update orders set type = 3 where oid = " + oid;
+    }else if(type == '待处理'){
+        sql = "update orders set type = 0 where oid = " + oid;
+    }
     sqlFn(sql, null, result => {
         if (result.affectedRows > 0) {
             res.send({
@@ -733,6 +739,8 @@ router.get("/changeOrder", (req, res) => {
         }
     })
 })
+
+
 
 
 // ============================================= 管理用户 ===============================================

@@ -12,6 +12,7 @@
       <el-tab-pane label="Pending" name="Pending"></el-tab-pane>
       <el-tab-pane label="Delivering" name="Delivering"></el-tab-pane>
       <el-tab-pane label="Completed" name="Completed"></el-tab-pane>
+      <el-tab-pane label="Abnormal" name="Abnormal"></el-tab-pane>      
     </el-tabs>
 
       
@@ -209,7 +210,8 @@
         const typeMap = {
           0: 'Pending',
           1: 'Delivering',
-          2: 'Completed'
+          2: 'Completed',
+          3: 'Abnormal'
         };
         return typeMap[order.type] || 'Unknown'; // 默认返回 'Unknown'
       },
@@ -226,6 +228,11 @@
         }else if(this.activeName === 'Completed'){
           this.type = 2
           this.dType = true
+          this.myOrders(1, this.type)
+        }
+        else if(this.activeName === 'Abnormal'){
+          this.type = 3
+          this.dType = false
           this.myOrders(1, this.type)
         }
       },

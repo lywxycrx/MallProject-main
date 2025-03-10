@@ -19,6 +19,7 @@
       <el-tab-pane label="待处理" name="待处理"></el-tab-pane>
       <el-tab-pane label="配送中" name="配送中"></el-tab-pane>
       <el-tab-pane label="已完成" name="已完成"></el-tab-pane>
+      <el-tab-pane label="状态异常" name="异常"></el-tab-pane>
     </el-tabs>
 
       
@@ -42,7 +43,7 @@
       <el-table-column
         prop="detail"
         label="清单"
-        width="450">
+        width="250">
       </el-table-column>
       <el-table-column
         prop="price"
@@ -61,7 +62,7 @@
       </el-table-column>
       <el-table-column
         label="操作"
-        width="320">
+        width="420">
             <template slot-scope="scope">
               <el-button
                 size="mini"
@@ -77,6 +78,22 @@
                 icon="el-icon-truck"
                 v-show="dType">
                 配送
+              </el-button>
+              <el-button
+                size="mini"
+                type="danger"
+                @click="changeStatus(scope.$index, scope.row, '异常')"
+                icon="el-icon-warning"
+                v-show="abnormalType">
+                设为异常
+              </el-button>
+              <el-button
+                size="mini"
+                type="success"
+                @click="changeStatus(scope.$index, scope.row, '待处理')"
+                icon="el-icon-check"
+                v-show="solveType">
+                解决异常
               </el-button>
               <el-button
                 size="mini"
@@ -163,6 +180,9 @@
 
         dType: true,    // 控制配送按钮是否显示
         sType: null,    // 控制完成按钮是否显示
+        abnormalType: true,
+        solveType: false,
+
 
         fields: {'用户': 'uid', '购物清单': 'detail', '总价': 'price', '地址': 'address', '时间': 'time', },
       }
@@ -223,16 +243,30 @@
           this.type = 0
           this.dType = true
           this.sType = false
+          this.abnormalType = true
+          this.solveType = false
           this.showOrders(1, this.type)
         }else if(this.activeName === '配送中'){
           this.type = 1
           this.dType = false
           this.sType = true
+          this.abnormalType = true
+          this.solveType = false
           this.showOrders(1, this.type)
         }else if(this.activeName === '已完成'){
           this.type = 2
           this.dType = false
           this.sType = false
+          this.abnormalType = false
+          this.solveType = false
+          this.showOrders(1, this.type)
+        }
+        else if(this.activeName === '异常'){
+          this.type = 3
+          this.dType = false
+          this.sType = false
+          this.abnormalType = false
+          this.solveType = true
           this.showOrders(1, this.type)
         }
       },
@@ -254,7 +288,8 @@
           type: 'warning'
         }).then(() => {
           this.$api.changeOrder({
-            oid: row.oid
+            oid: row.oid,
+            type: bType
           }).then(res => {
             if(res.data.status === 200) {
                 this.$message({
