@@ -11,7 +11,8 @@ const router = Router()
 //导入数据库 sqlFn('sql',[],res=>{})
 import sqlFn from './mysql.js'
 
-
+import path from 'path';
+import fs from 'fs';
 
 //图片需要的模块
 import multer, { diskStorage } from 'multer'
@@ -1012,13 +1013,35 @@ router.get("/getSales", (req, res) => {
 
 // ============================================== ======= ==============================================
 
+
 // 上传图片
+
 var storage = diskStorage({
     destination: function (req, file, cb) {
-        cb(null, "./upload/")
+        cb(null, `./upload/${ req.query.type }/`)
     },
+    // filename: function (req, file, cb) {
+    //     cb(null, Date.now() + "-" + file.originalname)
+    // }
     filename: function (req, file, cb) {
-        cb(null, Date.now() + "-" + file.originalname)
+        const type = req.query.type
+        const gid = req.query.gid
+        const fomate = file.originalname.substring(file.originalname.lastIndexOf('.') + 1)
+        if(type=="Carousel"){
+            const query = `SELECT CarouselSerial FROM goods WHERE gid=${gid}`
+            sqlFn(query, null, result =>{
+                cb(null, `${type}-${gid}-${result[0].CarouselSerial}.${fomate}`)
+                const update = `update goods set CarouselSerial = CarouselSerial + 1 where gid = ${gid}`
+                sqlFn(update, null, (result) => {
+                    console.log("轮播图添加成功")
+                })
+            })
+        }else if(type=="Thumbnail"){
+            cb(null, `${req.query.type}-${req.query.gid}.${fomate}`)
+        }else{
+            throw new Error('系统错误')
+        }
+        
     }
 })
 
@@ -1049,13 +1072,39 @@ router.post('/upload', upload.single('file'), function (req, res, next) {
     });
 });
 
-var storage = diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, "./upload/")
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + "-" + file.originalname)
+router.get('/getCarouselImages/:prefix', (req, res) => {
+    const prefix = req.params.prefix; // 获取 URL 参数
+    const directoryPath = path.join(process.cwd(), 'upload/Carousel'); // 使用 process.cwd() 获取当前工作目录
+    
+    fs.readdir(directoryPath, (err, files) => {
+      if (err) {
+        console.log(err)
+        return res.status(500).send('无法读取目录');
+      }
+      
+      // 过滤出以传入的前缀开头的文件名
+      const filteredFiles = files.filter(file => file.startsWith(`Carousel-${prefix}`));
+      res.json(filteredFiles); // 返回 JSON 格式的文件名数组
+    });
+  });
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+router.delete('/deleteCarousel', (req, res) => {
+  const filePath = req.body.url // 从请求中获取文件路径
+  console.log(filePath)
+
+  // 确保路径是有效的
+  const fullPath = path.resolve(__dirname, filePath);
+  
+  fs.unlink(filePath, (err) => {
+    if (err) {
+        console.log('err', err)
+      return res.status(500).json({ message: '文件删除失败', error: err });
     }
-})
+    res.json({ message: '文件删除成功' });
+  });
+});
 
 export default router

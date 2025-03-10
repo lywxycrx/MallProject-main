@@ -8,11 +8,14 @@
           <el-col :span="3"><div class="grid-content bg-purple">库存：{{goodsData.stock}}</div></el-col>
         </el-row>
         <el-row :gutter="20"></el-row>
-        
 
-        <div class="block">
-          <img :src="imgUrl">
-        </div>
+        <el-carousel :interval="4000" type="card" height="300px">
+          <h2 v-if="CarouselList.length==0">暂无图片</h2>
+          <el-carousel-item v-for="(item, index) in CarouselList" :key="index" :style="{ backgroundImage: 'url(' + item + ')', backgroundSize: 'cover' }">
+            <!-- <h3 class="medium">{{ index + 1 }}</h3> -->
+
+          </el-carousel-item>
+        </el-carousel>
 
         <div class="tabDiv">
           <el-button :disabled="isAble" v-show="state != 1" type="warning" icon="el-icon-star-off" class="collection" 
@@ -33,6 +36,7 @@
           </el-tabs>
         </div>
     </div>
+    
 </template>
   
 <script>
@@ -63,6 +67,7 @@ import store from '../store/index'
 
           state: store.state.loginModule.userinfo.type,
           isAble: false,
+          CarouselList: []
         }
       },
 
@@ -86,6 +91,8 @@ import store from '../store/index'
           this.imgUrl = this.goodsData.img;
         }) 
         this.showComments(this.gid);
+        this.fetchImages()
+        console.log(this.CarouselList)
       },
   
       methods: {
@@ -166,7 +173,22 @@ import store from '../store/index'
           if (document.visibilityState === 'visible') {
           window.location.reload();
           }
+        },
+
+        fetchImages() {
+          fetch(`/api/getCarouselImages/${this.gid}`) // 传递参数
+            .then(response => response.json())
+            .then(data => {
+              this.images = data.map(fileName => {
+                const imagePath = `http://localhost:8888/Carousel/${fileName}`;
+                this.CarouselList.push(imagePath);
+                // return imagePath;
+              });
+            }).catch(error => {
+              console.error("获取图片失败:", error);
+            });
         }
+
       }
   }
   </script>
@@ -233,6 +255,61 @@ import store from '../store/index'
     .grid-content {
       border-radius: 4px;
       min-height: 36px;
+    }
+
+    /* .home-banner {
+      width: 1240px;
+      height: 500px;
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 98;
+
+      img {
+        width: 100%;
+        height: 500px;
+      } 
+    } */
+    /* .el-carousel__item {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  height: 100vh;
+}
+
+.el-carousel__item h3 {
+  grid-column: 2;
+  color: #475669;
+  font-size: 14px;
+  opacity: 0.75;
+  line-height: 200px;
+  margin: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+  
+    .el-carousel__item:nth-child(2n) {
+      background-color: #99a9bf;
+      background-image: url('../../server/upload/Carousel/Carousel-8-2.jpg');
+      background-size: cover;
+    }
+  
+    .el-carousel__item:nth-child(2n+1) {
+      background-color: #d3dce6;
+      background-image: url('../../server/upload/Carousel/Carousel-8-3.jpg');
+      background-size: cover;
+    } */
+
+    .el-carousel__item {
+      height: 300px; /* 确保每个项的高度 */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white; /* 根据需要调整文字颜色 */
+    }
+
+    .el-carousel__item:nth-child(n) {
+      background-color: #99a9bf; /* 可以根据需要保留或删除 */
     }
   
   </style>

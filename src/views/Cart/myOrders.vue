@@ -290,7 +290,7 @@
             name: parts[0],
             num: parts[1],
             unit_price: (subtotalList[i]/parts[1]).toFixed(2),
-            subtotal: subtotalList[i]
+            subtotal: parseFloat(subtotalList[i]).toFixed(2)
           }
         }
         this.rowData.detail = []

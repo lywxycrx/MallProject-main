@@ -3,6 +3,7 @@
         <el-dialog
         :title="title"
         :visible.sync="dialogVisible"
+        :update="update"
         width="50%"> 
 
              <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
@@ -54,14 +55,27 @@
                 </el-form-item>
 
 
-                <el-form-item label="上传图片">
+                <el-form-item label="缩略图">
+                  <span v-if="update">
+                    <img :src="existingThumbnail" alt="Existing Image" height="130" width="130"/>
+                    更换缩略图(最多一张)
+                  </span>
+                  <UploadImg type="Thumbnail" :gid="ruleForm.gid" @sendImg = "sendImg"></UploadImg>
+                  
+                  <span slot="footer" class="dialog-footer">
+                      <el-button type="primary">确 定</el-button>
+                      <el-button @click="dialogVisibleImg = false">取 消</el-button>
+                  </span>
+                </el-form-item>
 
-                    <UploadImg @sendImg = 'sendImg'></UploadImg>
+                <el-form-item label="上传轮播图">
+                  
+                  <UploadImg type="Carousel" :gid="ruleForm.gid" :initialCarousel="CarouselList"@sendImg = "sendImg"></UploadImg>
                     
-                    <span slot="footer" class="dialog-footer">
-                        <el-button type="primary">确 定</el-button>
-                        <el-button @click="dialogVisibleImg = false">取 消</el-button>
-                    </span>
+                  <span slot="footer" class="dialog-footer">
+                      <el-button type="primary">确 定</el-button>
+                      <el-button @click="dialogVisibleImg = false">取 消</el-button>
+                  </span>
                 </el-form-item>
 
                 <el-dialog
@@ -102,7 +116,11 @@ export default {
         default: function() {
           return {}
         }
-      }
+      },
+      update: {
+        type: Boolean,
+        required: true
+    }
     },
 
     data() {
@@ -121,6 +139,8 @@ export default {
           parameter: '', 
           introduction: '',
         },
+        existingThumbnail: '',
+        CarouselList: [],
 
         rules: {
           name: [
@@ -159,6 +179,27 @@ export default {
       rowData(val) {
         console.log('触发监听器', val)
         this.ruleForm = val;
+        // try{
+        //   this.existingThumbnail = 'http://localhost:8888/Thumbnail/Thumbnail-' + this.ruleForm.gid + '.jpg'
+        //   console.log(this.existingThumbnail)
+        // }catch(err){
+        //   this.existingThumbnail = 'http://localhost:8888/Thumbnail/Thumbnail-' + this.ruleForm.gid + '.png'
+        //   console.log(this.existingThumbnail)
+        // }
+        fetch(this.existingThumbnail = 'http://localhost:8888/Thumbnail/Thumbnail-' + this.ruleForm.gid + '.jpg')
+          .then(response => {
+            if (response.status === 404) {
+              // 如果返回 404，则替换为 PNG 格式的图片
+              this.existingThumbnail = 'http://localhost:8888/Thumbnail/Thumbnail-' + this.ruleForm.gid + '.png';
+            }
+            console.log(this.existingThumbnail);
+          })
+          .catch(error => {
+            console.error('请求出错:', error);
+          });
+        
+        this.fetchCarousel()
+        console.log(this.CarouselList)
       } 
     },
 
@@ -169,19 +210,33 @@ export default {
         },
 
       // 获取图片地址
-      sendImg(val) {
+      sendImg(val, type) {
         console.log('显示图片路径', val)
         this.imgUrl = val
       },
 
+      fetchCarousel() {
+          fetch(`/api/getCarouselImages/${this.ruleForm.gid}`) // 传递参数
+            .then(response => response.json())
+            .then(data => {
+              this.images = data.map(fileName => {
+                const imagePath = `http://localhost:8888/Carousel/${fileName}`;
+                this.CarouselList.push(imagePath);
+                // return imagePath;
+              });
+            }).catch(error => {
+              console.error("获取图片失败:", error);
+            });
+        },
 
-      submitForm(formName) {
+        submitForm(formName) {
         this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log('进入提交阶段')
           let {gid, name, price, type, score, parameter, introduction, img, stock} = this.ruleForm;
           if (this.title === '编辑商品') {
             if(this.imgUrl != ''){        // 判断是否重新上传图片，若重新上传则重新赋值图片地址
+              console.log(this.imgUrl)
               img = this.imgUrl;
             }
             this.$api.updateGoods({gid, name, price, type, score, parameter, introduction, img, stock})
@@ -222,8 +277,8 @@ export default {
           return false;
         }
         });
-        
-      },
+
+      },  
     }
 }
 </script>

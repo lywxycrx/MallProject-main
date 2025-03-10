@@ -70,13 +70,6 @@
                 @click="handleEnable(scope.$index, scope.row)">
                 {{ getStatusText(scope.row.isEnabled) }}
               </el-button>
-              <!-- <el-table-column
-                prop="status"
-                label="状态">
-                <template #default="scope">
-                  <span></span>
-                </template>
-              </el-table-column> -->
               <el-button
                 type="primary"
                 size="mini"
@@ -96,7 +89,7 @@
     </el-table>
 
     <MyPage :total="total" :pageSize="pageSize" @changePage="changePage" class="page" :current-page="currentPage"></MyPage>
-    <Dialog ref="dialog" :title="title" :rowData="rowData"></Dialog>
+    <Dialog ref="dialog" :title="title" :rowData="rowData" :update="update"></Dialog>
   </div>
 </template>
 
@@ -104,7 +97,7 @@
 <script>
   import MyPage from '../../components/MyPage.vue'
   import Dialog from './AddGoods.vue'
-  
+  // import * as Thumbnail from '../../../server/Thumbnail';
 
   export default {
     components: {
@@ -124,6 +117,7 @@
         type: 'name',
         title: '添加商品',
         rowData:{},     // 当前行的数据对象
+        update: true
       }
     },
 
@@ -203,6 +197,7 @@
       // 添加时打开弹出
       addGoods(){
         this.title = '添加商品'
+        this.update=false
         this.$refs.dialog.dialogVisible = true;
       },
       
@@ -210,6 +205,7 @@
       // 编辑弹窗
       handleEdit(index, row){
         this.title = '编辑商品'
+        this.update=true
         this.rowData = row;
         this.$refs.dialog.dialogVisible = true;
       },
