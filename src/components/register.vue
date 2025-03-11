@@ -12,7 +12,14 @@
                 </el-form-item>
 
                 <el-form-item label="password" prop="pwd">
-                  <el-input v-model="ruleForm.pwd"></el-input>
+                  <el-input v-model="ruleForm.pwd" type="password"></el-input>
+                </el-form-item>
+
+                <el-form-item prop="pwd" type="password">
+                  <template #label>
+                    <span>password</span><br><span>confirm</span>
+                  </template>
+                  <el-input v-model="ruleForm.pwdConfirm" type="password"></el-input>
                 </el-form-item>
 
                 <el-form-item label="nick name" prop="name">
@@ -54,6 +61,7 @@ export default {
         ruleForm: {
           uid: '',
           pwd: '',
+          pwdConfirm: '',
           name: '',
           sex: '',
           address: '', 
@@ -67,7 +75,11 @@ export default {
           ],
           pwd: [
             { required: true, message: '请输入密码', trigger: 'blur' },
-            // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+            { min: 8, max: 16, message: '长度在 8 到 16 个字符', trigger: 'blur' }
+          ],
+          pwdConfirm: [
+            { required: true, message: '请确认密码', trigger: 'blur' },
+            { min: 8, max: 16, message: '长度在 8 到 16 个字符', trigger: 'blur' }
           ],
           name: [
             { required: true, message: '请输入昵称', trigger: 'blur' },
@@ -96,7 +108,9 @@ export default {
         },
 
       submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
+        console.log(this.ruleForm.pwd, this.ruleForm.pwdConfirm)
+        if(this.ruleForm.pwd == this.ruleForm.pwdConfirm){
+          this.$refs[formName].validate((valid) => {
           if(valid) {
             console.log('进入提交阶段')
             let {uid, pwd, name, sex, address, phone} = this.ruleForm;
@@ -118,6 +132,10 @@ export default {
             }) 
           }
         });
+        }else{
+          alert('两次密码输入不一致')
+        }
+        
       },
 
     }
