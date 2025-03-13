@@ -91,6 +91,10 @@
       <h3>Order No. {{ rowData.oid }}</h3>
       <p>Delivering Address: {{ rowData.address }}</p>
       <p>Createing Time: {{ rowData.time }}</p>
+      <p>Shipping Time: {{ rowData.dates[0] }}</p>
+      <p>Completed Time: {{ rowData.dates[1] }}</p>
+      <p v-if="rowData.dates[2] != null">Problem Time: {{ rowData.dates[2] }}</p>
+      <p v-if="rowData.dates[2] != null">Solve Time: {{ rowData.dates[3] }}</p>
       <p>Type: {{ rowData.status }}</p>
 
       <table border="1" style="width: 100%; border-collapse: collapse;">
@@ -148,7 +152,8 @@
           total: 0,
           time: '',
           status: '',
-          detail: []
+          detail: [],
+          dates: [null, null, null, null]
         },     // 当前行的数据对象
 
         dType: false,   // 控制删除按钮是否显示
@@ -302,6 +307,10 @@
         }
         this.rowData.detail = []
         this.rowData.detail = this.rowData.detail.concat(checklist)
+
+        for(let i = 0; i < 4; i++){
+          this.rowData.dates[i] = row[`date${i+1}`].split("T")[0]
+        }
 
         this.dialogVisible = true;
       },
