@@ -85,7 +85,6 @@ export default {
             if(status != 0){
               console.log(`${this.cartList[i].name}已停售`)
               this.disabled = "您购物车中的" + this.disabled + this.cartList[i].name + " 已停售"
-              
               this.$api.delCart({
                 gid: this.cartList[i].gid,
                 uid: this.cartList[i].uid,
@@ -175,7 +174,6 @@ export default {
       this.$api.addOrder({
         uid: store.state.loginModule.userinfo.uid,
         address: store.state.loginModule.userinfo.address,
-
         gid: this.idList,
         detail: this.totalNum,
         prcie: this.totalPrice,

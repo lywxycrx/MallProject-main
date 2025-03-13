@@ -120,6 +120,10 @@
       <h3>Order No. {{ rowData.oid }}</h3>
       <p>Delivering Address: {{ rowData.address }}</p>
       <p>Createing Time: {{ rowData.time }}</p>
+      <p>Shipping Time: {{ rowData.dates[0] }}</p>
+      <p>Completed Time: {{ rowData.dates[1] }}</p>
+      <p v-if="rowData.dates[2] != null">Problem Time: {{ rowData.dates[2] }}</p>
+      <p v-if="rowData.dates[2] != null">Solve Time: {{ rowData.dates[3] }}</p>
       <p>Type: {{ rowData.status }}</p>
 
       <table border="1" style="width: 100%; border-collapse: collapse;">
@@ -175,14 +179,20 @@
           total: 0,
           time: '',
           status: '',
-          detail: []
+          detail: [],
+          dates: [null, null, null, null]
         },     // 当前行的数据对象
 
         dType: true,    // 控制配送按钮是否显示
         sType: null,    // 控制完成按钮是否显示
         abnormalType: true,
         solveType: false,
-
+        statusMap: {
+          0: "待处理",
+          1: "配送中",
+          2: "已完成",
+          3: "异常"
+        },
 
         fields: {'用户': 'uid', '购物清单': 'detail', '总价': 'price', '地址': 'address', '时间': 'time', },
       }
@@ -207,6 +217,7 @@
       // 通过输入查询
       searchInput(val){
       console.log('searchInput执行');
+      console.log(val)
        if (!val) {
         this.showOrders(1, this.type);
         console.log('val为空执行');
@@ -282,6 +293,7 @@
 
       changeStatus(index, row, bType){
         console.log('删除', index, row)
+        const numType = Object.keys(this.statusMap).find(key => this.statusMap[key] === bType);
         this.$confirm('此操作将变更该订单状态为'+ bType + ', 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -289,7 +301,7 @@
         }).then(() => {
           this.$api.changeOrder({
             oid: row.oid,
-            type: bType
+            type: numType
           }).then(res => {
             if(res.data.status === 200) {
                 this.$message({
@@ -336,6 +348,9 @@
         }
         this.rowData.detail = []
         this.rowData.detail = this.rowData.detail.concat(checklist)
+        for(let i = 0; i < 4; i++){
+          this.rowData.dates[i] = row[`date${i+1}`].split("T")[0]
+        }
 
         this.dialogVisible = true;
       },

@@ -14,11 +14,11 @@
           </div>
         </el-col>
 
-        <el-col :span="6">
+        <!-- <el-col :span="6">
           <div class="grid-content bg-two">
             <li class="el-icon-s-order"> 利润:{{pNum}}￥</li>
           </div>
-        </el-col>
+        </el-col> -->
 
         <el-col :span="6">
           <div class="grid-content bg-one">

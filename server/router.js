@@ -572,7 +572,7 @@ router.get("/addOrder", (req, res) => {
     var address = req.query.address;
     var time = new Date();
     var subtotal = req.query.subtotal;
-    const sql = "insert into orders values (null,?,?,?,?,?,'0',?)"
+    const sql = "insert into orders values (null,?,?,?,?,?,'0',?,null,null,null,null)"
     var arr = [uid, detail, prcie, address, time.toLocaleDateString(), subtotal]
     sqlFn(sql, arr, result => {
         if (result.affectedRows > 0) {
@@ -691,11 +691,16 @@ router.get('/searchOrder', (req, res) => {
     const page = req.query.page || 1;
     var type = req.query.type;
     var search = req.query.search;
-    const sqlLen = "select * from orders where concat(`oid`, `uid`) like '%" + search + "%' and type = " + type;
+    // const sqlLen = "select * from orders where concat(`oid`, `uid`) like '%" + search + "%' and type = " + type;
+    
+    const sqlLen = "select * from orders where oid like '%" + search + "%' and type = " + type;
     sqlFn(sqlLen, null, data => {
         let len = data.length;
+        // const sql = 
+        // "select * from orders where concat(`oid`, `uid`, `detail`) like '%" + search 
+        // + "%' and type = " + type + " order by oid asc limit 10 offset " + (page - 1) * 10;
         const sql = 
-        "select * from orders where concat(`oid`, `uid`, `detail`) like '%" + search 
+        "select * from orders where detail like '%" + search 
         + "%' and type = " + type + " order by oid asc limit 10 offset " + (page - 1) * 10;
         sqlFn(sql, null, result => {
             if (result.length > 0) {
@@ -719,11 +724,14 @@ router.get('/searchOrder', (req, res) => {
 router.get("/changeOrder", (req, res) => {
     var oid = req.query.oid;
     var type = req.query.type;
+    const changeDate = new Date().toLocaleDateString()
+    
     var sql = "update orders set type = type + 1 where oid = " + oid;
-    if(type == '异常'){
+    if(type == 3){
         sql = "update orders set type = 3 where oid = " + oid;
-    }else if(type == '待处理'){
+    }else if(type == 0){
         sql = "update orders set type = 0 where oid = " + oid;
+        type = 4
     }
     sqlFn(sql, null, result => {
         if (result.affectedRows > 0) {
@@ -738,6 +746,13 @@ router.get("/changeOrder", (req, res) => {
             })
         }
     })
+
+    const dateSql = `update orders set date${type} = ? where oid = ?`
+
+    sqlFn(dateSql, [changeDate, oid], result => {
+        console.log(result)
+    })
+    
 })
 
 
