@@ -2,7 +2,7 @@
   <div class="outDiv">
     <!-- 搜索栏区域 -->
     <div class="header">
-      <el-input placeholder="请输入您所要查询的订单" 
+      <el-input placeholder="请输入您所要查询的订单(支持订单编号和商品查询)" 
       @change="searchInput" v-model="input" clearable style="margin-right: 10px;"></el-input>
       <el-button class="sbtn" type="primary">查询</el-button>
 
@@ -180,7 +180,7 @@
           time: '',
           status: '',
           detail: [],
-          dates: [null, null, null, null]
+          dates: ['', '', '', '']
         },     // 当前行的数据对象
 
         dType: true,    // 控制配送按钮是否显示
@@ -349,7 +349,10 @@
         this.rowData.detail = []
         this.rowData.detail = this.rowData.detail.concat(checklist)
         for(let i = 0; i < 4; i++){
-          this.rowData.dates[i] = row[`date${i+1}`].split("T")[0]
+          if(row[`date${i+1}`] != null){
+            this.rowData.dates[i] = row[`date${i+1}`].split("T")[0]
+          }
+          
         }
 
         this.dialogVisible = true;

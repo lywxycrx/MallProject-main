@@ -9,8 +9,12 @@
         </el-row>
         <el-row :gutter="20"></el-row>
 
+        <div class="block">
+          <img :src="imgUrl">
+        </div>
+
         <el-carousel :interval="4000" type="card" height="300px">
-          <h2 v-if="CarouselList.length==0">暂无图片</h2>
+          <h2 v-if="CarouselList.length==0">暂无其他图片</h2>
           <el-carousel-item v-for="(item, index) in CarouselList" :key="index" :style="{ backgroundImage: 'url(' + item + ')', backgroundSize: 'cover' }">
             <!-- <h3 class="medium">{{ index + 1 }}</h3> -->
 
@@ -300,16 +304,34 @@ import store from '../store/index'
       background-size: cover;
     } */
 
-    .el-carousel__item {
-      height: 300px; /* 确保每个项的高度 */
+    /* .el-carousel__item {
+      height: 300px;
       display: flex;
       justify-content: center;
       align-items: center;
-      color: white; /* 根据需要调整文字颜色 */
+      color: white; 
+      background-size: contain
     }
 
     .el-carousel__item:nth-child(n) {
-      background-color: #99a9bf; /* 可以根据需要保留或删除 */
-    }
+      background-color: #99a9bf; 
+    } */
+
+    .el-carousel {
+  height: 300px; /* 确保轮播图的高度 */
+  width: 600px;
+}
+
+.el-carousel__item {
+  height: 100%; /* 确保每个项的高度 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white; /* 根据需要调整文字颜色 */
+  background-size: contain !important; /* 保持图片宽高比，不裁剪 */
+  background-position: center center; /* 确保图片居中 */
+  background-repeat: no-repeat; /* 防止图片重复 */
+  background-color: #000; /* 添加背景颜色，防止图片未完全填充时出现空白 */
+}
   
   </style>

@@ -153,7 +153,7 @@
           time: '',
           status: '',
           detail: [],
-          dates: [null, null, null, null]
+          dates: ['暂无', '暂无', '暂无', '暂无']
         },     // 当前行的数据对象
 
         dType: false,   // 控制删除按钮是否显示
@@ -309,7 +309,9 @@
         this.rowData.detail = this.rowData.detail.concat(checklist)
 
         for(let i = 0; i < 4; i++){
-          this.rowData.dates[i] = row[`date${i+1}`].split("T")[0]
+          if(row[`date${i+1}`] != null){
+            this.rowData.dates[i] = row[`date${i+1}`].split("T")[0]
+          }
         }
 
         this.dialogVisible = true;
