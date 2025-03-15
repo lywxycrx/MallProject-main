@@ -123,6 +123,7 @@
       <p>Shipping Time: {{ rowData.dates[0] }}</p>
       <p>Completed Time: {{ rowData.dates[1] }}</p>
       <p v-if="rowData.dates[2] != null">Problem Time: {{ rowData.dates[2] }}</p>
+      <p v-if="rowData.dates[2] != null">Situation: {{ rowData.situation }}</p>
       <p v-if="rowData.dates[2] != null">Solve Time: {{ rowData.dates[3] }}</p>
       <p>Type: {{ rowData.status }}</p>
 
@@ -180,7 +181,8 @@
           time: '',
           status: '',
           detail: [],
-          dates: ['暂无', '暂无', '暂无', '暂无']
+          dates: ['暂无', '暂无', '暂无', '暂未解决'],
+          situation: ''
         },     // 当前行的数据对象
 
         dType: true,    // 控制配送按钮是否显示
@@ -294,29 +296,80 @@
 
       changeStatus(index, row, bType){
         console.log('删除', index, row)
+        let situation = null
+        if(bType=='异常'){
+          this.$prompt("请输入异常信息", "提示", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            inputPattern: /.+/, // 确保用户输入非空内容
+            inputErrorMessage: "异常信息不能为空"
+          }).then(({ value }) => {
+            situation = value; // 获取用户输入的异常信息
+            this.confirmChangeStatus(row, bType, situation);
+          }).catch((err) => {
+            console.log(err)
+            this.$message({
+            type: "info",
+            message: "已取消异常信息输入"
+          });
+        });
+        }
+        else{
+          this.confirmChangeStatus(row, bType, situation)
+        }
+        
+        // this.$confirm('此操作将变更该订单状态为'+ bType + ', 是否继续?', '提示', {
+        //   confirmButtonText: '确定',
+        //   cancelButtonText: '取消',
+        //   type: 'warning'
+        // }).then(() => {
+        //   this.$api.changeOrder({
+        //     oid: row.oid,
+        //     type: numType,
+        //     situation: situation
+        //   }).then(res => {
+        //     if(res.data.status === 200) {
+        //         this.$message({
+        //         type: 'success',
+        //         message: '变更成功'
+        //       })
+        //       this.showOrders(1, this.type)                  // 更新视图
+        //     }
+        //   })
+        // }).catch(() => {
+        //   this.$message({
+        //     type: 'info',
+        //     message: '已取消'
+        //   });          
+        // });
+      },
+
+      confirmChangeStatus(row, bType, situation) {
+        console.log(situation)
         const numType = Object.keys(this.statusMap).find(key => this.statusMap[key] === bType);
-        this.$confirm('此操作将变更该订单状态为'+ bType + ', 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
+        this.$confirm(`此操作将变更该订单状态为${bType}, 是否继续?`, "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
         }).then(() => {
           this.$api.changeOrder({
             oid: row.oid,
-            type: numType
+            type: numType,
+            situation: situation
           }).then(res => {
-            if(res.data.status === 200) {
-                this.$message({
-                type: 'success',
-                message: '变更成功'
-              })
-              this.showOrders(1, this.type)                  // 更新视图
+            if (res.data.status === 200) {
+              this.$message({
+                type: "success",
+                message: "变更成功"
+              });
+              this.showOrders(1, this.type); // 更新视图
             }
-          })
+          });
         }).catch(() => {
           this.$message({
-            type: 'info',
-            message: '已取消'
-          });          
+            type: "info",
+            message: "已取消"
+          });
         });
       },
 
@@ -355,7 +408,7 @@
           }
           
         }
-
+        this.rowData.situation = row['situation']
         this.dialogVisible = true;
       },
 

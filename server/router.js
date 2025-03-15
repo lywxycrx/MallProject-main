@@ -572,7 +572,7 @@ router.get("/addOrder", (req, res) => {
     var address = req.query.address;
     var time = new Date();
     var subtotal = req.query.subtotal;
-    const sql = "insert into orders values (null,?,?,?,?,?,'0',?,null,null,null,null)"
+    const sql = "insert into orders values (null,?,?,?,?,?,'0',?,null,null,null,null,null)"
     var arr = [uid, detail, prcie, address, time.toLocaleDateString(), subtotal]
     sqlFn(sql, arr, result => {
         if (result.affectedRows > 0) {
@@ -724,11 +724,12 @@ router.get('/searchOrder', (req, res) => {
 router.get("/changeOrder", (req, res) => {
     var oid = req.query.oid;
     var type = req.query.type;
+    var situation = req.query.situation;
     const changeDate = new Date().toLocaleDateString()
     
     var sql = "update orders set type = type + 1 where oid = " + oid;
-    if(type == 3){
-        sql = "update orders set type = 3 where oid = " + oid;
+    if(type == 3 && situation != ''){
+        sql = "update orders set type = 3, situation = \'" + situation + "\' where oid = " + oid;
     }else if(type == 0){
         sql = "update orders set type = 0 where oid = " + oid;
         type = 4

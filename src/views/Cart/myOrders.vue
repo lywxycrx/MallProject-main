@@ -94,6 +94,7 @@
       <p>Shipping Time: {{ rowData.dates[0] }}</p>
       <p>Completed Time: {{ rowData.dates[1] }}</p>
       <p v-if="rowData.dates[2] != null">Problem Time: {{ rowData.dates[2] }}</p>
+      <p v-if="rowData.dates[2] != null">Situation: {{ rowData.situation }}</p>
       <p v-if="rowData.dates[2] != null">Solve Time: {{ rowData.dates[3] }}</p>
       <p>Type: {{ rowData.status }}</p>
 
@@ -153,7 +154,8 @@
           time: '',
           status: '',
           detail: [],
-          dates: ['暂无', '暂无', '暂无', '暂无']
+          dates: ['暂无', '暂无', '暂无', '暂未解决'],
+          situation: ''
         },     // 当前行的数据对象
 
         dType: false,   // 控制删除按钮是否显示
@@ -313,7 +315,7 @@
             this.rowData.dates[i] = row[`date${i+1}`].split("T")[0]
           }
         }
-
+        this.rowData.situation = row['situation']
         this.dialogVisible = true;
       },
     },
