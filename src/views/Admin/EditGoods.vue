@@ -143,6 +143,9 @@
         this.currentPage = 1;
         return;
       }
+      if(/^[0-9]+$/.test(val)){
+        this.type = 'gid'
+      }
       this.$api
         .getSearch({
           search: String(val),

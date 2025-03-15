@@ -36,8 +36,8 @@
         width="60">
       </el-table-column>
       <el-table-column
-        prop="uid"
-        label="用户编号"
+        prop="name"
+        label="用户"
         width="110">
       </el-table-column>
       <el-table-column
@@ -180,7 +180,7 @@
           time: '',
           status: '',
           detail: [],
-          dates: ['', '', '', '']
+          dates: ['暂无', '暂无', '暂无', '暂无']
         },     // 当前行的数据对象
 
         dType: true,    // 控制配送按钮是否显示
@@ -201,15 +201,16 @@
     methods: {
       showOrders(page, type) {
         console.log('showOrders执行=================')
-         this.$api.showOrders({
-            page,
-            type,        // 查询待处理订单
-          }).then(res => {
-            if(res.status == 200){
-              this.tableData = res.data.data
-              this.total = res.data.total;
-              this.pageSize = res.data.pageSize;
-            }
+        
+        this.$api.showOrders({
+          page,
+          type,        // 查询待处理订单
+        }).then(res => {
+          if(res.status == 200){
+            this.tableData = res.data.data
+            this.total = res.data.total;
+            this.pageSize = res.data.pageSize;
+          }
         })
       },
 

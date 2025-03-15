@@ -624,8 +624,8 @@ router.get('/searchMyorders', (req, res) => {
 router.get("/showOrders", (req, res) => {
     const page = req.query.page || 1;
     const type = req.query.type;
-    const sql = "select * from orders where type = " + type + " order by oid desc limit 12 offset " + (page - 1) * 12
-    sqlFn(sql, null, (result) => {
+    const sql = "SELECT o.*, u.name FROM orders o LEFT JOIN users u ON o.uid = u.uid WHERE o.type = ? ORDER BY o.oid DESC LIMIT 12 OFFSET ?;"
+    sqlFn(sql, [type, (page - 1) * 12], (result) => {
         const len = result.length;
         if (result.length > 0) {
             res.send({
@@ -692,7 +692,7 @@ router.get('/searchOrder', (req, res) => {
     var type = req.query.type;
     var search = req.query.search;
     // const sqlLen = "select * from orders where concat(`oid`, `uid`) like '%" + search + "%' and type = " + type;
-    
+
     const sqlLen = "select * from orders where oid like '%" + search + "%' and type = " + type;
     sqlFn(sqlLen, null, data => {
         let len = data.length;
