@@ -7,31 +7,31 @@
         width="50%"> 
 
              <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-                <el-form-item label="account" prop="uid">
+                <el-form-item label="Account" prop="uid">
                   <el-input v-model="ruleForm.uid"></el-input>
                 </el-form-item>
 
-                <el-form-item label="password" prop="pwd">
+                <el-form-item label="Password" prop="pwd">
                   <el-input v-model="ruleForm.pwd" type="password"></el-input>
                 </el-form-item>
 
                 <el-form-item prop="pwd" type="password">
                   <template #label>
-                    <span>password</span><br><span>confirm</span>
+                    <span>Password</span><br><span>confirm</span>
                   </template>
                   <el-input v-model="ruleForm.pwdConfirm" type="password"></el-input>
                 </el-form-item>
 
-                <el-form-item label="nick name" prop="name">
+                <el-form-item label="Nick name" prop="name">
                   <el-input v-model="ruleForm.name"></el-input>
                 </el-form-item>
 
 
-                <el-form-item label="address" prop="address">
+                <el-form-item label="Address" prop="address">
                   <el-input v-model="ruleForm.address"></el-input>
                 </el-form-item>
 
-                <el-form-item label="email" prop="phone">
+                <el-form-item label="Email" prop="phone">
                   <el-input v-model="ruleForm.phone"></el-input>
                 </el-form-item>
 

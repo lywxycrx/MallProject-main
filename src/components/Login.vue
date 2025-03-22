@@ -11,22 +11,22 @@
       ref="ruleForm" 
       label-width="60px" 
       class="form">
-        <el-form-item label="账号" prop="uid">
+        <el-form-item label="Account" prop="uid">
           <el-input type="text" v-model="ruleForm.uid" autocomplete="off"></el-input>
         </el-form-item>
         
-        <el-form-item label="密码" prop="pwd">
+        <el-form-item label="Password" prop="pwd">
           <el-input type="password" v-model="ruleForm.pwd" autocomplete="off"></el-input>
         </el-form-item>
         <div class="radioDiv">
-          <el-radio v-model="type" label="0">用户登录</el-radio>
-          <el-radio v-model="type" label="1">管理员登录</el-radio>
+          <el-radio v-model="type" label="0">Customer</el-radio>
+          <el-radio v-model="type" label="1">Vendor</el-radio>
         </div>
         <Dialog ref="dialog"></Dialog>
         <el-form-item>
-          <el-button  @click="submitForm('ruleForm')">登录</el-button>
-          <el-button class="regBtn"  @click="register()">注册</el-button>
-          <el-button @click="resetForm('ruleForm')">重置</el-button>
+          <el-button  @click="submitForm('ruleForm')">Log in</el-button>
+          <el-button class="regBtn"  @click="register()">Sign up</el-button>
+          <el-button @click="resetForm('ruleForm')">Reset</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -46,14 +46,14 @@ import Dialog from './register'
     data() {
       var validateUser = (rule, value, callback) => {
         if (value === '') {
-          callback(new Error('请输入账号'));
+          callback(new Error('Please enter your account'));
         } else {
           callback();
         }
       };
       var validatePwd = (rule, value, callback) => {
         if (value === '') {
-          callback(new Error('请输入密码'));
+          callback(new Error('Please enter your passwrod'));
         } else {
           callback();
         }
@@ -86,7 +86,7 @@ import Dialog from './register'
         if(this.type === null) {
           this.$message({
             type: 'error',
-            message: '请选择登录身份'
+            message: 'Please choose your login identity'
           })
         }else {
           this.$refs[formName].validate((valid) => {
@@ -121,7 +121,7 @@ import Dialog from './register'
                 }else{
                   this.$message({
                     type: 'error',
-                    message: '账号或密码输入错误'
+                    message: 'Incorrect account or password entry'
                   })
                 }
               })

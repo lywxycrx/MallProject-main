@@ -2,10 +2,10 @@
     <div class="ouDiv">
       <h2>{{goodsData.name}}</h2>
         <el-row :gutter="20">
-          <el-col :span="3"><div class="grid-content bg-purple">价格：{{goodsData.price}}</div></el-col>
-          <el-col :span="3"><div class="grid-content bg-purple">销量：{{goodsData.sales}}</div></el-col>
-          <el-col :span="3"><div class="grid-content bg-purple">评分：{{goodsData.score}}</div></el-col>
-          <el-col :span="3"><div class="grid-content bg-purple">库存：{{goodsData.stock}}</div></el-col>
+          <el-col :span="3"><div class="grid-content bg-purple">Price: {{goodsData.price}}</div></el-col>
+          <el-col :span="3"><div class="grid-content bg-purple">Units sold: {{goodsData.sales}}</div></el-col>
+          <el-col :span="3"><div class="grid-content bg-purple">Rating: {{goodsData.score}}</div></el-col>
+          <el-col :span="3"><div class="grid-content bg-purple">Inventory: {{goodsData.stock}}</div></el-col>
         </el-row>
         <el-row :gutter="20"></el-row>
 
@@ -14,7 +14,7 @@
         </div>
 
         <el-carousel :interval="4000" type="card" height="300px">
-          <h2 v-if="CarouselList.length==0">暂无其他图片</h2>
+          <h2 v-if="CarouselList.length==0">No other pictures available</h2>
           <el-carousel-item v-for="(item, index) in CarouselList" :key="index" :style="{ backgroundImage: 'url(' + item + ')', backgroundSize: 'cover' }">
             <!-- <h3 class="medium">{{ index + 1 }}</h3> -->
 
@@ -30,7 +30,7 @@
             <el-tab-pane label="参数" name="first">{{goodsData.parameter}}</el-tab-pane>
             <el-tab-pane label="简介" name="second">{{goodsData.introduction}}</el-tab-pane>
             <el-tab-pane label="评论" name="third">
-              <el-button type="primary" v-show="state != 1" icon="el-icon-edit" @click="addComment">添加评论</el-button>
+              <el-button type="primary" v-show="state != 1" icon="el-icon-edit" @click="addComment">Add comment</el-button>
 
               <Dialog :dialogVisible="dialogVisible" :gid="gid" @changeDialog="changeDialog"></Dialog>
               <CommentList :commentList="commentList"></CommentList>
@@ -65,7 +65,7 @@ import store from '../store/index'
           imgUrl: '',
 
           btnStatus: true,
-          btnText: '加入购物车',
+          btnText: 'Add to cart',
 
           dialogVisible: false,
 
@@ -84,7 +84,7 @@ import store from '../store/index'
         }).then(res => {
           if(res.data.status == 200){
             this.btnStatus = false;
-            this.btnText = '从购物车删除'
+            this.btnText = 'Delete from cart'
           }
         })      
   
@@ -119,7 +119,7 @@ import store from '../store/index'
 
         // 添加评论
         addComment() {
-          console.log('按钮事件触发了')
+          console.log('Button event triggered')
           this.dialogVisible = true
         },
 
@@ -134,9 +134,9 @@ import store from '../store/index'
             .then((res) => {
               if(res.status == 200){
                 this.btnStatus = false
-                this.btnText = '从购物车删除'
+                this.btnText = 'Delete from cart'
                 this.$message({
-                message: '添加成功',
+                message: 'Add successfully',
                 type: 'success'
                 });
               }
@@ -148,9 +148,9 @@ import store from '../store/index'
             .then((res) => {
               if(res.status == 200){
                 this.btnStatus = true
-                this.btnText = '加入购物车'
+                this.btnText = 'Add to cart'
                 this.$message({
-                message: '删除成功',
+                message: 'Deleted successfully',
                 type: 'success'
                 });
               }
@@ -168,7 +168,7 @@ import store from '../store/index'
         getStyle() {
           if(this.goodsData.stock == 0) {
             this.isAble = true
-            this.btnText = "缺货"
+            this.btnText = "Out of stock"
           }else if(this.btnStatus === false) {
             return {background: 'red !important' }
           }

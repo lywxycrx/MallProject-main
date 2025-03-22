@@ -2,7 +2,7 @@
   <div class="outDiv">
     <!-- 搜索栏区域 -->
     <div class="header">
-      <el-input placeholder="请输入您所要查询的用户" @change="searchInput" v-model="input" clearable></el-input>
+      <el-input placeholder="Please enter the user you are looking for" @change="searchInput" v-model="input" clearable></el-input>
       <el-button type="primary">查询</el-button>
     </div>
 

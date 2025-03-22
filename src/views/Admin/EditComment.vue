@@ -2,8 +2,8 @@
   <div class="outDiv">
     <!-- 搜索栏区域 -->
     <div class="header">
-      <el-input placeholder="请输入您所要查询的评论" @change="searchInput" v-model="input" clearable></el-input>
-      <el-button type="primary">查询</el-button>
+      <el-input placeholder="Please enter the comment you are looking for" @change="searchInput" v-model="input" clearable></el-input>
+      <el-button type="primary">Search</el-button>
       <!-- <el-button type="primary" @click="addGoods">添加</el-button> -->
     </div>
 
@@ -16,43 +16,43 @@
     style="width: 100%">
       <el-table-column
         prop="cid"
-        label="编号"
+        label="编号(最后调整看叫什么)"
         width="110">
       </el-table-column>
       <el-table-column
         prop="uid"
-        label="账号"
+        label="User ID"
         width="110">
       </el-table-column>
       <el-table-column
         prop="gid"
-        label="评论商品编号"
+        label="Product ID"
         width="110">
       </el-table-column>
       <el-table-column
         prop="content"
-        label="评论内容"
+        label="Comment"
         width="500">
       </el-table-column>
       <el-table-column
         prop="time"
-        label="时间"
+        label="Time"
         width="100">
       </el-table-column>
       <el-table-column
-        label="操作"
+        label="Operation"
         width="200">
             <template slot-scope="scope">
               <el-button size="mini" 
                 @click="handleDetail(scope.$index, scope.row)">
-                查看
+                View
               </el-button>
               <el-button
                 size="mini"
                 type="danger"
                 @click="handleDelete(scope.$index, scope.row)"
                 icon="el-icon-delete">
-                删除
+                Delete
               </el-button>
             </template>
         </el-table-column>
@@ -82,11 +82,11 @@
         pageSize: 1,
         input: '',
 
-        activeName: '全部',
+        activeName: 'All',
         dialogVisible: false,
         currentPage: 1, // 页面改变时的变量
         type: 'name',
-        title: '添加商品',
+        title: 'Add product',
         rowData:{},     // 当前行的数据对象
       }
     },
@@ -127,7 +127,7 @@
             this.pageSize = 1;
             this.$message({
               type: 'error',
-              message: '暂无此评论'
+              message: 'No Comments'
             }); 
           }
         });
@@ -152,7 +152,7 @@
 
       // 添加时打开弹出
       addGoods(){
-        this.title = '添加商品'
+        this.title = 'Add product'
         this.$refs.dialog.dialogVisible = true;
       },
       
@@ -170,9 +170,9 @@
       // 删除操作
       handleDelete(index, row){
         console.log('删除', index, row)
-        this.$confirm('此操作将永久删除该评论, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+        this.$confirm('This action will permanently delete the comment, continue or not.?', 'Next', {
+          confirmButtonText: 'Confirm',
+          cancelButtonText: 'Cancel',
           type: 'warning'
         }).then(() => {
           this.$api.delComment({
@@ -181,7 +181,7 @@
             if(res.data.status === 200) {
                 this.$message({
                 type: 'success',
-                message: '删除成功'
+                message: 'Deleted successfully'
               })
               this.editComments(1)                  // 更新视图
             }
@@ -189,7 +189,7 @@
         }).catch(() => {
           this.$message({
             type: 'info',
-            message: '已取消'
+            message: 'Cancelled'
           });          
         });
       },

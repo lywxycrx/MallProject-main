@@ -2,24 +2,24 @@
   <div class="outDiv">
     <!-- 搜索栏区域 -->
     <div class="header">
-      <el-input placeholder="请输入您所要查询的订单(支持订单编号和商品查询)" 
+      <el-input placeholder="Please enter the order you want to query(支持订单编号和商品查询,,,最后调)" 
       @change="searchInput" v-model="input" clearable style="margin-right: 10px;"></el-input>
-      <el-button class="sbtn" type="primary">查询</el-button>
+      <el-button class="sbtn" type="primary">Search</el-button>
 
       <download-excel
           class = "export-excel-wrapper"
           :data = this.tableData
           :fields = this.fields
           name = "商品订单表">
-          <el-button type="primary" class="ebtn" size="small">导出订单</el-button>
+          <el-button type="primary" class="ebtn" size="small">Export Orders</el-button>
       </download-excel>
     </div>
 
     <el-tabs v-model="activeName" @tab-click="cHandleClick">
-      <el-tab-pane label="待处理" name="待处理"></el-tab-pane>
-      <el-tab-pane label="配送中" name="配送中"></el-tab-pane>
-      <el-tab-pane label="已完成" name="已完成"></el-tab-pane>
-      <el-tab-pane label="状态异常" name="异常"></el-tab-pane>
+      <el-tab-pane label="Pending" name="Pending"></el-tab-pane>
+      <el-tab-pane label="Shipped" name="Shipped"></el-tab-pane>
+      <el-tab-pane label="Completed" name="Completed"></el-tab-pane>
+      <el-tab-pane label="Hold(可以说成abnormal)" name="异常"></el-tab-pane>
     </el-tabs>
 
       
@@ -32,37 +32,37 @@
 
       <el-table-column
         prop="oid"
-        label="编号"
-        width="60">
+        label="P.O. numbers"
+        width="120">
       </el-table-column>
       <el-table-column
         prop="name"
-        label="用户"
-        width="110">
+        label="Customer names"
+        width="140">
       </el-table-column>
       <el-table-column
         prop="detail"
-        label="清单"
-        width="250">
+        label="Details"
+        width="230">
       </el-table-column>
       <el-table-column
         prop="price"
-        label="总价"
-        width="90">
+        label="Total price"
+        width="100">
       </el-table-column>
       <el-table-column
         prop="address"
-        label="地址"
-        width="220">
+        label="Address"
+        width="200">
       </el-table-column>
       <el-table-column
         prop="time"
-        label="下单时间"
+        label="Purchase dates"
         width="180">
       </el-table-column>
       <el-table-column
-        label="操作"
-        width="420">
+        label="Operations"
+        width="430">
             <template slot-scope="scope">
               <el-button
                 size="mini"
@@ -77,7 +77,7 @@
                 @click="changeStatus(scope.$index, scope.row, '配送中')"
                 icon="el-icon-truck"
                 v-show="dType">
-                配送
+                Delivery
               </el-button>
               <el-button
                 size="mini"
@@ -101,14 +101,14 @@
                 @click="changeStatus(scope.$index, scope.row, '已完成')"
                 icon="el-icon-check"
                 v-show="sType">
-                完成
+                Complete
               </el-button>
               <el-button
                 size="mini"
                 type="danger"
                 @click="handleDelete(scope.$index, scope.row)"
                 icon="el-icon-delete">
-                删除
+                Delete
               </el-button>
             </template>
         </el-table-column>
@@ -168,11 +168,11 @@
         pageSize: 1,
         input: '',
 
-        activeName: '全部',
+        activeName: 'All',
         dialogVisible: false,
         currentPage: 1, // 页面改变时的变量
         type: 0,
-        title: '添加商品',
+        title: 'Add product',
         rowData:{
           oid: 0,
           address: '',
@@ -242,7 +242,7 @@
             this.pageSize = 1;
             this.$message({
               type: 'error',
-              message: '暂无此订单'
+              message: 'No such order at this time'
             })
           }
         });
@@ -251,21 +251,21 @@
 
       // 类别查询
       cHandleClick() {
-        if(this.activeName === '待处理'){
+        if(this.activeName === 'Pending'){
           this.type = 0
           this.dType = true
           this.sType = false
           this.abnormalType = true
           this.solveType = false
           this.showOrders(1, this.type)
-        }else if(this.activeName === '配送中'){
+        }else if(this.activeName === 'Shipped'){
           this.type = 1
           this.dType = false
           this.sType = true
           this.abnormalType = true
           this.solveType = false
           this.showOrders(1, this.type)
-        }else if(this.activeName === '已完成'){
+        }else if(this.activeName === 'Completed'){
           this.type = 2
           this.dType = false
           this.sType = false
@@ -295,9 +295,9 @@
       changeStatus(index, row, bType){
         console.log('删除', index, row)
         const numType = Object.keys(this.statusMap).find(key => this.statusMap[key] === bType);
-        this.$confirm('此操作将变更该订单状态为'+ bType + ', 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+        this.$confirm('This will change the status of the order to'+ bType + ', continue or not', 'hint', {
+          confirmButtonText: 'Confirm',
+          cancelButtonText: 'Cancel',
           type: 'warning'
         }).then(() => {
           this.$api.changeOrder({
@@ -307,7 +307,7 @@
             if(res.data.status === 200) {
                 this.$message({
                 type: 'success',
-                message: '变更成功'
+                message: 'Change successfully'
               })
               this.showOrders(1, this.type)                  // 更新视图
             }
@@ -315,7 +315,7 @@
         }).catch(() => {
           this.$message({
             type: 'info',
-            message: '已取消'
+            message: 'Cancelled'
           });          
         });
       },
@@ -362,9 +362,9 @@
       // 删除操作
       handleDelete(index, row){
         console.log('删除', index, row)
-        this.$confirm('此操作将永久删除该订单, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+        this.$confirm('This action will permanently delete the order, do you want to continue?', 'hint', {
+          confirmButtonText: 'Confirm',
+          cancelButtonText: 'Cancel',
           type: 'warning'
         }).then(() => {
           this.$api.delOrder({
@@ -373,7 +373,7 @@
             if(res.data.status === 200) {
                 this.$message({
                 type: 'success',
-                message: '删除成功'
+                message: 'Deleted successfully'
               })
               this.showOrders(1, this.type)                  // 更新视图
             }
@@ -381,7 +381,7 @@
         }).catch(() => {
           this.$message({
             type: 'info',
-            message: '已取消'
+            message: 'Cancelled'
           });          
         });
       },

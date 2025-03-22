@@ -84,8 +84,8 @@ export default {
           });
 
         } catch (error) {
-          console.error('删除文件时出错:', error);
-          this.$message.error('删除文件时出错');
+          console.error('Error while deleting a file:', error);
+          this.$message.error('Error while deleting a file');
         }
       }
       
@@ -98,7 +98,7 @@ export default {
 
     beforeUpload(file) {
       if (this.hasT) {
-        this.$message.error('只能添加一张缩略图');
+        this.$message.error('Only one thumbnail can be added');
         return false;
       }
 
@@ -106,18 +106,18 @@ export default {
       const isPNG = file.type === 'image/png';
       const isLt2M = file.size / 1024 / 1024 <= 3;
       if (!(isJPG || isPNG)) {
-        this.$message.error('上传头像图片只能是 jpg/png 格式');
+        this.$message.error('Uploading avatar images can only be in jpg/png format');
       }
       if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 3MB');
+        this.$message.error('The size of the uploaded avatar image can not exceed 3MB.');
       }
       return (isPNG || isJPG) && isLt2M;
     },
 
     successUpload(res, file, fileList) {
-      console.log('上传成功！', res, file, fileList);
+      console.log('Uploaded successfully！', res, file, fileList);
       this.$message({
-        message: '上传成功',
+        message: 'Uploaded successfully',
         type: 'success'
       });
       if (this.type === 'Thumbnail') {

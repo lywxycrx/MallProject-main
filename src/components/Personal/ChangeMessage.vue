@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-dialog
-        title="修改姓名"
+        title="Change Name"
         :visible.sync="nDialog"
         :append-to-body="true"
         :before-close="handleDialogClose"
@@ -12,12 +12,12 @@
                 </el-form-item>
 
                 <el-form-item>
-                <el-button type="primary" @click="submitMessage('ruleForm', tableName, 'name', ruleForm.name)" style="float: right; margin-top: 30px">确定</el-button>
+                <el-button type="primary" @click="submitMessage('ruleForm', tableName, 'name', ruleForm.name)" style="float: right; margin-top: 30px">Confirm</el-button>
                 </el-form-item>
             </el-form>
         </el-dialog>
         <el-dialog
-        title="修改性别"
+        title="Change Gender"
         :visible.sync="sDialog"
         :append-to-body="true"
         :before-close="handleDialogClose"
@@ -28,12 +28,12 @@
                 </el-form-item>
 
                 <el-form-item>
-                <el-button type="primary" @click="submitMessage('ruleForm', tableName, 'sex', ruleForm.sex)" style="float: right; margin-top: 30px">确定</el-button>
+                <el-button type="primary" @click="submitMessage('ruleForm', tableName, 'sex', ruleForm.sex)" style="float: right; margin-top: 30px">Confirm</el-button>
                 </el-form-item>
             </el-form>
         </el-dialog>
         <el-dialog
-        title="修改地址"
+        title="Change Address"
         :visible.sync="aDialog"
         :append-to-body="true"
         :before-close="handleDialogClose"
@@ -44,12 +44,12 @@
                 </el-form-item>
 
                 <el-form-item>
-                <el-button type="primary" @click="submitMessage('ruleForm', tableName, 'address', ruleForm.address)" style="float: right; margin-top: 30px">确定</el-button>
+                <el-button type="primary" @click="submitMessage('ruleForm', tableName, 'address', ruleForm.address)" style="float: right; margin-top: 30px">Confirm</el-button>
                 </el-form-item>
             </el-form>
         </el-dialog>
         <el-dialog
-        title="修改手机号"
+        title="Change your phone number"
         :visible.sync="pDialog"
         :append-to-body="true"
         :before-close="handleDialogClose"
@@ -60,7 +60,7 @@
                 </el-form-item>
 
                 <el-form-item>
-                <el-button type="primary" @click="submitMessage('ruleForm', tableName, 'phone', ruleForm.phone)" style="float: right; margin-top: 30px">确定</el-button>
+                <el-button type="primary" @click="submitMessage('ruleForm', tableName, 'phone', ruleForm.phone)" style="float: right; margin-top: 30px">Confirm</el-button>
                 </el-form-item>
             </el-form>
         </el-dialog>
@@ -93,20 +93,20 @@ export default {
 
         rules: {
           name: [
-            { required: true, message: '请输入姓名', trigger: 'blur' },
-            // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+            { required: true, message: 'Please enter your name', trigger: 'blur' },
+            
           ],
           address: [
-            { required: true, message: '请输入地址', trigger: 'blur' },
-            // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+            { required: true, message: 'Please enter your address', trigger: 'blur' },
+            
           ],
           sex: [
-            { required: true, message: '请输入性别', trigger: 'blur' },
-            // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+            { required: true, message: 'Please enter your gender', trigger: 'blur' },
+            
           ],
           phone: [
-            { required: true, message: '请输入手机号', trigger: 'blur' },
-            // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+            { required: true, message: 'Please enter your phone number', trigger: 'blur' },
+            
           ],
         }
       };
@@ -116,13 +116,13 @@ export default {
       // 关闭弹窗时发送的事件
       handleDialogClose() {
           this.$emit('changeDialog')
-          console.log('弹窗关闭时的事件触发了！')
+          console.log('The event is triggered when the popup closes!')
       },
 
       submitMessage(formName, tableName, column, message) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            console.log('进入提交阶段')
+            console.log('Moving to the submission stage')
             this.$api.changeMessage({
               tableName: tableName,
               column,
@@ -132,7 +132,7 @@ export default {
             .then((res) => {
               if(res.status == 200){
                 this.$message({
-                    message: '修改成功',
+                    message: 'Modified successfully',
                     type: 'success'
                 });         
                 setTimeout(() => {
@@ -141,7 +141,7 @@ export default {
               }
             }) 
           } else {
-            console.log('修改失败');
+            console.log('Failed to modify');
             return false;
           }
         });

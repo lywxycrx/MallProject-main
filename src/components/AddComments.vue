@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-dialog
-            title="评论"
+            title="Comment"
             :visible.sync="dialogVisible"
             width="70%"
             :before-close="handleClose">
@@ -13,7 +13,7 @@
             </el-form>
 
             <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="submit('ruleForm')">发布</el-button>
+                <el-button type="primary" @click="submit('ruleForm')">Publish</el-button>
             </span>
         </el-dialog>
     </div>
@@ -49,8 +49,8 @@ export default {
 
             rules: {
                 content: [
-                    { required: true, message: '请输入评论内容', trigger: 'blur' },
-                    // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+                    { required: true, message: 'Please enter a comment', trigger: 'blur' },
+                    
                 ],
             }
       }
@@ -59,7 +59,7 @@ export default {
     methods: {
         // 弹窗关闭时触发的事件
         handleClose(){
-            console.log('关闭事件触发了')
+            console.log('Close event triggered')
             // this.dialogVisible = false
             this.$emit('changeDialog')
         },
@@ -68,7 +68,7 @@ export default {
         submit(formName) {
             this.$refs[formName].validate((valid) => {
                 if(valid) {
-                    console.log('进入提交阶段')
+                    console.log('Moving to the submission stage')
                     let content = this.ruleForm.content;
                     let gid = this.gid
                     let uid = store.state.loginModule.userinfo.uid
@@ -77,14 +77,14 @@ export default {
                     .then((res) => {
                     if(res.status == 200){
                         this.$message({
-                        message: '发布成功',
+                        message: 'Publish Successfully',
                         type: 'success'
                         });
                         setTimeout(() => {
                             this.reload()
                         }, 700);
                     }else {
-                        this.$message.error('发布失败');
+                        this.$message.error('Failed to publish');
                         return false; 
                         }
                     });
