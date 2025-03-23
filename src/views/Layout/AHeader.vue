@@ -8,22 +8,22 @@
           </div>
         </el-col>
         <el-col :span="2"><div class="grid-content bg-purple">
-          <el-link @click="linkHome">首页</el-link>
+          <el-link @click="linkHome">Home</el-link>
         </div></el-col>
         <el-col :span="2"><div class="grid-content bg-purple">
-          <el-link @click="editUsers">用户列表</el-link>
+          <el-link @click="editUsers">User list</el-link>
         </div></el-col>
         <el-col :span="2"><div class="grid-content bg-purple">
-          <el-link @click="editGoods">商品管理</el-link>
+          <el-link @click="editGoods">Product</el-link>
         </div></el-col>
         <el-col :span="2"><div class="grid-content bg-purple">
-          <el-link @click="editOrder">订单管理</el-link>
+          <el-link @click="editOrder">Order</el-link>
         </div></el-col>
         <el-col :span="2"><div class="grid-content bg-purple">
-          <el-link @click="editComment">评论管理</el-link>
+          <el-link @click="editComment">Comment</el-link>
         </div></el-col>
-        <el-col :span="2"><div class="grid-content bg-purple">
-          <el-link @click="linkCenter">个人中心</el-link>
+        <el-col :span="4"><div class="grid-content bg-purple">
+          <el-link @click="linkCenter">Personal Center</el-link>
         </div></el-col>
 
         <div class="userDiv">
@@ -86,9 +86,9 @@ export default {
       ...mapMutations('loginModule', ['clearUser']),
       exit() {
         console.log('退出');
-         this.$confirm('是否退出系统？', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+         this.$confirm('Do you exit the system?', 'Hint', {
+          confirmButtonText: 'Confirm',
+          cancelButtonText: 'Cancel',
           type: 'warning'
         }).then(() => {
           // 情况vuex和本地数据，跳转至登录界面
@@ -98,7 +98,7 @@ export default {
         }).catch(() => {
         this.$message({
           type: 'info',
-          message: '已取消'
+          message: 'Cancelled'
           }); 
         })
       },

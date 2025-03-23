@@ -83,8 +83,8 @@ export default {
             let status = this.cartList[i].isEnabled
             console.log(status)
             if(status != 0){
-              console.log(`${this.cartList[i].name}已停售`)
-              this.disabled = "您购物车中的" + this.disabled + this.cartList[i].name + " 已停售"
+              console.log(`${this.cartList[i].name} no longer available`)
+              this.disabled = this.disabled + this.cartList[i].name + " no longer available"
               this.$api.delCart({
                 gid: this.cartList[i].gid,
                 uid: this.cartList[i].uid,

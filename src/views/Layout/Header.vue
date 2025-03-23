@@ -54,7 +54,7 @@ export default {
     methods: {
       ...mapMutations('loginModule', ['clearUser']),
       exit() {
-        console.log('退出');
+        console.log('Exit');
          this.$confirm('Exit the system?', 'hint', {
           confirmButtonText: 'confirm',
           cancelButtonText: 'cancel',
@@ -67,7 +67,7 @@ export default {
         }).catch(() => {
         this.$message({
           type: 'info',
-          message: '已取消'
+          message: 'Cancelled'
           }); 
         })
       },

@@ -4,25 +4,20 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <div class="grid-content bg-four">
-            <li class="el-icon-s-custom"> 用户总数: {{uNum}} 人</li>
+            <li class="el-icon-s-custom"> Number of users: {{uNum}} </li>
           </div>
         </el-col>
 
         <el-col :span="6">
           <div class="grid-content bg-three">
-            <li class="el-icon-s-goods"> 商品总数: {{gNum}} 种</li>
+            <li class="el-icon-s-goods"> Number of commodity species: {{gNum}} </li>
           </div>
         </el-col>
 
-        <!-- <el-col :span="6">
-          <div class="grid-content bg-two">
-            <li class="el-icon-s-order"> 利润:{{pNum}}￥</li>
-          </div>
-        </el-col> -->
 
         <el-col :span="6">
           <div class="grid-content bg-one">
-            <li class="el-icon-s-comment"> 反馈总数: {{fNum}} 条</li>
+            <li class="el-icon-s-comment"> Number of comments: {{fNum}} </li>
           </div>
         </el-col>
       </el-row>

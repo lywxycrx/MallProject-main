@@ -25,12 +25,12 @@
     </el-footer>
 
     <el-dialog
-        title="反馈意见"
+        title="Feedback"
         :visible.sync="dialogVisible"
         width="50%"> 
 
           <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-            <el-form-item label="反馈意见" prop="content">
+            <el-form-item label="Feedback" prop="content">
               <el-input type="textarea" 
               maxlength="300"
               show-word-limit 
@@ -92,7 +92,7 @@ export default {
               if(res.status == 200){
                 this.$message({
                   type: 'success',
-                  message: '提交成功'
+                  message: 'Submit successfully'
                 })
               }
             }) 
