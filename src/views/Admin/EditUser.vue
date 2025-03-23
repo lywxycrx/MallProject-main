@@ -3,7 +3,7 @@
     <!-- 搜索栏区域 -->
     <div class="header">
       <el-input placeholder="Please enter the user you are looking for" @change="searchInput" v-model="input" clearable></el-input>
-      <el-button type="primary">查询</el-button>
+      <el-button type="primary">Search</el-button>
     </div>
 
       
