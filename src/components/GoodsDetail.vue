@@ -261,61 +261,7 @@ import store from '../store/index'
       min-height: 36px;
     }
 
-    /* .home-banner {
-      width: 1240px;
-      height: 500px;
-      position: absolute;
-      left: 0;
-      top: 0;
-      z-index: 98;
-
-      img {
-        width: 100%;
-        height: 500px;
-      } 
-    } */
-    /* .el-carousel__item {
-  display: grid;
-  grid-template-columns: 1fr 3fr;
-  height: 100vh;
-}
-
-.el-carousel__item h3 {
-  grid-column: 2;
-  color: #475669;
-  font-size: 14px;
-  opacity: 0.75;
-  line-height: 200px;
-  margin: 0;
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-  
-    .el-carousel__item:nth-child(2n) {
-      background-color: #99a9bf;
-      background-image: url('../../server/upload/Carousel/Carousel-8-2.jpg');
-      background-size: cover;
-    }
-  
-    .el-carousel__item:nth-child(2n+1) {
-      background-color: #d3dce6;
-      background-image: url('../../server/upload/Carousel/Carousel-8-3.jpg');
-      background-size: cover;
-    } */
-
-    /* .el-carousel__item {
-      height: 300px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: white; 
-      background-size: contain
-    }
-
-    .el-carousel__item:nth-child(n) {
-      background-color: #99a9bf; 
-    } */
+ 
 
     .el-carousel {
   height: 300px; /* 确保轮播图的高度 */

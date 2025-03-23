@@ -151,7 +151,7 @@ export default {
         this.$api.selectStock({
           gid: this.idList[i],
         }).then(res => {
-          this.stockList.push(res.data.data[0])
+          this.stockList.push(res.data.data)
         })
       }
       setTimeout(() => {

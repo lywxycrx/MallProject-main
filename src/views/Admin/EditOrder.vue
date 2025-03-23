@@ -61,8 +61,16 @@
         width="180">
       </el-table-column>
       <el-table-column
+        prop="type"
+        label="状态"
+        width="180">
+        <template slot-scope="scope">
+          <span>{{ statusMap[scope.row.type] }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
         label="Operations"
-        width="430">
+        width="420">
             <template slot-scope="scope">
               <el-button
                 size="mini"
