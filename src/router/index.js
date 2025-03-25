@@ -33,11 +33,6 @@ const routes = [
     name: 'login',
     component: Login,
   },
-  {
-    path: '/goodsDetail/:gid',
-    name: 'goodsDetail',
-    component: GoodsDetail
-  },
 
   {
     path: '/home',
@@ -84,6 +79,15 @@ const routes = [
         component: MyOrders,
         meta: {
           isLogin: true
+        }
+      },
+      // 将商品详情页添加到Header组件的子路由中
+      {
+        path: '/goodsDetail/:gid',
+        name: 'goodsDetail',
+        component: GoodsDetail,
+        meta: {
+          isLogin: false // 假设商品详情页是公开的，根据需要调整
         }
       },
     ]
