@@ -572,7 +572,7 @@ router.get("/addOrder", (req, res) => {
     var address = req.query.address;
     var time = new Date();
     var subtotal = req.query.subtotal;
-    const sql = "insert into orders values (null,?,?,?,?,?,'0',?,null,null,null,null)"
+    const sql = "insert into orders values (null,?,?,?,?,?,'0',?,null,null,null,null,null)"
     var arr = [uid, detail, prcie, address, time.toLocaleDateString(), subtotal]
     sqlFn(sql, arr, result => {
         if (result.affectedRows > 0) {
