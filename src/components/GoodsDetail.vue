@@ -23,7 +23,7 @@
 
         <div class="tabDiv">
           <el-button :disabled="isAble" v-show="state != 1" type="warning" icon="el-icon-star-off" class="collection" 
-          :style="getStyle()" @click="addCart"> {{btnText}} 
+          :style="getStyle()" @click="addCart"  v-if="isLoggedIn"> {{btnText}} 
           </el-button>
 
           <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -55,6 +55,11 @@ import store from '../store/index'
       },
       mounted() {
         document.addEventListener('visibilitychange', this.handleVisibilityChange);
+        if(store.state.loginModule.userinfo.token){
+        this.isLoggedIn = true
+        }else{
+          this.isLoggedIn = false
+        }
       },
       data(){
         return {
@@ -71,7 +76,8 @@ import store from '../store/index'
 
           state: store.state.loginModule.userinfo.type,
           isAble: false,
-          CarouselList: []
+          CarouselList: [],
+          isLoggedIn: false
         }
       },
 
