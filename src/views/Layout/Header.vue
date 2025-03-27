@@ -1,182 +1,231 @@
 <template>
+  <div>
+    <!-- 头部导航栏 -->
     <div class="header">
-      <el-row :gutter="20">
-        <el-col :span="2">
-          <div class="grid-content bg-purple">
-            <div class="logoDiv"></div>
+      <el-row class="nav-container" justify="center">
+        <el-col :span="3">
+          <div class="logoDiv"></div>
+        </el-col>
+        <el-col :span="3">
+          <el-link :class="{ active: isActive('/home') }" @click="linkHome">Home</el-link>
+        </el-col>
+        <el-col :span="3">
+          <el-link :class="{ active: isActive('/goodsList') }" @click="linkGoods">Mall</el-link>
+        </el-col>
+        <el-col :span="4">
+          <el-link :class="{ active: isActive('/cart') }" @click="linkCart">Shopping Cart</el-link>
+        </el-col>
+        <el-col :span="4">
+          <el-link :class="{ active: isActive('/myOrders') }" @click="linkOrders">Order</el-link>
+        </el-col>
+        <el-col :span="4">
+          <el-link :class="{ active: isActive('/center') }" @click="linkCenter">Personal Center</el-link>
+        </el-col>
+        <el-col :span="3" class="userDiv">
+          <div v-if="isLoggedIn">
+            <div class="uImg"></div>
+            <span class="username">Hello, {{ userinfo.name }}</span>
+            <li class="el-icon-switch-button logout-icon" @click="exit"></li>
+          </div>
+          <div v-else @click="exit" class="login-text">
+            Click to Login
           </div>
         </el-col>
-        <el-col :span="2"><div class="grid-content bg-purple">
-          <el-link @click="linkHome">Home</el-link>
-        </div></el-col>
-        <el-col :span="2"><div class="grid-content bg-purple">
-          <el-link @click="linkGoods">Mall</el-link>
-        </div></el-col>
-        <el-col :span="2"><div class="grid-content bg-purple">
-          <el-link @click="linkCart">Shopping Cart</el-link>
-        </div></el-col>
-        <el-col :span="2"><div class="grid-content bg-purple">
-          <el-link @click="linkOrders">Order</el-link>
-        </div></el-col>
-        <el-col :span="2"><div class="grid-content bg-purple">
-          <el-link @click="linkCenter">Personal Center</el-link>
-        </div></el-col>
-        <div class="userDiv">
-          
-          <span v-if="isLoggedIn">
-            <div class="uImg"></div>
-            Hello, {{userinfo.name}}
-            <li class="el-icon-switch-button" @click="exit" style="margin-left: 5px"></li>
-          </span>
-          <span v-if="!isLoggedIn" @click="exit" 
-            @mouseenter="isHovered = true" 
-            @mouseleave="isHovered = false"
-            :style="{
-              cursor: 'pointer'
-            }">
-            Click to Login
-          </span>
-        </div>
       </el-row>
+    </div>
+
+    <!-- 主要内容区域 -->
+    <div class="main-content">
       <router-view></router-view>
     </div>
-    
+  </div>
 </template>
 
 <script>
-import {mapState, mapMutations} from 'vuex'
-import store from '../../store/index'
+import { mapState, mapMutations } from "vuex";
+import store from "../../store/index";
 
 export default {
-    name: 'Header',
-    computed: {
-      ...mapState('loginModule', ['userinfo'])   
-    },
-
-    data() {
-        return {
-          isLoggedIn: false
-        };
-    },
-
-    mounted() {
-      if(store.state.loginModule.userinfo.token){
-        this.isLoggedIn = true
-      }else{
-        this.isLoggedIn = false
-      }
-    },
-
-    methods: {
-      ...mapMutations('loginModule', ['clearUser']),
-      exit() {
-        console.log('Exit');
-        var massage = ''
-        if(store.state.loginModule.userinfo.token){
-          massage = 'Exit the system'
-        }else{
-          massage = 'You will be redirected to the login page'
-        }
-         this.$confirm(massage, 'hint', {
-          confirmButtonText: 'confirm',
-          cancelButtonText: 'cancel',
-          type: 'warning'
-        }).then(() => {
-          // 情况vuex和本地数据，跳转至登录界面
-          this.clearUser();
-          localStorage.removeItem('user')
-          this.$router.push('/login')
-        }).catch(() => {
+  name: "Header",
+  computed: {
+    ...mapState("loginModule", ["userinfo"]),
+  },
+  data() {
+    return {
+      isLoggedIn: store.state.loginModule.userinfo.token ? true : false,
+    };
+  },
+  methods: {
+    ...mapMutations("loginModule", ["clearUser"]),
+    exit() {
+      const message = this.isLoggedIn ? "Exit the system" : "You will be redirected to the login page";
+      this.$confirm(message, "Hint", {
+        confirmButtonText: "Confirm",
+        cancelButtonText: "Cancel",
+        type: "warning",
+      }).then(() => {
+        this.clearUser();
+        localStorage.removeItem("user");
+        this.$router.push("/login");
+      }).catch(() => {
         this.$message({
-          type: 'info',
-          message: 'Cancelled'
-          }); 
-        })
-      },
-
-      linkHome() {
-        console.log('首页被点击')
-        this.$router.push('/home')
-      },
-
-      linkGoods() {
-          console.log('商城被点击')
-          this.$router.push('/goodsList')
-      },
-
-      linkCenter() {
-          console.log('个人中心被点击')
-          this.$router.push('/center')
-      },
-
-      linkCart() {
-        console.log('购物车被点击')
-        this.$router.push('/cart')
-      },
-
-      linkOrders() {
-        console.log('订单被点击')
-        this.$router.push('/myOrders')
-      },
-
-      test() {
-        console.log(store.state.loginModule.userinfo.token)
-      },
+          type: "info",
+          message: "Cancelled",
+        });
+      });
+    },
+    linkHome() {
+      this.$router.push("/home");
+    },
+    linkGoods() {
+      this.$router.push("/goodsList");
+    },
+    linkCenter() {
+      this.$router.push("/center");
+    },
+    linkCart() {
+      this.$router.push("/cart");
+    },
+    linkOrders() {
+      this.$router.push("/myOrders");
+    },
+    isActive(route) {
+      return this.$route.path === route;
     }
+  },
 };
 </script>
 
 <style scoped>
-    .header {
-      position: relative;
-      background-color: #ffffff;
-      color: rgb(255, 255, 255);
-      text-align: center;
-      line-height: 55px;
-      
-      border: 1px solid rgb(235, 235, 235);
-      border-radius: 10px 10px 10px 10px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
-    }
+/* 头部导航栏 */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  background-color: #ffffff;
+  border-bottom: 2px solid rgb(230, 230, 230);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    .userDiv {
-      position: absolute;
-      color: black;
-      right: 5%;
-      top: 5%;
-    }
+/* 让 el-row 不换行 */
+.nav-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: nowrap;
+}
 
-    .uImg {
-      position: relative;
-      float: left;
-      margin-top: 8%;
-      right: 5%;
-      height: 30px;
-      width: 30px;
-      background-image: url('../../assets/user.png');
-      background-size: cover;
-      border-radius: 100%;
-      /* border: 1px solid; */
-    }
+/* Logo */
+.logoDiv {
+  width: 60px;
+  height: 60px;
+  background-image: url("../../assets/logo.png");
+  background-size: cover;
+}
 
-    .el-row {
-      margin: auto;
-    }
+/* 用户信息 */
+.userDiv {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  color: black;
+  white-space: nowrap;
+}
 
-    .logoDiv {
-      position: relative;
-      margin-left: 30px;
-      margin-top: 10px;
-      margin-bottom: 10px;
-      height: 60px;
-      width: 60px;
-      background-image: url("../../assets/logo.png");
-      background-size: cover;
-    }
+.username {
+  font-weight: bold;
+  color: #333;
+}
 
-    .el-link.el-link--default {
-      font-size: 16px;
-    }
+/* 用户头像 */
+.uImg {
+  width: 30px;
+  height: 30px;
+  background-image: url("../../assets/user.png");
+  background-size: cover;
+  border-radius: 50%;
+}
 
+/* 退出按钮 */
+.logout-icon {
+  cursor: pointer;
+  font-size: 18px;
+  transition: color 0.3s ease;
+}
 
+.logout-icon:hover {
+  color: red;
+}
+
+/* 登录按钮 */
+.login-text {
+  cursor: pointer;
+  font-weight: bold;
+  color: #007bff;
+  transition: color 0.3s ease;
+}
+
+.login-text:hover {
+  color: #0056b3;
+}
+
+/* 主要内容区域 */
+.main-content {
+  margin-top: 80px;
+  min-height: calc(100vh - 80px);
+  padding: 20px;
+}
+
+/* 导航栏链接 */
+.el-link {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  padding: 10px 15px;
+  border-radius: 5px;
+}
+
+/* 悬停时的效果 */
+.el-link:hover {
+  color: #007bff;
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
+/* 选中（当前页面）时的效果 */
+.el-link.active {
+  color: #ffffff;
+  background-color: #007bff;
+  border-radius: 5px;
+  padding: 10px 15px;
+}
+
+/* 响应式调整 */
+@media (max-width: 1024px) {
+  .nav-container {
+    justify-content: space-between;
+  }
+  .userDiv {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .userDiv {
+    margin-top: 10px;
+  }
+}
 </style>
