@@ -19,7 +19,8 @@
       <el-tab-pane label="Pending" name="Pending"></el-tab-pane>
       <el-tab-pane label="Shipped" name="Shipped"></el-tab-pane>
       <el-tab-pane label="Completed" name="Completed"></el-tab-pane>
-      <el-tab-pane label="Hold(可以说成abnormal)" name="异常"></el-tab-pane>
+      <el-tab-pane label="Holding" name="Holding"></el-tab-pane>
+      <el-tab-pane label="Cancelled" name="Cancelled"></el-tab-pane>
     </el-tabs>
 
       
@@ -82,7 +83,7 @@
               <el-button
                 size="mini"
                 type="warning"
-                @click="changeStatus(scope.$index, scope.row, '配送中')"
+                @click="changeStatus(scope.$index, scope.row, 'Shipped')"
                 icon="el-icon-truck"
                 v-show="dType">
                 Delivery
@@ -90,23 +91,23 @@
               <el-button
                 size="mini"
                 type="danger"
-                @click="changeStatus(scope.$index, scope.row, '异常')"
+                @click="changeStatus(scope.$index, scope.row, 'Holding')"
                 icon="el-icon-warning"
                 v-show="abnormalType">
-                设为异常
+                设为Holding
               </el-button>
               <el-button
                 size="mini"
                 type="success"
-                @click="changeStatus(scope.$index, scope.row, '待处理')"
+                @click="changeStatus(scope.$index, scope.row, 'Pending')"
                 icon="el-icon-check"
                 v-show="solveType">
-                解决异常
+                解决Holding
               </el-button>
               <el-button
                 size="mini"
                 type="success"
-                @click="changeStatus(scope.$index, scope.row, '已完成')"
+                @click="changeStatus(scope.$index, scope.row, 'Completed')"
                 icon="el-icon-check"
                 v-show="sType">
                 Complete
@@ -132,6 +133,7 @@
       <p>Completed Time: {{ rowData.dates[1] }}</p>
       <p v-if="rowData.dates[2] != null">Problem Time: {{ rowData.dates[2] }}</p>
       <p v-if="rowData.dates[2] != null">Solve Time: {{ rowData.dates[3] }}</p>
+      <p v-if="rowData.dates[4] != null">Cancel Time: {{ rowData.dates[4] }}</p>
       <p>Type: {{ rowData.status }}</p>
 
       <table border="1" style="width: 100%; border-collapse: collapse;">
@@ -196,10 +198,11 @@
         abnormalType: true,
         solveType: false,
         statusMap: {
-          0: "待处理",
-          1: "配送中",
-          2: "已完成",
-          3: "异常"
+          0: "Pending",
+          1: "Shipped",
+          2: "Completed",
+          3: "Holding",
+          4: "Cancelled"
         },
 
         fields: {'用户': 'uid', '购物清单': 'detail', '总价': 'price', '地址': 'address', '时间': 'time', },
@@ -212,7 +215,7 @@
         
         this.$api.showOrders({
           page,
-          type,        // 查询待处理订单
+          type,        // 查询Pending订单
         }).then(res => {
           if(res.status == 200){
             this.tableData = res.data.data
@@ -270,7 +273,7 @@
           this.type = 1
           this.dType = false
           this.sType = true
-          this.abnormalType = true
+          this.abnormalType = false
           this.solveType = false
           this.showOrders(1, this.type)
         }else if(this.activeName === 'Completed'){
@@ -281,12 +284,19 @@
           this.solveType = false
           this.showOrders(1, this.type)
         }
-        else if(this.activeName === '异常'){
+        else if(this.activeName === 'Holding'){
           this.type = 3
           this.dType = false
           this.sType = false
           this.abnormalType = false
           this.solveType = true
+          this.showOrders(1, this.type)
+        }else if(this.activeName === 'Cancelled'){
+          this.type = 4
+          this.dType = false
+          this.sType = false
+          this.abnormalType = false
+          this.solveType = false
           this.showOrders(1, this.type)
         }
       },
@@ -303,7 +313,7 @@
       changeStatus(index, row, bType){
         console.log('删除', index, row)
         const numType = Object.keys(this.statusMap).find(key => this.statusMap[key] === bType);
-        this.$confirm('This will change the status of the order to'+ bType + ', continue or not', 'hint', {
+        this.$confirm('This will change the status of the order to '+ bType + ', continue or not', 'hint', {
           confirmButtonText: 'Confirm',
           cancelButtonText: 'Cancel',
           type: 'warning'
@@ -339,6 +349,10 @@
           this.rowData.status = 'Pending'
         }else if(this.rowData.status == 1){
           this.rowData.status = 'Delivering'
+        }else if(this.rowData.status == 3){
+          this.rowData.status = 'Holding'
+        }else if(this.rowData.status == 4){
+          this.rowData.status = 'Cancelled'
         }else{
           this.rowData.status = 'Completed'
         }
@@ -357,13 +371,11 @@
         }
         this.rowData.detail = []
         this.rowData.detail = this.rowData.detail.concat(checklist)
-        for(let i = 0; i < 4; i++){
-          if(row[`date${i+1}`] != null){
-            this.rowData.dates[i] = row[`date${i+1}`].split("T")[0]
-          }
-          
+        let i = 0
+        while(row[`date${i+1}`] != null){
+          this.rowData.dates[i] = row[`date${i+1}`].split("T")[0]
+          console.log(i++)
         }
-
         this.dialogVisible = true;
       },
 

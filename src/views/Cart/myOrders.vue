@@ -12,7 +12,8 @@
       <el-tab-pane label="Pending" name="Pending"></el-tab-pane>
       <el-tab-pane label="Delivering" name="Delivering"></el-tab-pane>
       <el-tab-pane label="Completed" name="Completed"></el-tab-pane>
-      <el-tab-pane label="Abnormal" name="Abnormal"></el-tab-pane>      
+      <el-tab-pane label="Abnormal" name="Abnormal"></el-tab-pane>
+      <el-tab-pane label="Cancelled" name="Cancelled"></el-tab-pane>     
     </el-tabs>
 
       
@@ -72,6 +73,14 @@
               </el-button>
               <el-button
                 size="mini"
+                type="warning"
+                @click="handleCancel(scope.row)"
+                icon="el-icon-close"
+                v-show="CancelType">
+                Cancel
+              </el-button>
+              <el-button
+                size="mini"
                 type="danger"
                 @click="handleDelete(scope.$index, scope.row)"
                 icon="el-icon-delete"
@@ -95,6 +104,7 @@
       <p>Completed Time: {{ rowData.dates[1] }}</p>
       <p v-if="rowData.dates[2] != null">Problem Time: {{ rowData.dates[2] }}</p>
       <p v-if="rowData.dates[2] != null">Solve Time: {{ rowData.dates[3] }}</p>
+      <p v-if="rowData.dates[4] != null">Cancel Time: {{ rowData.dates[4] }}</p>
       <p>Type: {{ rowData.status }}</p>
 
       <table border="1" style="width: 100%; border-collapse: collapse;">
@@ -157,6 +167,7 @@
         },     // 当前行的数据对象
 
         dType: false,   // 控制删除按钮是否显示
+        CancelType: true
       }
     },
 
@@ -181,7 +192,7 @@
       searchInput(val){
       console.log('searchInput执行');
        if (!val) {
-        this.showOrders(1, this.type);
+        this.myOrders(1, this.type);
         console.log('val为空执行');
         this.currentPage = 1;
         return;
@@ -216,7 +227,8 @@
           0: 'Pending',
           1: 'Delivering',
           2: 'Completed',
-          3: 'Abnormal'
+          3: 'Abnormal',
+          4: "Cancelled"
         };
         return typeMap[order.type] || 'Unknown'; // 默认返回 'Unknown'
       },
@@ -225,19 +237,28 @@
         if(this.activeName === 'Pending'){
           this.type = 0
           this.dType = false
+          this.CancelType = true
           this.myOrders(1, this.type)
         }else if(this.activeName === 'Delivering'){
           this.type = 1
           this.dType = false
+          this.CancelType = false
           this.myOrders(1, this.type)
         }else if(this.activeName === 'Completed'){
           this.type = 2
           this.dType = true
+          this.CancelType = false
           this.myOrders(1, this.type)
         }
         else if(this.activeName === 'Abnormal'){
           this.type = 3
           this.dType = false
+          this.CancelType = true
+          this.myOrders(1, this.type)
+        }else if(this.activeName === 'Cancelled'){
+          this.type = 4
+          this.dType = false
+          this.CancelType = false
           this.myOrders(1, this.type)
         }
       },
@@ -289,6 +310,10 @@
           this.rowData.status = 'Pending'
         }else if(this.rowData.status == 1){
           this.rowData.status = 'Delivering'
+        }else if(this.rowData.status == 3){
+          this.rowData.status = 'Holding'
+        }else if(this.rowData.status == 4){
+          this.rowData.status = 'Cancelled'
         }else{
           this.rowData.status = 'Completed'
         }
@@ -308,14 +333,42 @@
         this.rowData.detail = []
         this.rowData.detail = this.rowData.detail.concat(checklist)
 
-        for(let i = 0; i < 4; i++){
-          if(row[`date${i+1}`] != null){
-            this.rowData.dates[i] = row[`date${i+1}`].split("T")[0]
-          }
+        let i = 0
+        while(row[`date${i+1}`] != null){
+          this.rowData.dates[i] = row[`date${i+1}`].split("T")[0]
+          console.log(i++)
         }
 
         this.dialogVisible = true;
       },
+
+      handleCancel(row){
+        console.log("取消订单")
+        this.$confirm('Do you confirm to cancel the order?', {
+          confirmButtonText: 'Confirm',
+          cancelButtonText: 'Cancel',
+          type: 'warning'
+        }).then(() => {
+          this.$api.changeOrder({
+            oid: row.oid,
+            type: 4
+          }).then(res => {
+            if(res.data.status === 200) {
+                this.$message({
+                type: 'success',
+                message: 'Cancel successfully'
+              })
+              this.myOrders(1, this.type)                  // 更新视图
+            }
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: 'Give up canceling order'
+          });          
+        });
+      }
+
     },
 
     

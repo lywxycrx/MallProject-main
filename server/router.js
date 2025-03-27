@@ -731,7 +731,10 @@ router.get("/changeOrder", (req, res) => {
         sql = "update orders set type = 3 where oid = " + oid;
     }else if(type == 0){
         sql = "update orders set type = 0 where oid = " + oid;
-        type = 4
+        type = 4 //将日期类型设置为解决问题的日期
+    }else if(type == 4){
+        sql = "update orders set type = 4 where oid = " + oid;
+        type = 5 //将日期类型设置为取消的日期
     }
     sqlFn(sql, null, result => {
         if (result.affectedRows > 0) {

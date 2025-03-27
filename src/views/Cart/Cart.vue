@@ -7,6 +7,7 @@
         <el-button type="danger" round class="tBtn" @click="selectStock">Checkout</el-button>
       </div>
     </div>
+    <h3 v-if="!cartList" style="color: black;">You haven't selected any products yet</h3>
     <CartList :cartList="cartList" @sumPrice="sumPrice"  @synchronization="synchronization"></CartList>
     <MyPage :total="total" :pageSize="pageSize" @changePage="changePage" class="page" :current-page="currentPage"></MyPage>
     
