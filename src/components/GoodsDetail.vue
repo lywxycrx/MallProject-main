@@ -9,9 +9,9 @@
         </el-row>
         <el-row :gutter="20"></el-row>
 
-        <div class="block">
+        <!-- <div class="block">
           <img :src="imgUrl">
-        </div>
+        </div> -->
 
         <el-carousel :interval="4000" type="card" height="300px">
           <h2 v-if="CarouselList.length==0">No other pictures available</h2>

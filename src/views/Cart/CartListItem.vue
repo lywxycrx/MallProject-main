@@ -3,6 +3,7 @@
     <div class="item-selector">
       <CheckButton :itemPrice="itemPrice" :itemGid="itemGid" :itemName="itemName" @sumPrice="sumPrice" :num="num" ></CheckButton>
     </div>
+
     <div class="item-img">
       <el-link @click="itemClick">
         <img :src="itemInfo.img" alt="Product pictures">

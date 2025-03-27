@@ -339,7 +339,7 @@ router.get("/addGoods", (req, res) => {
     var introduction = req.query.introduction;
     var img = req.query.imgUrl;
     var stock = req.query.stock;
-    const sql = "insert into goods values (null,?,?,?,?,0,?,?,?,?)"
+    const sql = "insert into goods values (null,?,?,?,?,0,?,?,?,?,0,0)"
     var arr = [type, img, name, price, score, parameter, introduction, stock];
     sqlFn(sql, arr, result => {
         if (result.affectedRows > 0) {
@@ -693,7 +693,7 @@ router.get('/searchOrder', (req, res) => {
     var search = req.query.search;
     // const sqlLen = "select * from orders where concat(`oid`, `uid`) like '%" + search + "%' and type = " + type;
 
-    const sqlLen = "select * from orders where oid like '%" + search + "%' and type = " + type;
+    const sqlLen = "select * from orders where concat(`oid`, `name`) like '%" + search + "%' and type = " + type;
     sqlFn(sqlLen, null, data => {
         let len = data.length;
         // const sql = 

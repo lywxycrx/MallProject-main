@@ -234,7 +234,7 @@ export default {
         if (valid) {
           console.log('进入提交阶段')
           let {gid, name, price, type, score, parameter, introduction, img, stock} = this.ruleForm;
-          if (this.title === '编辑商品') {
+          if (this.title === 'Edit product') {
             if(this.imgUrl != ''){        // 判断是否重新上传图片，若重新上传则重新赋值图片地址
               console.log(this.imgUrl)
               img = this.imgUrl;

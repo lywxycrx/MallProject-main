@@ -26,7 +26,7 @@
 
       <el-table-column
         prop="oid"
-        label="serial number"
+        label="P.O.number"
         width="150">
       </el-table-column>
       <!-- <el-table-column
@@ -41,28 +41,28 @@
       </el-table-column>
       <el-table-column
         prop="price"
-        label="total price"
+        label="Total Price"
         width="120">
       </el-table-column>
       <el-table-column
         prop="address"
-        label="address"
+        label="Shipping Address"
         width="220">
       </el-table-column>
       <el-table-column
         prop="time"
-        label="Order time"
+        label="Purchase Date"
         width="180">
       </el-table-column>
       <el-table-column
         prop="type"
-        label="status"
+        label="Status"
         width="180"
         :formatter="formatType">
       </el-table-column>
       <el-table-column
-        label="oprate"
-        width="120">
+        label="Opration"
+        width="240">
             <template slot-scope="scope">
               <el-button
                 size="mini"
@@ -97,8 +97,9 @@
 
 
     <el-dialog :visible.sync="dialogVisible" title="Order Details">
-      <h3>Order No. {{ rowData.oid }}</h3>
-      <p>Delivering Address: {{ rowData.address }}</p>
+      <!-- <h3>Order No. {{ rowData.oid }}</h3> -->
+      <h3>P.O.number: {{ rowData.oid }}</h3>
+      <p>Shipping Address: {{ rowData.address }}</p>
       <p>Createing Time: {{ rowData.time }}</p>
       <p>Shipping Time: {{ rowData.dates[0] }}</p>
       <p>Completed Time: {{ rowData.dates[1] }}</p>
@@ -111,7 +112,7 @@
         <thead>
           <tr>
             <th>Item</th>
-            <th>Quentity</th>
+            <th>Quantity</th>
             <th>Unit Price</th>
             <th>Subtotal</th>
           </tr>

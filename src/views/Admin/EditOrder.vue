@@ -33,7 +33,7 @@
 
       <el-table-column
         prop="oid"
-        label="P.O. numbers"
+        label='P.O.numbers'
         width="120">
       </el-table-column>
       <el-table-column
@@ -63,7 +63,7 @@
       </el-table-column>
       <el-table-column
         prop="type"
-        label="状态"
+        label="Status"
         width="180">
         <template slot-scope="scope">
           <span>{{ statusMap[scope.row.type] }}</span>
@@ -126,8 +126,8 @@
     <MyPage :total="total" :pageSize="pageSize" @changePage="changePage" class="page" :current-page="currentPage"></MyPage>
     <!-- <Dialog ref="dialog" :title="title" :rowData="rowData"></Dialog> -->
     <el-dialog :visible.sync="dialogVisible" title="Order Details">
-      <h3>Order No. {{ rowData.oid }}</h3>
-      <p>Delivering Address: {{ rowData.address }}</p>
+      <h3>P.O.number: {{ rowData.oid }}</h3>
+      <p>Shipping Address: {{ rowData.address }}</p>
       <p>Createing Time: {{ rowData.time }}</p>
       <p>Shipping Time: {{ rowData.dates[0] }}</p>
       <p>Completed Time: {{ rowData.dates[1] }}</p>
@@ -140,7 +140,7 @@
         <thead>
           <tr>
             <th>Item</th>
-            <th>Quentity</th>
+            <th>Quantity</th>
             <th>Unit Price</th>
             <th>Subtotal</th>
           </tr>

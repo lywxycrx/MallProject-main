@@ -121,7 +121,9 @@ export default {
                 this.$message({
                   type: 'success',
                   message: '注册成功'
-                })
+                }
+              )
+              this.dialogVisible = false
               }else {
                 this.$message({
                   type: 'error',
