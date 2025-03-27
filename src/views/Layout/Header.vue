@@ -22,9 +22,20 @@
           <el-link @click="linkCenter">Personal Center</el-link>
         </div></el-col>
         <div class="userDiv">
-          <div class="uImg"></div>
-          Hello, {{userinfo.name}}
-          <li class="el-icon-switch-button" @click="exit" style="margin-left: 5px"></li>
+          
+          <span v-if="isLoggedIn">
+            <div class="uImg"></div>
+            Hello, {{userinfo.name}}
+            <li class="el-icon-switch-button" @click="exit" style="margin-left: 5px"></li>
+          </span>
+          <span v-if="!isLoggedIn" @click="exit" 
+            @mouseenter="isHovered = true" 
+            @mouseleave="isHovered = false"
+            :style="{
+              cursor: 'pointer'
+            }">
+            Click to Login
+          </span>
         </div>
       </el-row>
       <router-view></router-view>
@@ -34,6 +45,7 @@
 
 <script>
 import {mapState, mapMutations} from 'vuex'
+import store from '../../store/index'
 
 export default {
     name: 'Header',
@@ -43,19 +55,29 @@ export default {
 
     data() {
         return {
-            
+          isLoggedIn: false
         };
     },
 
     mounted() {
-        
+      if(store.state.loginModule.userinfo.token){
+        this.isLoggedIn = true
+      }else{
+        this.isLoggedIn = false
+      }
     },
 
     methods: {
       ...mapMutations('loginModule', ['clearUser']),
       exit() {
         console.log('Exit');
-         this.$confirm('Exit the system?', 'hint', {
+        var massage = ''
+        if(store.state.loginModule.userinfo.token){
+          massage = 'Exit the system'
+        }else{
+          massage = 'You will be redirected to the login page'
+        }
+         this.$confirm(massage, 'hint', {
           confirmButtonText: 'confirm',
           cancelButtonText: 'cancel',
           type: 'warning'
@@ -95,7 +117,11 @@ export default {
       linkOrders() {
         console.log('订单被点击')
         this.$router.push('/myOrders')
-      }
+      },
+
+      test() {
+        console.log(store.state.loginModule.userinfo.token)
+      },
     }
 };
 </script>
