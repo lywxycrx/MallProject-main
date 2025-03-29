@@ -2,6 +2,9 @@
   <div class="outDiv">
     <div class="searchDiv">
       <el-input :placeholder="$t('goodsList.searchPlaceholder')" @change="getSearch" v-model="input" clearable></el-input>
+      <el-button type="primary" class="voice-btn" :class="{'listening': isListening}" @click="toggleVoiceInput">
+        <i class="el-icon-microphone"></i>
+      </el-button>
       <el-button type="primary" icon="el-icon-search">{{ $t('common.search') }}</el-button>
     </div>
 
@@ -44,6 +47,23 @@ export default {
       total: 5,
       pageSize: 1,
       currentPage: 1,
+      
+      // 语音识别相关
+      recognition: null,
+      isListening: false,
+      supportedLanguages: {
+        'zh': 'zh-CN',
+        'en': 'en-US',
+        // 可以根据需要添加更多语言
+      }
+    }
+  },
+
+  computed: {
+    // 获取当前语言的语音识别语言代码
+    currentRecognitionLang() {
+      const currentLocale = this.$i18n.locale;
+      return this.supportedLanguages[currentLocale] || 'en-US'; // 默认使用英语
     }
   },
 
@@ -112,11 +132,103 @@ export default {
       this.pageSize = this.pageSize;
       this.showGoods(num);                //列表分页
     },
+    
+    // 清理语音识别文本，移除结尾的标点符号
+    cleanRecognitionText(text) {
+      // 移除末尾的句号、问号、感叹号、逗号等常见标点
+      return text.replace(/[.。,，?？!！;；:：'"''""]+$/g, '').trim();
+    },
+    
+    // 初始化语音识别
+    initSpeechRecognition() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      
+      if (!SpeechRecognition) {
+        this.$message.error(this.$t('common.browserNotSupported') || '您的浏览器不支持语音识别功能');
+        return;
+      }
+      
+      this.recognition = new SpeechRecognition();
+      this.recognition.continuous = false;
+      this.recognition.interimResults = false;
+      
+      // 根据当前语言设置语音识别语言
+      this.recognition.lang = this.currentRecognitionLang;
+      
+      this.recognition.onresult = (event) => {
+        let transcript = event.results[0][0].transcript;
+        // 清理识别文本，移除结尾的标点符号
+        transcript = this.cleanRecognitionText(transcript);
+        this.input = transcript;
+        this.getSearch(transcript);
+        this.isListening = false;
+      };
+      
+      this.recognition.onerror = (event) => {
+        console.error('语音识别错误:', event.error);
+        const errorMessage = this.$i18n.locale === 'zh' ? 
+          '语音识别失败，请重试' : 
+          'Voice recognition failed, please try again';
+        this.$message.error(this.$t('common.voiceRecognitionError') || errorMessage);
+        this.isListening = false;
+      };
+      
+      this.recognition.onend = () => {
+        this.isListening = false;
+      };
+    },
+    
+    // 切换语音输入
+    toggleVoiceInput() {
+      // 每次使用前都重新初始化，以确保使用最新的语言设置
+      this.initSpeechRecognition();
+      
+      if (!this.recognition) {
+        return; // 如果初始化失败则退出
+      }
+      
+      if (this.isListening) {
+        this.recognition.stop();
+        this.isListening = false;
+      } else {
+        this.isListening = true;
+        try {
+          this.recognition.start();
+          const speakMessage = this.$i18n.locale === 'zh' ? 
+            '请开始说话...' : 
+            'Please start speaking...';
+          this.$message.info(this.$t('common.speakNow') || speakMessage);
+        } catch (error) {
+          console.error('语音识别启动失败:', error);
+          const errorMessage = this.$i18n.locale === 'zh' ? 
+            '语音识别启动失败' : 
+            'Failed to start voice recognition';
+          this.$message.error(this.$t('common.voiceRecognitionStartError') || errorMessage);
+          this.isListening = false;
+        }
+      }
+    }
   },
 
   created() {
     this.showGoods(1);
   },
+  
+  watch: {
+    // 监听语言变化，更新语音识别语言
+    '$i18n.locale'() {
+      if (this.recognition) {
+        this.recognition.lang = this.currentRecognitionLang;
+      }
+    }
+  },
+  
+  beforeDestroy() {
+    // 在组件销毁前停止语音识别
+    if (this.recognition && this.isListening) {
+      this.recognition.stop();
+    }
+  }
 }
 </script>
 
@@ -151,6 +263,31 @@ export default {
   margin-left: 20px;
   height: 40px;
   margin-top: 8px;
+}
+
+/* 语音按钮相关样式 */
+.voice-btn {
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.voice-btn.listening {
+  background-color: #ff4949;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 /* 让商品列表区域根据内容自适应 */
