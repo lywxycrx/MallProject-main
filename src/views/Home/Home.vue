@@ -9,18 +9,18 @@
     </div>
     <div class="test2">
     </div>
-    <h2 style="text-align: center; color: black;">{{ $t('home.specials') }}</h2>
+    <h2 class="section-title">{{ $t('home.specials') }}</h2>
     <div class="lowDiv">
       <LowPrice></LowPrice>
     </div>
-    <h2 style="text-align: center; color: black;">{{ $t('home.recommendGoods') }}</h2>
+    <h2 class="section-title">{{ $t('home.recommendGoods') }}</h2>
     <div class="belowDiv">
       <ShowRecommend></ShowRecommend>
     </div>
-    <el-footer>
-        <i class="el-icon-location">   {{ $t('home.footer.address') }}: XXXXXX-XXXXX-No.666</i>
-        <i class="el-icon-phone">   {{ $t('home.footer.contact') }}: 1999911</i>
-        <li class="el-icon-s-promotion">   {{ $t('home.footer.mail') }}: @554893.qq.com</li>
+    <el-footer class="page-footer">
+        <i class="el-icon-location footer-item">   {{ $t('home.footer.address') }}: XXXXXX-XXXXX-No.666</i>
+        <i class="el-icon-phone footer-item">   {{ $t('home.footer.contact') }}: 1999911</i>
+        <li class="el-icon-s-promotion footer-item">   {{ $t('home.footer.mail') }}: @554893.qq.com</li>
         <el-button type="primary" round @click="dialog" icon="el-icon-upload" class="fbbtn">{{ $t('home.footer.feedback') }}</el-button>
     </el-footer>
 
@@ -49,12 +49,18 @@
 <script>
 import LowPrice from './LowPrice.vue'
 import ShowRecommend from './ShowRecommend.vue'
+import { mapGetters } from 'vuex';
 
 export default {
   components: {
     LowPrice,
     ShowRecommend,
   },
+  
+  computed: {
+    ...mapGetters(['highContrastMode'])
+  },
+  
   data() {
     return {
       dialogVisible: false,
@@ -115,8 +121,106 @@ export default {
 }
 </script>
 
+<style>
+/* 高对比度模式样式 */
+.high-contrast-mode .section-title {
+  color: #ffffff !important;
+  background-color: #000000 !important;
+  padding: 10px !important;
+  margin: 20px 0 !important;
+  font-size: 24px !important;
+  font-weight: bold !important;
+  border-bottom: 3px solid #ffff00 !important;
+  text-align: center !important;
+}
+
+.high-contrast-mode .page-footer {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border-top: 3px solid #ffff00 !important;
+}
+
+.high-contrast-mode .footer-item {
+  color: #ffffff !important;
+  font-size: 16px !important;
+  font-weight: bold !important;
+}
+
+.high-contrast-mode .fbbtn {
+  background-color: #ffff00 !important;
+  color: #000000 !important;
+  border: 2px solid #ffff00 !important;
+  font-weight: bold !important;
+  font-size: 16px !important;
+}
+
+.high-contrast-mode .fbbtn:hover {
+  background-color: #000000 !important;
+  color: #ffff00 !important;
+}
+
+.high-contrast-mode .el-carousel__item {
+  border: 3px solid #ffffff !important;
+}
+
+.high-contrast-mode .test,
+.high-contrast-mode .test2 {
+  border: 3px solid #ffffff !important;
+  filter: contrast(1.5) brightness(1.2) !important;
+}
+
+/* 高对比度模式下的弹窗样式 */
+.high-contrast-mode .el-dialog {
+  background-color: #000000 !important;
+  border: 3px solid #ffffff !important;
+}
+
+.high-contrast-mode .el-dialog__title {
+  color: #ffff00 !important;
+  font-size: 20px !important;
+  font-weight: bold !important;
+}
+
+.high-contrast-mode .el-form-item__label {
+  color: #ffffff !important;
+  font-size: 16px !important;
+  font-weight: bold !important;
+}
+
+.high-contrast-mode .el-textarea__inner {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 2px solid #ffffff !important;
+}
+</style>
+
 <style scoped>
-  /* 样式保持不变 */
+  /* 标题样式 */
+  .section-title {
+    text-align: center; 
+    color: black;
+    margin: 20px 0;
+    padding: 10px;
+  }
+  
+  /* 页脚样式 */
+  .page-footer {
+    color: #333;
+    text-align: center;
+    line-height: 60px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  }
+  
+  .footer-item {
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  /* 轮播图背景 */
   .test {
     position: absolute;
     background-image: url('../../assets/bg.jpg');
@@ -124,7 +228,6 @@ export default {
     height: 360px;
     width: 180px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
-    /* margin-left: 85%; */
   }
 
   .test2 {
@@ -136,7 +239,6 @@ export default {
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
     margin-left: 85%;
   }
-
 
   .outDiv {
     margin-top: 1%;
@@ -176,7 +278,6 @@ export default {
   }
 
 
-/* 轮播图背景 */
   .el-carousel__item h3 {
     color: #475669;
     font-size: 14px;
@@ -199,20 +300,5 @@ export default {
 
   .fbbtn {
     z-index: 99999;
-  }
-
-
-/* 页面布局背景 */
-  .el-footer {
-    color: #333;
-    text-align: center;
-    line-height: 60px;
-    width: 100%;
-
-    display: flex;
-    justify-content: space-around;
-    /* justify-content: center;   子元素水平居中 */
-    align-items: center;       /* 子元素垂直居中 */
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)
   }
 </style>

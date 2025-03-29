@@ -1,15 +1,16 @@
 <template>
-  <div id="app">
+  <div id="app" :class="{ 'high-contrast-mode': highContrastMode }">
     <router-view v-if="isRouterAlive"></router-view>
   </div>
 </template>
 
 <script>
   import Header from './views/Layout/Header.vue'
+  import { mapGetters } from 'vuex';
 
   export default {
     components: {
-        Header,
+      Header,
     },
 
     provide() {
@@ -24,6 +25,10 @@
       }
     },
 
+    computed: {
+      ...mapGetters(['highContrastMode'])
+    },
+
     methods: {
       reload() {
         this.isRouterAlive = false
@@ -35,6 +40,6 @@
   }
 </script>
 
-<style scoped>
-
+<style>
+/* 全局样式可以放在这里 */
 </style>

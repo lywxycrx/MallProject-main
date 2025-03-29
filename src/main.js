@@ -11,6 +11,9 @@ import i18n from './i18n'
 import './plugins/element.js'
 import './utils/localStorage' // 持久化
 
+// 导入高对比度样式表
+import './assets/high-contrast.css'
+
 import echarts from 'echarts'
 Vue.prototype.$echarts = echarts;
 
@@ -28,6 +31,11 @@ Vue.component('downloadExcel', JsonExcel)
 Vue.prototype.$api = api
 
 Vue.config.productionTip = false
+
+// 初始化高对比度模式
+if (store.dispatch && typeof store.dispatch === 'function') {
+  store.dispatch('initHighContrastMode');
+}
 
 new Vue({
   router,

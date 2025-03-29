@@ -21,7 +21,7 @@
         <el-col :span="3">
           <el-link :class="{ active: isActive('/center') }" @click="linkCenter">{{ $t('header.personalCenter') }}</el-link>
         </el-col>
-        <el-col :span="3">
+        <el-col :span="2">
           <!-- 语言切换下拉菜单 -->
           <el-dropdown @command="handleLanguageChange" trigger="click">
             <span class="language-selector">
@@ -33,6 +33,10 @@
               <el-dropdown-item command="en">English</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
+        </el-col>
+        <!-- 添加高对比度模式按钮 -->
+        <el-col :span="1">
+          <AccessibilityTools class="accessibility-tools" />
         </el-col>
         <el-col :span="4" class="userDiv">
           <div v-if="isLoggedIn">
@@ -55,13 +59,18 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations, mapGetters } from "vuex";
 import store from "../../store/index";
+import AccessibilityTools from '@/components/AccessibilityTools.vue';
 
 export default {
   name: "Header",
+  components: {
+    AccessibilityTools
+  },
   computed: {
     ...mapState("loginModule", ["userinfo"]),
+    ...mapGetters(["highContrastMode"]),
     currentLanguageDisplay() {
       return this.$i18n.locale === 'zh' ? '中文' : 'English';
     }
@@ -254,6 +263,13 @@ export default {
 .language-selector:hover {
   color: #007bff;
   background-color: rgba(0, 123, 255, 0.1);
+}
+
+/* 辅助功能工具样式 */
+.accessibility-tools {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* 响应式调整 */

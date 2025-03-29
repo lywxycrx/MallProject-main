@@ -197,5 +197,9 @@
     "errors": {
       "fetchImages": "Failed to fetch images"
     }
+  },
+  "accessibility": {
+    "highContrast": "High Contrast",
+    "highContrastTooltip": "Toggle high contrast mode for better visibility"
   }
 }

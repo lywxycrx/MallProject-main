@@ -197,5 +197,9 @@
     "errors": {
       "fetchImages": "获取图片失败"
     }
+  },
+  "accessibility": {
+    "highContrast": "高对比度",
+    "highContrastTooltip": "切换高对比度模式以提高可见性"
   }
 }

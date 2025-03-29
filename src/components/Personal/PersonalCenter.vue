@@ -4,7 +4,7 @@
       <el-tab-pane :label="$t('personal.tabs.info')">
         <el-row :gutter="20">
           <el-col :span="4">
-            <div class="grid-content bg-purple" v-if="!!userData[0]">
+            <div class="grid-content" v-if="!!userData[0]">
               {{ $t('personal.account') }}: {{userData[0].uid}}  
             </div>
           </el-col>
@@ -12,13 +12,13 @@
 
         <el-row :gutter="200">
           <el-col :span="8">
-            <div class="grid-content bg-purple" v-if="!!userData[0]">{{ $t('personal.name') }}: {{userData[0].name}}
+            <div class="grid-content" v-if="!!userData[0]">{{ $t('personal.name') }}: {{userData[0].name}}
               <el-button class="editBtn" icon="el-icon-edit" @click="changeName"></el-button>
             </div>
           </el-col>
 
           <el-col :span="8">
-            <div class="grid-content bg-purple" v-if="!!userData[0]">{{ $t('personal.gender') }}:{{userData[0].sex}}
+            <div class="grid-content" v-if="!!userData[0]">{{ $t('personal.gender') }}:{{userData[0].sex}}
               <el-button class="editBtn" icon="el-icon-edit" @click="changeSex"></el-button>
             </div>
           </el-col>
@@ -26,13 +26,13 @@
 
         <el-row :gutter="200"> 
           <el-col :span="8">
-            <div class="grid-content bg-purple" v-if="!!userData[0]">
+            <div class="grid-content" v-if="!!userData[0]">
               {{ $t('personal.phone') }}: {{userData[0].phone}}
               <el-button class="editBtn" icon="el-icon-edit" @click="changePhone"></el-button>
             </div>
           </el-col>
           <el-col :span="8">
-            <div class="grid-content bg-purple" v-if="!!userData[0]">{{ $t('personal.address') }}:{{userData[0].address}}
+            <div class="grid-content" v-if="!!userData[0]">{{ $t('personal.address') }}:{{userData[0].address}}
               <el-button class="editBtn" icon="el-icon-edit" @click="changeAddress"></el-button>
             </div>
           </el-col>
@@ -61,6 +61,7 @@
 <script>
 import ChangePassword from './ChangePassword.vue' 
 import ChangeMessage from './ChangeMessage.vue'
+import { mapGetters } from 'vuex';
 
 export default {
   components: {
@@ -82,6 +83,11 @@ export default {
       }
     },
   },
+  
+  computed: {
+    ...mapGetters(['highContrastMode'])
+  },
+  
   data() {
     return {
       nDialog: false,
@@ -121,6 +127,48 @@ export default {
 }
 </script>
 
+<style>
+/* 高对比度模式下的样式 */
+.high-contrast-mode .outside .grid-content {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 2px solid #ffffff !important;
+  border-radius: 8px !important;
+  padding: 15px !important;
+  margin-bottom: 15px !important;
+  font-size: 16px !important;
+  font-weight: bold !important;
+}
+
+.high-contrast-mode .outside .editBtn {
+  background-color: #000000 !important;
+  color: #ffff00 !important;
+  border: 2px solid #ffff00 !important;
+  padding: 5px 10px !important;
+  margin-left: 10px !important;
+}
+
+.high-contrast-mode .outside .editBtn:hover {
+  background-color: #ffff00 !important;
+  color: #000000 !important;
+}
+
+.high-contrast-mode .outside .el-tabs__item {
+  color: #ffffff !important;
+  font-size: 16px !important;
+  font-weight: bold !important;
+}
+
+.high-contrast-mode .outside .el-tabs__item.is-active {
+  color: #ffff00 !important;
+}
+
+.high-contrast-mode .outside .el-tabs__active-bar {
+  background-color: #ffff00 !important;
+  height: 3px !important;
+}
+</style>
+
 <style scoped>
   .outside {
     position: absolute;
@@ -138,8 +186,11 @@ export default {
   }
 
   .grid-content {
-    padding: 1px;
+    padding: 10px;
     margin: auto;
+    background-color: #f5f7fa;
+    border-radius: 4px;
+    border: 1px solid #ebeef5;
   }
 
   .editBtn {
