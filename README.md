@@ -1,6 +1,6 @@
-
 ```
 MallProject-main
+├─ .env
 ├─ babel.config.js
 ├─ jsconfig.json
 ├─ package-lock.json
@@ -8,6 +8,7 @@ MallProject-main
 ├─ public
 │  ├─ favicon.ico
 │  └─ index.html
+├─ README.md
 ├─ server
 │  ├─ index.js
 │  ├─ mysql.js
@@ -33,6 +34,7 @@ MallProject-main
 │  │  │  ├─ CommentItem.vue
 │  │  │  └─ CommentList.vue
 │  │  ├─ GoodsDetail.vue
+│  │  ├─ HelloI18n.vue
 │  │  ├─ Login.vue
 │  │  ├─ MyPage.vue
 │  │  ├─ Personal
@@ -44,6 +46,12 @@ MallProject-main
 │  │  │  ├─ List.vue
 │  │  │  └─ ListItem.vue
 │  │  └─ UploadImg.vue
+│  ├─ i18n
+│  │  ├─ index.js
+│  │  └─ locales
+│  │     ├─ en.json
+│  │     └─ zh.json
+│  ├─ i18n.js
 │  ├─ main.js
 │  ├─ plugins
 │  │  └─ element.js

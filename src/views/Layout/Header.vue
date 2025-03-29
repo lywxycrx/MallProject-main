@@ -3,32 +3,45 @@
     <!-- 头部导航栏 -->
     <div class="header">
       <el-row class="nav-container" justify="center">
-        <el-col :span="3">
+        <el-col :span="2">
           <div class="logoDiv"></div>
         </el-col>
         <el-col :span="3">
-          <el-link :class="{ active: isActive('/home') }" @click="linkHome">Home</el-link>
+          <el-link :class="{ active: isActive('/home') }" @click="linkHome">{{ $t('header.home') }}</el-link>
         </el-col>
         <el-col :span="3">
-          <el-link :class="{ active: isActive('/goodsList') }" @click="linkGoods">Mall</el-link>
+          <el-link :class="{ active: isActive('/goodsList') }" @click="linkGoods">{{ $t('header.mall') }}</el-link>
         </el-col>
-        <el-col :span="4">
-          <el-link :class="{ active: isActive('/cart') }" @click="linkCart">Shopping Cart</el-link>
+        <el-col :span="3">
+          <el-link :class="{ active: isActive('/cart') }" @click="linkCart">{{ $t('header.cart') }}</el-link>
         </el-col>
-        <el-col :span="4">
-          <el-link :class="{ active: isActive('/myOrders') }" @click="linkOrders">Order</el-link>
+        <el-col :span="3">
+          <el-link :class="{ active: isActive('/myOrders') }" @click="linkOrders">{{ $t('header.myOrders') }}</el-link>
         </el-col>
-        <el-col :span="4">
-          <el-link :class="{ active: isActive('/center') }" @click="linkCenter">Personal Center</el-link>
+        <el-col :span="3">
+          <el-link :class="{ active: isActive('/center') }" @click="linkCenter">{{ $t('header.personalCenter') }}</el-link>
         </el-col>
-        <el-col :span="3" class="userDiv">
+        <el-col :span="3">
+          <!-- 语言切换下拉菜单 -->
+          <el-dropdown @command="handleLanguageChange" trigger="click">
+            <span class="language-selector">
+              {{ currentLanguageDisplay }}
+              <i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="zh">中文</el-dropdown-item>
+              <el-dropdown-item command="en">English</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </el-col>
+        <el-col :span="4" class="userDiv">
           <div v-if="isLoggedIn">
             <div class="uImg"></div>
-            <span class="username">Hello, {{ userinfo.name }}</span>
+            <span class="username">{{ $t('common.hello') }}, {{ userinfo.name }}</span>
             <li class="el-icon-switch-button logout-icon" @click="exit"></li>
           </div>
           <div v-else @click="exit" class="login-text">
-            Click to Login
+            {{ $t('common.clickToLogin') }}
           </div>
         </el-col>
       </el-row>
@@ -49,6 +62,9 @@ export default {
   name: "Header",
   computed: {
     ...mapState("loginModule", ["userinfo"]),
+    currentLanguageDisplay() {
+      return this.$i18n.locale === 'zh' ? '中文' : 'English';
+    }
   },
   data() {
     return {
@@ -57,11 +73,18 @@ export default {
   },
   methods: {
     ...mapMutations("loginModule", ["clearUser"]),
+    handleLanguageChange(lang) {
+      // 使用我们在element.js中定义的全局方法切换语言
+      this.$changeLanguage(lang);
+    },
     exit() {
-      const message = this.isLoggedIn ? "Exit the system" : "You will be redirected to the login page";
-      this.$confirm(message, "Hint", {
-        confirmButtonText: "Confirm",
-        cancelButtonText: "Cancel",
+      const message = this.isLoggedIn 
+        ? this.$t('common.exitConfirm') 
+        : this.$t('common.redirectToLogin');
+      
+      this.$confirm(message, this.$t('common.hint'), {
+        confirmButtonText: this.$t('common.confirm'),
+        cancelButtonText: this.$t('common.cancel'),
         type: "warning",
       }).then(() => {
         this.clearUser();
@@ -70,7 +93,7 @@ export default {
       }).catch(() => {
         this.$message({
           type: "info",
-          message: "Cancelled",
+          message: this.$t('common.operationCancelled'),
         });
       });
     },
@@ -93,6 +116,13 @@ export default {
       return this.$route.path === route;
     }
   },
+  // 组件创建时检查是否有保存的语言设置
+  created() {
+    const savedLanguage = localStorage.getItem('language');
+    if (savedLanguage) {
+      this.$i18n.locale = savedLanguage;
+    }
+  }
 };
 </script>
 
@@ -186,7 +216,7 @@ export default {
 
 /* 导航栏链接 */
 .el-link {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
   color: #333;
   text-decoration: none;
@@ -209,23 +239,60 @@ export default {
   padding: 10px 15px;
 }
 
+/* 语言选择器样式 */
+.language-selector {
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  padding: 10px 15px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.language-selector:hover {
+  color: #007bff;
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
 /* 响应式调整 */
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .nav-container {
     justify-content: space-between;
   }
-  .userDiv {
+  .el-link, .language-selector {
     font-size: 14px;
+    padding: 8px 10px;
+  }
+}
+
+@media (max-width: 992px) {
+  .nav-container {
+    flex-wrap: wrap;
+  }
+  .userDiv {
+    order: -1;
+    width: 100%;
+    justify-content: flex-end;
+    margin-right: 20px;
   }
 }
 
 @media (max-width: 768px) {
+  .header {
+    height: auto;
+    padding: 10px 0;
+  }
   .nav-container {
     flex-direction: column;
     align-items: center;
   }
-  .userDiv {
-    margin-top: 10px;
+  .el-col {
+    margin: 5px 0;
+  }
+  .main-content {
+    margin-top: 220px;
   }
 }
 </style>

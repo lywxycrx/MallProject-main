@@ -9,28 +9,28 @@
     </div>
     <div class="test2">
     </div>
-    <h2 style="text-align: center; color: black;">Specials</h2>
+    <h2 style="text-align: center; color: black;">{{ $t('home.specials') }}</h2>
     <div class="lowDiv">
       <LowPrice></LowPrice>
     </div>
-    <h2 style="text-align: center; color: black;">Recommend goods</h2>
+    <h2 style="text-align: center; color: black;">{{ $t('home.recommendGoods') }}</h2>
     <div class="belowDiv">
       <ShowRecommend></ShowRecommend>
     </div>
     <el-footer>
-        <i class="el-icon-location">   Address: XXXXXX-XXXXX-No.666</i>
-        <i class="el-icon-phone">   Contact number: 1999911</i>
-        <li class="el-icon-s-promotion">   Mail: @554893.qq.com</li>
-        <el-button type="primary" round @click="dialog" icon="el-icon-upload" class="fbbtn">Give feedback</el-button>
+        <i class="el-icon-location">   {{ $t('home.footer.address') }}: XXXXXX-XXXXX-No.666</i>
+        <i class="el-icon-phone">   {{ $t('home.footer.contact') }}: 1999911</i>
+        <li class="el-icon-s-promotion">   {{ $t('home.footer.mail') }}: @554893.qq.com</li>
+        <el-button type="primary" round @click="dialog" icon="el-icon-upload" class="fbbtn">{{ $t('home.footer.feedback') }}</el-button>
     </el-footer>
 
     <el-dialog
-        title="Feedback"
+        :title="$t('home.feedback.title')"
         :visible.sync="dialogVisible"
         width="50%"> 
 
           <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-            <el-form-item label="Feedback" prop="content">
+            <el-form-item :label="$t('home.feedback.label')" prop="content">
               <el-input type="textarea" 
               maxlength="300"
               show-word-limit 
@@ -38,7 +38,7 @@
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="submitForm('ruleForm')" 
-              style="float: right; margin-top: 30px">Submit Now 
+              style="float: right; margin-top: 30px">{{ $t('home.feedback.submit') }}
               </el-button>
             </el-form-item>
           </el-form>
@@ -47,8 +47,6 @@
 </template>
 
 <script>
-
-
 import LowPrice from './LowPrice.vue'
 import ShowRecommend from './ShowRecommend.vue'
 
@@ -67,43 +65,58 @@ export default {
 
       rules: {
         content: [
-          { required: true, message: 'Please enter your opinion', trigger: 'blur' },
-          // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          { required: true, message: this.$t('home.feedback.validation.required'), trigger: 'blur' },
         ],
       },
     }
   },
 
+  // 监听语言变化，更新rules中的message
+  watch: {
+    '$i18n.locale': function(newVal) {
+      this.updateValidationMessages();
+    }
+  },
+
+  created() {
+    this.updateValidationMessages();
+  },
 
   methods: {
+    // 更新验证消息以支持实时语言切换
+    updateValidationMessages() {
+      this.rules.content[0].message = this.$t('home.feedback.validation.required');
+    },
+    
     dialog() {
       this.dialogVisible = true
     },
 
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            console.log('进入提交阶段')
-            let content = this.ruleForm.content;
-            this.$api.addFeedback({
-              content,
-            })
-            .then((res) => {
-              if(res.status == 200){
-                this.$message({
-                  type: 'success',
-                  message: 'Submit successfully'
-                })
-              }
-            }) 
-          }
-        })
-      },
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          console.log('进入提交阶段')
+          let content = this.ruleForm.content;
+          this.$api.addFeedback({
+            content,
+          })
+          .then((res) => {
+            if(res.status == 200){
+              this.$message({
+                type: 'success',
+                message: this.$t('home.feedback.successMessage')
+              })
+            }
+          }) 
+        }
+      })
+    },
   }
 }
 </script>
 
 <style scoped>
+  /* 样式保持不变 */
   .test {
     position: absolute;
     background-image: url('../../assets/bg.jpg');
@@ -202,5 +215,4 @@ export default {
     align-items: center;       /* 子元素垂直居中 */
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)
   }
-
 </style>

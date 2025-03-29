@@ -2,18 +2,18 @@
   <div class="outDiv">
     <!-- 搜索栏区域 -->
     <div class="header">
-      <el-input placeholder="Please enter the order you want to inquire about" @change="searchInput" 
+      <el-input :placeholder="$t('orders.searchPlaceholder')" @change="searchInput" 
       v-model="input" clearable style="margin-right: 10px;">
       </el-input>
-      <el-button type="primary">Select</el-button>
+      <el-button type="primary">{{ $t('orders.select') }}</el-button>
     </div>
 
     <el-tabs v-model="activeName" @tab-click="cHandleClick">
-      <el-tab-pane label="Pending" name="Pending"></el-tab-pane>
-      <el-tab-pane label="Delivering" name="Delivering"></el-tab-pane>
-      <el-tab-pane label="Completed" name="Completed"></el-tab-pane>
-      <el-tab-pane label="Abnormal" name="Abnormal"></el-tab-pane>
-      <el-tab-pane label="Cancelled" name="Cancelled"></el-tab-pane>     
+      <el-tab-pane :label="$t('orders.status.pending')" name="Pending"></el-tab-pane>
+      <el-tab-pane :label="$t('orders.status.delivering')" name="Delivering"></el-tab-pane>
+      <el-tab-pane :label="$t('orders.status.completed')" name="Completed"></el-tab-pane>
+      <el-tab-pane :label="$t('orders.status.abnormal')" name="Abnormal"></el-tab-pane>
+      <el-tab-pane :label="$t('orders.status.cancelled')" name="Cancelled"></el-tab-pane>     
     </el-tabs>
 
       
@@ -26,42 +26,37 @@
 
       <el-table-column
         prop="oid"
-        label="P.O.number"
+        :label="$t('orders.table.orderNumber')"
         width="150">
       </el-table-column>
-      <!-- <el-table-column
-        prop="uid"
-        label="User ID"
-        width="80">
-      </el-table-column> -->
       <el-table-column
         prop="detail"
-        label="Checklist"
+        :label="$t('orders.table.checklist')"
         width="200">
       </el-table-column>
       <el-table-column
         prop="price"
-        label="Total Price"
+        :label="$t('orders.table.totalPrice')"
         width="120">
       </el-table-column>
       <el-table-column
         prop="address"
-        label="Shipping Address"
+        :label="$t('orders.table.shippingAddress')"
         width="220">
       </el-table-column>
       <el-table-column
         prop="time"
-        label="Purchase Date"
+        :label="$t('orders.table.purchaseDate')"
         width="180">
       </el-table-column>
       <el-table-column
         prop="type"
-        label="Status"
+        :label="$t('orders.table.status')"
         width="180"
         :formatter="formatType">
       </el-table-column>
       <el-table-column
-        label="Opration"
+        :label="$t('orders.table.operation')"
         width="240">
             <template slot-scope="scope">
               <el-button
@@ -69,7 +64,7 @@
                 type="info"
                 @click="handleDetails(scope.row)"
                 icon="el-icon-view">
-                Details
+                {{ $t('orders.actions.details') }}
               </el-button>
               <el-button
                 size="mini"
@@ -77,7 +72,7 @@
                 @click="handleCancel(scope.row)"
                 icon="el-icon-close"
                 v-show="CancelType">
-                Cancel
+                {{ $t('orders.actions.cancel') }}
               </el-button>
               <el-button
                 size="mini"
@@ -85,54 +80,48 @@
                 @click="handleDelete(scope.$index, scope.row)"
                 icon="el-icon-delete"
                 v-show="dType">
-                Delete
+                {{ $t('orders.actions.delete') }}
               </el-button>
             </template>
         </el-table-column>
     </el-table>
 
     <MyPage :total="total" :pageSize="pageSize" @changePage="changePage" class="page" :current-page="currentPage"></MyPage>
-    <!-- <Dialog ref="dialog" :title="title" :rowData="rowData"></Dialog> -->
 
-
-
-    <el-dialog :visible.sync="dialogVisible" title="Order Details">
-      <!-- <h3>Order No. {{ rowData.oid }}</h3> -->
-      <h3>P.O.number: {{ rowData.oid }}</h3>
-      <p>Shipping Address: {{ rowData.address }}</p>
-      <p>Createing Time: {{ rowData.time }}</p>
-      <p>Shipping Time: {{ rowData.dates[0] }}</p>
-      <p>Completed Time: {{ rowData.dates[1] }}</p>
-      <p v-if="rowData.dates[2] != null">Problem Time: {{ rowData.dates[2] }}</p>
-      <p v-if="rowData.dates[2] != null">Solve Time: {{ rowData.dates[3] }}</p>
-      <p v-if="rowData.dates[4] != null">Cancel Time: {{ rowData.dates[4] }}</p>
-      <p>Type: {{ rowData.status }}</p>
+    <el-dialog :visible.sync="dialogVisible" :title="$t('orders.details.title')">
+      <h3>{{ $t('orders.details.orderNumber') }}: {{ rowData.oid }}</h3>
+      <p>{{ $t('orders.details.shippingAddress') }}: {{ rowData.address }}</p>
+      <p>{{ $t('orders.details.creatingTime') }}: {{ rowData.time }}</p>
+      <p>{{ $t('orders.details.shippingTime') }}: {{ rowData.dates[0] }}</p>
+      <p>{{ $t('orders.details.completedTime') }}: {{ rowData.dates[1] }}</p>
+      <p v-if="rowData.dates[2] != null">{{ $t('orders.details.problemTime') }}: {{ rowData.dates[2] }}</p>
+      <p v-if="rowData.dates[2] != null">{{ $t('orders.details.solveTime') }}: {{ rowData.dates[3] }}</p>
+      <p v-if="rowData.dates[4] != null">{{ $t('orders.details.cancelTime') }}: {{ rowData.dates[4] }}</p>
+      <p>{{ $t('orders.details.type') }}: {{ rowData.status }}</p>
 
       <table border="1" style="width: 100%; border-collapse: collapse;">
         <thead>
           <tr>
-            <th>Item</th>
-            <th>Quantity</th>
-            <th>Unit Price</th>
-            <th>Subtotal</th>
+            <th>{{ $t('orders.details.table.item') }}</th>
+            <th>{{ $t('orders.details.table.quantity') }}</th>
+            <th>{{ $t('orders.details.table.unitPrice') }}</th>
+            <th>{{ $t('orders.details.table.subtotal') }}</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item) of rowData.detail">
+          <tr v-for="(item) of rowData.detail" :key="item.name">
             <td>{{ item.name }}</td>
             <td>{{ item.num }}</td>
             <td>{{ item.unit_price }}</td>
             <td>{{ item.subtotal }}</td>
           </tr>
           <tr>
-            <td><strong>total</strong></td>
+            <td><strong>{{ $t('orders.details.table.total') }}</strong></td>
             <td colspan="3" style="text-align: right;"><strong>{{ rowData.total }}</strong></td>
           </tr>
         </tbody>
       </table>
     </el-dialog>
-
-
   </div>
 </template>
 
@@ -144,7 +133,6 @@
   export default {
     components: {
       MyPage,
-      // Dialog,
     },
     data() {
       return {
@@ -164,7 +152,8 @@
           time: '',
           status: '',
           detail: [],
-          dates: ['暂无', '暂无', '暂无', '暂无']
+          dates: [this.$t('orders.details.notAvailable'), this.$t('orders.details.notAvailable'), 
+                 this.$t('orders.details.notAvailable'), this.$t('orders.details.notAvailable')]
         },     // 当前行的数据对象
 
         dType: false,   // 控制删除按钮是否显示
@@ -188,51 +177,51 @@
         })
       },
 
-
       // 通过输入查询
       searchInput(val){
-      console.log('searchInput执行');
-       if (!val) {
-        this.myOrders(1, this.type);
-        console.log('val为空执行');
-        this.currentPage = 1;
-        return;
-      }
-      this.$api
-        .searchMyorders({
-          search: val,
-          type: this.type,
-          uid: store.state.loginModule.userinfo.uid
-        })
-        .then((res) => {
-          console.log("搜索---", res.data);
+        console.log('searchInput执行');
+        if (!val) {
+          this.myOrders(1, this.type);
+          console.log('val为空执行');
           this.currentPage = 1;
-          if (res.data.status === 200) {
-            this.tableData = res.data.data
-            this.total = res.data.total;
-            this.pageSize = res.data.pageSize;;
-          } else {
-            this.total = 1;
-            this.pageSize = 1;
-            this.$message({
-              type: 'error',
-              message: 'There is no such order yet'
-            })
-          }
-        });
+          return;
+        }
+        this.$api
+          .searchMyorders({
+            search: val,
+            type: this.type,
+            uid: store.state.loginModule.userinfo.uid
+          })
+          .then((res) => {
+            console.log("搜索---", res.data);
+            this.currentPage = 1;
+            if (res.data.status === 200) {
+              this.tableData = res.data.data
+              this.total = res.data.total;
+              this.pageSize = res.data.pageSize;;
+            } else {
+              this.total = 1;
+              this.pageSize = 1;
+              this.$message({
+                type: 'error',
+                message: this.$t('orders.noOrderError')
+              })
+            }
+          });
       },
 
       //类别显示
       formatType(order) {
         const typeMap = {
-          0: 'Pending',
-          1: 'Delivering',
-          2: 'Completed',
-          3: 'Abnormal',
-          4: "Cancelled"
+          0: this.$t('orders.status.pending'),
+          1: this.$t('orders.status.delivering'),
+          2: this.$t('orders.status.completed'),
+          3: this.$t('orders.status.abnormal'),
+          4: this.$t('orders.status.cancelled')
         };
-        return typeMap[order.type] || 'Unknown'; // 默认返回 'Unknown'
+        return typeMap[order.type] || this.$t('orders.status.unknown'); // 默认返回 'Unknown'
       },
+
       // 类别查询
       cHandleClick() {
         if(this.activeName === 'Pending'){
@@ -264,7 +253,6 @@
         }
       },
 
-
       // 页面改变
       changePage(num) {
           this.currentPage = num
@@ -272,13 +260,12 @@
           this.myOrders(num, this.type);                //列表分页
       },
 
-
       // 删除操作
       handleDelete(index, row){
         console.log('删除', index, row)
-        this.$confirm('This operation will permanently delete the order. Do you want to continue?', 'hint', {
-          confirmButtonText: 'confirm',
-          cancelButtonText: 'cancel',
+        this.$confirm(this.$t('orders.confirmMessages.delete'), this.$t('common.hint'), {
+          confirmButtonText: this.$t('common.confirm'),
+          cancelButtonText: this.$t('common.cancel'),
           type: 'warning'
         }).then(() => {
           this.$api.delOrder({
@@ -287,7 +274,7 @@
             if(res.data.status === 200) {
                 this.$message({
                 type: 'success',
-                message: 'Delete successfully'
+                message: this.$t('orders.successMessages.delete')
               })
               this.myOrders(1, this.type)                  // 更新视图
             }
@@ -295,7 +282,7 @@
         }).catch(() => {
           this.$message({
             type: 'info',
-            message: 'Canceled'
+            message: this.$t('orders.cancelMessages.delete')
           });          
         });
       },
@@ -308,15 +295,15 @@
 
         this.rowData.status=row['type']
         if(this.rowData.status == 0){
-          this.rowData.status = 'Pending'
+          this.rowData.status = this.$t('orders.status.pending')
         }else if(this.rowData.status == 1){
-          this.rowData.status = 'Delivering'
+          this.rowData.status = this.$t('orders.status.delivering')
         }else if(this.rowData.status == 3){
-          this.rowData.status = 'Holding'
+          this.rowData.status = this.$t('orders.status.holding')
         }else if(this.rowData.status == 4){
-          this.rowData.status = 'Cancelled'
+          this.rowData.status = this.$t('orders.status.cancelled')
         }else{
-          this.rowData.status = 'Completed'
+          this.rowData.status = this.$t('orders.status.completed')
         }
 
         let subtotalList = row['subtotal'].split(',')
@@ -334,6 +321,14 @@
         this.rowData.detail = []
         this.rowData.detail = this.rowData.detail.concat(checklist)
 
+        // 重置日期数组
+        this.rowData.dates = [
+          this.$t('orders.details.notAvailable'), 
+          this.$t('orders.details.notAvailable'), 
+          this.$t('orders.details.notAvailable'), 
+          this.$t('orders.details.notAvailable')
+        ];
+        
         let i = 0
         while(row[`date${i+1}`] != null){
           this.rowData.dates[i] = row[`date${i+1}`].split("T")[0]
@@ -345,9 +340,9 @@
 
       handleCancel(row){
         console.log("取消订单")
-        this.$confirm('Do you confirm to cancel the order?', {
-          confirmButtonText: 'Confirm',
-          cancelButtonText: 'Cancel',
+        this.$confirm(this.$t('orders.confirmMessages.cancel'), {
+          confirmButtonText: this.$t('common.confirm'),
+          cancelButtonText: this.$t('common.cancel'),
           type: 'warning'
         }).then(() => {
           this.$api.changeOrder({
@@ -357,7 +352,7 @@
             if(res.data.status === 200) {
                 this.$message({
                 type: 'success',
-                message: 'Cancel successfully'
+                message: this.$t('orders.successMessages.cancel')
               })
               this.myOrders(1, this.type)                  // 更新视图
             }
@@ -365,21 +360,17 @@
         }).catch(() => {
           this.$message({
             type: 'info',
-            message: 'Give up canceling order'
+            message: this.$t('orders.cancelMessages.cancel')
           });          
         });
       }
-
     },
-
-    
 
     created() {
       console.log('dType:', this.dType)
       this.myOrders(1, this.type)
     }
   }
-
 </script>
 
 <style scoped>
@@ -410,5 +401,4 @@
     position: absolute;
     left: 40%;
   }
-
 </style>

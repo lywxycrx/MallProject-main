@@ -2,17 +2,15 @@
   <div class="outside">
     <div class="foot">
       <div class="totalPrice">
-        <p>Checklist:{{totalNum}}</p>
-        <span>total:${{totalPrice}}</span>
-        <el-button type="danger" round class="tBtn" @click="selectStock">Checkout</el-button>
+        <p>{{ $t('cart.checklist') }}:{{totalNum}}</p>
+        <span>{{ $t('cart.total') }}:${{totalPrice}}</span>
+        <el-button type="danger" round class="tBtn" @click="selectStock">{{ $t('cart.checkout') }}</el-button>
       </div>
     </div>
-    <h3 v-if="!cartList" style="color: black;">You haven't selected any products yet</h3>
-    <CartList :cartList="cartList" @sumPrice="sumPrice"  @synchronization="synchronization"></CartList>
+    <h3 v-if="!cartList" style="color: black;">{{ $t('cart.empty') }}</h3>
+    <CartList :cartList="cartList" @sumPrice="sumPrice" @synchronization="synchronization"></CartList>
     <MyPage :total="total" :pageSize="pageSize" @changePage="changePage" class="page" :current-page="currentPage"></MyPage>
-    
   </div>
-  
 </template>
 
 <script>
@@ -69,7 +67,6 @@ export default {
     this.getCart(1);
   },
 
-
   methods: {
     // 购物车数据绑定
     getCart(page) {
@@ -84,8 +81,8 @@ export default {
             let status = this.cartList[i].isEnabled
             console.log(status)
             if(status != 0){
-              console.log(`${this.cartList[i].name} no longer available`)
-              this.disabled = this.disabled + this.cartList[i].name + " no longer available"
+              console.log(`${this.cartList[i].name} ${this.$t('cart.noLongerAvailable')}`)
+              this.disabled = this.disabled + this.cartList[i].name + " " + this.$t('cart.noLongerAvailable')
               this.$api.delCart({
                 gid: this.cartList[i].gid,
                 uid: this.cartList[i].uid,
@@ -127,6 +124,7 @@ export default {
         this.numList.splice(this.numList.indexOf(sumNum), 1);
       }
     },
+    
     synchronization(num, itemPrice, checked, sumNum, itemGid) {
       for(let i = 0; i < this.idList.length; i++){
         if(this.idList[i] == itemGid){
@@ -145,7 +143,6 @@ export default {
       }
     },
 
-
     // 查询库存数量后并生结算成订单
     selectStock() {
       for(let i=0; i<this.idList.length; i++) {
@@ -158,7 +155,7 @@ export default {
       setTimeout(() => {
         for(let i=0; i<this.idList.length; i++) {
           if(this.stockList[i] < this.numList[i]) {
-            this.$message.error('Purchase quantity exceeds stock quantity');
+            this.$message.error(this.$t('cart.errors.exceedsStock'));
             this.stockList.length = 0
             return
           }else if(i+1 == this.idList.length) {
@@ -168,7 +165,6 @@ export default {
         }
       }, 1000);
     },
-
 
     // 购物车结算事件
     settlement() {
@@ -181,8 +177,8 @@ export default {
         subtotal: this.sumPriceList.join(",")
       })
       .then((res) => {
-      if(res.status == 200){
-          console.log('Order generated')
+        if(res.status == 200){
+          console.log(this.$t('cart.messages.orderGenerated'))
           this.$api.delCart({
             uid: store.state.loginModule.userinfo.uid,
             gid: this.idList,
@@ -190,17 +186,17 @@ export default {
             if(res.status == 200){
               this.$message({
                 type: 'success',
-                message: 'Order settled successfully'
+                message: this.$t('cart.messages.settlementSuccess')
               })
               setTimeout(() => {
                 this.reload()
               }, 700);
             }
           })
-      }else {
-          this.$message.error('Order settlement failed');
+        }else {
+          this.$message.error(this.$t('cart.errors.settlementFailed'));
           return false; 
-          }
+        }
       });
       for(let i=0; i<this.idList.length; i++) {
         this.$api.updateSales({
@@ -216,13 +212,10 @@ export default {
 
     // 页面改变
     changePage(num) {
-        this.currentPage = num
-        this.pageSize = this.pageSize;
-        this.getCart(num);                //列表分页
+      this.currentPage = num
+      this.pageSize = this.pageSize;
+      this.getCart(num);                //列表分页
     },
-
-    //商品停售
-
   },
 };
 </script>
@@ -261,7 +254,6 @@ export default {
     right: 20%;
   }
 
-
   .tBtn {
     position: absolute;
     top: 15%;
@@ -272,5 +264,4 @@ export default {
     position: absolute;
     left: 45%;
   }
-
 </style>

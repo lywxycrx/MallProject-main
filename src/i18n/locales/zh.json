@@ -1,0 +1,201 @@
+{
+  "header": {
+    "home": "首页",
+    "mall": "商城",
+    "cart": "购物车",
+    "myOrders": "我的订单",
+    "personalCenter": "个人中心",
+    "language": "语言"
+  },
+  "common": {
+    "hello": "你好",
+    "clickToLogin": "点击登录",
+    "exitConfirm": "确认退出系统吗？",
+    "redirectToLogin": "即将跳转到登录页面",
+    "hint": "提示",
+    "confirm": "确认",
+    "cancel": "取消",
+    "operationCancelled": "已取消操作",
+    "search": "搜索",
+    "loading": "加载中...",
+    "noData": "暂无数据"
+  },
+  "home": {
+    "welcome": "欢迎使用我们的商城系统",
+    "featured": "精选商品",
+    "hotSales": "热销商品",
+    "newArrivals": "新品上市",
+    "recommendations": "为您推荐",
+    "viewMore": "查看更多",
+    "specials": "特价商品",
+    "recommendGoods": "推荐商品",
+    "footer": {
+      "address": "地址",
+      "contact": "联系电话",
+      "mail": "邮箱",
+      "feedback": "提供反馈"
+    },
+    "feedback": {
+      "title": "反馈",
+      "label": "反馈内容",
+      "submit": "立即提交",
+      "validation": {
+        "required": "请输入您的意见"
+      },
+      "successMessage": "提交成功"
+    }
+  },
+  "goodsList": {
+    "searchPlaceholder": "请输入您想查询的商品",
+    "tabs": {
+      "all": "全部商品",
+      "new": "新品",
+      "popular": "热门",
+      "recommend": "推荐",
+      "onSale": "特价",
+      "lastFiveDays": "近五天"
+    },
+    "noProductError": "暂无此商品"
+  },
+  "orders": {
+    "searchPlaceholder": "请输入您想查询的订单",
+    "select": "选择",
+    "status": {
+      "pending": "待处理",
+      "delivering": "配送中",
+      "completed": "已完成",
+      "abnormal": "异常",
+      "cancelled": "已取消",
+      "holding": "处理中",
+      "unknown": "未知状态"
+    },
+    "table": {
+      "orderNumber": "订单号",
+      "checklist": "商品清单",
+      "totalPrice": "总价",
+      "shippingAddress": "收货地址",
+      "purchaseDate": "购买日期",
+      "status": "状态",
+      "operation": "操作"
+    },
+    "actions": {
+      "details": "详情",
+      "cancel": "取消",
+      "delete": "删除"
+    },
+    "details": {
+      "title": "订单详情",
+      "orderNumber": "订单号",
+      "shippingAddress": "收货地址",
+      "creatingTime": "创建时间",
+      "shippingTime": "发货时间",
+      "completedTime": "完成时间",
+      "problemTime": "问题时间",
+      "solveTime": "解决时间",
+      "cancelTime": "取消时间",
+      "type": "类型",
+      "notAvailable": "暂无",
+      "table": {
+        "item": "商品",
+        "quantity": "数量",
+        "unitPrice": "单价",
+        "subtotal": "小计",
+        "total": "总计"
+      }
+    },
+    "noOrderError": "暂无此订单",
+    "confirmMessages": {
+      "delete": "此操作将永久删除该订单，是否继续？",
+      "cancel": "您确认要取消该订单吗？"
+    },
+    "successMessages": {
+      "delete": "删除成功",
+      "cancel": "取消成功"
+    },
+    "cancelMessages": {
+      "delete": "已取消删除",
+      "cancel": "已放弃取消订单"
+    }
+  },
+  "personal": {
+    "tabs": {
+      "info": "个人信息",
+      "password": "修改密码"
+    },
+    "account": "账号",
+    "name": "姓名",
+    "gender": "性别",
+    "phone": "电话号码",
+    "address": "地址",
+    "edit": {
+      "name": "修改姓名",
+      "gender": "修改性别",
+      "phone": "修改电话",
+      "address": "修改地址"
+    }
+  },
+  "password": {
+    "oldPassword": "旧密码",
+    "newPassword": "新密码",
+    "confirmPassword": "再次输入",
+    "confirmButton": "确认修改",
+    "rules": {
+      "length": "密码长度8-24位",
+      "content": "必须包含大写字母、小写字母、数字，不含特殊字符",
+      "email": "密码不能包含邮箱地址"
+    },
+    "validation": {
+      "oldRequired": "请输入旧密码",
+      "newRequired": "请输入新密码",
+      "confirmRequired": "请确认新密码",
+      "lengthError": "密码长度为8到64个字符",
+      "formatError": "密码格式不正确"
+    },
+    "messages": {
+      "success": "修改成功，请重新登录",
+      "serverError": "服务器错误，修改失败",
+      "mismatch": "修改失败，两次密码输入不一致"
+    }
+  },
+  "cart": {
+    "title": "购物车",
+    "empty": "您还没有选择任何商品",
+    "checklist": "清单",
+    "total": "总计",
+    "checkout": "结算",
+    "noLongerAvailable": "已不再提供",
+    "messages": {
+      "orderGenerated": "订单已生成",
+      "settlementSuccess": "订单结算成功"
+    },
+    "errors": {
+      "exceedsStock": "购买数量超过库存数量",
+      "settlementFailed": "订单结算失败"
+    }
+  },
+  "goods": {
+    "price": "价格",
+    "unitsSold": "已售",
+    "rating": "评分",
+    "inventory": "库存",
+    "noPictures": "暂无其他图片",
+    "addComment": "添加评论",
+    "tabs": {
+      "parameters": "参数",
+      "introduction": "简介",
+      "comments": "评论"
+    },
+    "buttons": {
+      "addToCart": "加入购物车",
+      "deleteFromCart": "从购物车删除",
+      "outOfStock": "缺货"
+    },
+    "messages": {
+      "addSuccess": "添加成功",
+      "deleteSuccess": "删除成功"
+    },
+    "errors": {
+      "fetchImages": "获取图片失败"
+    }
+  }
+}

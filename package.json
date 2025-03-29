@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "i18n:report": "vue-cli-service i18n:report --src \"./src/**/*.?(js|vue)\" --locales \"./src/locales/**/*.json\""
   },
   "dependencies": {
     "axios": "^0.26.0",
@@ -24,12 +25,14 @@
     "v-charts-v2": "^2.0.9",
     "videojs-contrib-hls": "^5.15.0",
     "vue": "^2.6.14",
+    "vue-i18n": "^8.26.3",
     "vue-json-excel": "^0.3.0",
     "vue-router": "^2.8.0",
     "vue-video-player": "^5.0.2",
     "vuex": "^3.6.2"
   },
   "devDependencies": {
+    "@intlify/vue-i18n-loader": "^1.1.0",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-plugin-vuex": "~5.0.0",
@@ -39,6 +42,7 @@
     "less-loader": "^10.2.0",
     "video.js": "^7.18.1",
     "vue-cli-plugin-element": "~1.0.1",
+    "vue-cli-plugin-i18n": "~2.3.2",
     "vue-template-compiler": "^2.6.14"
   },
   "browserslist": [

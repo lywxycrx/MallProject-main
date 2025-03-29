@@ -1,0 +1,201 @@
+{
+  "header": {
+    "home": "Home",
+    "mall": "Mall",
+    "cart": "Shopping Cart",
+    "myOrders": "Order",
+    "personalCenter": "Personal Center",
+    "language": "Language"
+  },
+  "common": {
+    "hello": "Hello",
+    "clickToLogin": "Click to Login",
+    "exitConfirm": "Exit the system?",
+    "redirectToLogin": "You will be redirected to the login page",
+    "hint": "Hint",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "operationCancelled": "Cancelled",
+    "search": "Search",
+    "loading": "Loading...",
+    "noData": "No Data"
+  },
+  "home": {
+    "welcome": "Welcome to our shopping mall",
+    "featured": "Featured Products",
+    "hotSales": "Hot Sales",
+    "newArrivals": "New Arrivals",
+    "recommendations": "Recommendations",
+    "viewMore": "View More",
+    "specials": "Specials",
+    "recommendGoods": "Recommend Goods",
+    "footer": {
+      "address": "Address",
+      "contact": "Contact number",
+      "mail": "Mail",
+      "feedback": "Give feedback"
+    },
+    "feedback": {
+      "title": "Feedback",
+      "label": "Feedback",
+      "submit": "Submit Now",
+      "validation": {
+        "required": "Please enter your opinion"
+      },
+      "successMessage": "Submit successfully"
+    }
+  },
+  "goodsList": {
+    "searchPlaceholder": "Please enter the product you want to inquire about",
+    "tabs": {
+      "all": "All products",
+      "new": "New",
+      "popular": "Popular",
+      "recommend": "Recommend",
+      "onSale": "On Sale",
+      "lastFiveDays": "Last Five Days"
+    },
+    "noProductError": "There is no such product yet"
+  },
+  "orders": {
+    "searchPlaceholder": "Please enter the order you want to inquire about",
+    "select": "Select",
+    "status": {
+      "pending": "Pending",
+      "delivering": "Delivering",
+      "completed": "Completed",
+      "abnormal": "Abnormal",
+      "cancelled": "Cancelled",
+      "holding": "Holding",
+      "unknown": "Unknown"
+    },
+    "table": {
+      "orderNumber": "P.O.number",
+      "checklist": "Checklist",
+      "totalPrice": "Total Price",
+      "shippingAddress": "Shipping Address",
+      "purchaseDate": "Purchase Date",
+      "status": "Status",
+      "operation": "Operation"
+    },
+    "actions": {
+      "details": "Details",
+      "cancel": "Cancel",
+      "delete": "Delete"
+    },
+    "details": {
+      "title": "Order Details",
+      "orderNumber": "P.O.number",
+      "shippingAddress": "Shipping Address",
+      "creatingTime": "Creating Time",
+      "shippingTime": "Shipping Time",
+      "completedTime": "Completed Time",
+      "problemTime": "Problem Time",
+      "solveTime": "Solve Time",
+      "cancelTime": "Cancel Time",
+      "type": "Type",
+      "notAvailable": "Not available",
+      "table": {
+        "item": "Item",
+        "quantity": "Quantity",
+        "unitPrice": "Unit Price",
+        "subtotal": "Subtotal",
+        "total": "Total"
+      }
+    },
+    "noOrderError": "There is no such order yet",
+    "confirmMessages": {
+      "delete": "This operation will permanently delete the order. Do you want to continue?",
+      "cancel": "Do you confirm to cancel the order?"
+    },
+    "successMessages": {
+      "delete": "Delete successfully",
+      "cancel": "Cancel successfully"
+    },
+    "cancelMessages": {
+      "delete": "Canceled",
+      "cancel": "Give up canceling order"
+    }
+  },
+  "personal": {
+    "tabs": {
+      "info": "Personal Info",
+      "password": "Change Password"
+    },
+    "account": "Account",
+    "name": "Name",
+    "gender": "Gender",
+    "phone": "Phone number",
+    "address": "Address",
+    "edit": {
+      "name": "Edit Name",
+      "gender": "Edit Gender",
+      "phone": "Edit Phone",
+      "address": "Edit Address"
+    }
+  },
+  "password": {
+    "oldPassword": "Old password",
+    "newPassword": "New password",
+    "confirmPassword": "Enter again",
+    "confirmButton": "Confirm modification",
+    "rules": {
+      "length": "Password length 8-24 bits",
+      "content": "Must contain uppercase letters, lowercase letters, numbers, no special characters.",
+      "email": "The password cannot contain an email address"
+    },
+    "validation": {
+      "oldRequired": "Please enter the old password",
+      "newRequired": "Please enter the new password",
+      "confirmRequired": "Please confirm the new password",
+      "lengthError": "8 to 64 characters in length",
+      "formatError": "Incorrect password format"
+    },
+    "messages": {
+      "success": "Modified successfully, please re-login",
+      "serverError": "Server error, modification failed",
+      "mismatch": "Modification failed, two password fields do not match"
+    }
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "empty": "You haven't selected any products yet",
+    "checklist": "Checklist",
+    "total": "Total",
+    "checkout": "Checkout",
+    "noLongerAvailable": "no longer available",
+    "messages": {
+      "orderGenerated": "Order generated",
+      "settlementSuccess": "Order settled successfully"
+    },
+    "errors": {
+      "exceedsStock": "Purchase quantity exceeds stock quantity",
+      "settlementFailed": "Order settlement failed"
+    }
+  },
+  "goods": {
+    "price": "Price",
+    "unitsSold": "Units sold",
+    "rating": "Rating",
+    "inventory": "Inventory",
+    "noPictures": "No other pictures available",
+    "addComment": "Add comment",
+    "tabs": {
+      "parameters": "Parameters",
+      "introduction": "Introduction",
+      "comments": "Comments"
+    },
+    "buttons": {
+      "addToCart": "Add to cart",
+      "deleteFromCart": "Delete from cart",
+      "outOfStock": "Out of stock"
+    },
+    "messages": {
+      "addSuccess": "Add successfully",
+      "deleteSuccess": "Deleted successfully"
+    },
+    "errors": {
+      "fetchImages": "Failed to fetch images"
+    }
+  }
+}

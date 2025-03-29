@@ -1,4 +1,8 @@
 import Vue from 'vue';
+import i18n from '../i18n';
+import enLocale from 'element-ui/lib/locale/lang/en';
+import zhLocale from 'element-ui/lib/locale/lang/zh-CN';
+import locale from 'element-ui/lib/locale';
 import {
   Pagination,
   Dialog,
@@ -79,6 +83,34 @@ import {
   Notification
 } from 'element-ui';
 
+// 设置Element UI的语言
+function setElementLanguage() {
+  const lang = i18n.locale;
+  if (lang === 'zh') {
+    locale.use(zhLocale);
+  } else {
+    locale.use(enLocale);
+  }
+}
+
+// 初始设置语言
+setElementLanguage();
+
+// 配置Element的i18n
+locale.i18n((key, value) => i18n.t(key, value));
+
+// 为Vue实例添加语言切换方法
+Vue.prototype.$changeLanguage = function(lang) {
+  i18n.locale = lang;
+  localStorage.setItem('language', lang);
+  setElementLanguage();
+  
+  // 显示语言切换成功的消息
+  const message = lang === 'zh' ? '语言已切换为中文' : 'Language changed to English';
+  Message.success(message);
+};
+
+// 注册组件
 Vue.use(Pagination);
 Vue.use(Dialog);
 Vue.use(Autocomplete);
