@@ -2,28 +2,25 @@
   <div>
     <!-- 头部导航栏 -->
     <div class="header">
-      <el-row class="nav-container" justify="center">
-        <el-col :span="2">
+      <div class="nav-wrapper">
+        <!-- Logo区域 -->
+        <div class="logo-area">
           <div class="logoDiv"></div>
-        </el-col>
-        <el-col :span="3">
+        </div>
+        
+        <!-- 导航链接区域 -->
+        <div class="nav-links">
           <el-link :class="{ active: isActive('/home') }" @click="linkHome">{{ $t('header.home') }}</el-link>
-        </el-col>
-        <el-col :span="3">
           <el-link :class="{ active: isActive('/goodsList') }" @click="linkGoods">{{ $t('header.mall') }}</el-link>
-        </el-col>
-        <el-col :span="3">
           <el-link :class="{ active: isActive('/cart') }" @click="linkCart">{{ $t('header.cart') }}</el-link>
-        </el-col>
-        <el-col :span="3">
           <el-link :class="{ active: isActive('/myOrders') }" @click="linkOrders">{{ $t('header.myOrders') }}</el-link>
-        </el-col>
-        <el-col :span="3">
           <el-link :class="{ active: isActive('/center') }" @click="linkCenter">{{ $t('header.personalCenter') }}</el-link>
-        </el-col>
-        <el-col :span="2">
+        </div>
+        
+        <!-- 功能区域：语言切换、辅助工具和用户信息 -->
+        <div class="functional-area">
           <!-- 语言切换下拉菜单 -->
-          <el-dropdown @command="handleLanguageChange" trigger="click">
+          <el-dropdown @command="handleLanguageChange" trigger="click" class="language-dropdown">
             <span class="language-selector">
               {{ currentLanguageDisplay }}
               <i class="el-icon-arrow-down el-icon--right"></i>
@@ -33,22 +30,41 @@
               <el-dropdown-item command="en">English</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
-        </el-col>
-        <!-- 添加高对比度模式按钮 -->
-        <el-col :span="1">
+          
+          <!-- 辅助工具 -->
           <AccessibilityTools class="accessibility-tools" />
-        </el-col>
-        <el-col :span="4" class="userDiv">
-          <div v-if="isLoggedIn">
-            <div class="uImg"></div>
-            <span class="username">{{ $t('common.hello') }}, {{ userinfo.name }}</span>
-            <li class="el-icon-switch-button logout-icon" @click="exit"></li>
+          
+          <!-- 用户信息/登录区域 -->
+          <div class="userDiv">
+            <div v-if="isLoggedIn" class="user-info">
+              <div class="uImg"></div>
+              <span class="username">{{ $t('common.hello') }}, {{ userinfo.name }}</span>
+              <li class="el-icon-switch-button logout-icon" @click="exit"></li>
+            </div>
+            <div v-else @click="exit" class="login-text">
+              {{ $t('common.clickToLogin') }}
+            </div>
           </div>
-          <div v-else @click="exit" class="login-text">
-            {{ $t('common.clickToLogin') }}
-          </div>
-        </el-col>
-      </el-row>
+        </div>
+        
+        <!-- 移动端菜单按钮 -->
+        <div class="mobile-menu-toggle" @click="toggleMobileMenu">
+          <i class="el-icon-menu"></i>
+        </div>
+      </div>
+      
+      <!-- 移动端菜单 -->
+      <div class="mobile-menu" v-show="mobileMenuVisible">
+        <el-link :class="{ active: isActive('/home') }" @click="linkHome">{{ $t('header.home') }}</el-link>
+        <el-link :class="{ active: isActive('/goodsList') }" @click="linkGoods">{{ $t('header.mall') }}</el-link>
+        <el-link :class="{ active: isActive('/cart') }" @click="linkCart">{{ $t('header.cart') }}</el-link>
+        <el-link :class="{ active: isActive('/myOrders') }" @click="linkOrders">{{ $t('header.myOrders') }}</el-link>
+        <el-link :class="{ active: isActive('/center') }" @click="linkCenter">{{ $t('header.personalCenter') }}</el-link>
+        <div class="mobile-language">
+          <span @click="handleLanguageChange('zh')">中文</span> | 
+          <span @click="handleLanguageChange('en')">English</span>
+        </div>
+      </div>
     </div>
 
     <!-- 主要内容区域 -->
@@ -78,13 +94,17 @@ export default {
   data() {
     return {
       isLoggedIn: store.state.loginModule.userinfo.token ? true : false,
+      mobileMenuVisible: false
     };
   },
   methods: {
     ...mapMutations("loginModule", ["clearUser"]),
+    toggleMobileMenu() {
+      this.mobileMenuVisible = !this.mobileMenuVisible;
+    },
     handleLanguageChange(lang) {
-      // 使用我们在element.js中定义的全局方法切换语言
       this.$changeLanguage(lang);
+      this.mobileMenuVisible = false;
     },
     exit() {
       const message = this.isLoggedIn 
@@ -108,24 +128,28 @@ export default {
     },
     linkHome() {
       this.$router.push("/home");
+      this.mobileMenuVisible = false;
     },
     linkGoods() {
       this.$router.push("/goodsList");
+      this.mobileMenuVisible = false;
     },
     linkCenter() {
       this.$router.push("/center");
+      this.mobileMenuVisible = false;
     },
     linkCart() {
       this.$router.push("/cart");
+      this.mobileMenuVisible = false;
     },
     linkOrders() {
       this.$router.push("/myOrders");
+      this.mobileMenuVisible = false;
     },
     isActive(route) {
       return this.$route.path === route;
     }
   },
-  // 组件创建时检查是否有保存的语言设置
   created() {
     const savedLanguage = localStorage.getItem('language');
     if (savedLanguage) {
@@ -142,26 +166,27 @@ export default {
   top: 0;
   left: 0;
   width: 100%;
-  height: 70px;
   background-color: #ffffff;
   border-bottom: 2px solid rgb(230, 230, 230);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 10000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-/* 让 el-row 不换行 */
-.nav-container {
-  width: 100%;
+.nav-wrapper {
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  flex-wrap: nowrap;
+  justify-content: space-between;
+  height: 70px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
-/* Logo */
+/* Logo区域 */
+.logo-area {
+  flex: 0 0 auto;
+}
+
 .logoDiv {
   width: 60px;
   height: 60px;
@@ -169,19 +194,37 @@ export default {
   background-size: cover;
 }
 
+/* 导航链接区域 */
+.nav-links {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex: 1;
+}
+
+/* 功能区域 */
+.functional-area {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
 /* 用户信息 */
 .userDiv {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
   gap: 10px;
-  color: black;
-  white-space: nowrap;
 }
 
 .username {
   font-weight: bold;
   color: #333;
+  white-space: nowrap;
 }
 
 /* 用户头像 */
@@ -198,6 +241,7 @@ export default {
   cursor: pointer;
   font-size: 18px;
   transition: color 0.3s ease;
+  list-style: none;
 }
 
 .logout-icon:hover {
@@ -210,6 +254,7 @@ export default {
   font-weight: bold;
   color: #007bff;
   transition: color 0.3s ease;
+  white-space: nowrap;
 }
 
 .login-text:hover {
@@ -218,8 +263,8 @@ export default {
 
 /* 主要内容区域 */
 .main-content {
-  margin-top: 80px;
-  min-height: calc(100vh - 80px);
+  margin-top: 70px;
+  min-height: calc(100vh - 70px);
   padding: 20px;
 }
 
@@ -244,8 +289,6 @@ export default {
 .el-link.active {
   color: #ffffff;
   background-color: #007bff;
-  border-radius: 5px;
-  padding: 10px 15px;
 }
 
 /* 语言选择器样式 */
@@ -258,6 +301,7 @@ export default {
   border-radius: 5px;
   transition: all 0.3s ease;
   display: inline-block;
+  white-space: nowrap;
 }
 
 .language-selector:hover {
@@ -272,11 +316,45 @@ export default {
   justify-content: center;
 }
 
+/* 移动端菜单按钮 */
+.mobile-menu-toggle {
+  display: none;
+  cursor: pointer;
+  font-size: 24px;
+}
+
+/* 移动端菜单 */
+.mobile-menu {
+  display: none;
+  flex-direction: column;
+  padding: 15px;
+  background-color: #fff;
+  border-top: 1px solid #e6e6e6;
+}
+
+.mobile-menu .el-link {
+  margin: 8px 0;
+  width: 100%;
+  text-align: center;
+}
+
+.mobile-language {
+  margin-top: 15px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.mobile-language span {
+  cursor: pointer;
+  padding: 5px;
+}
+
 /* 响应式调整 */
 @media (max-width: 1200px) {
-  .nav-container {
-    justify-content: space-between;
+  .nav-links {
+    gap: 10px;
   }
+  
   .el-link, .language-selector {
     font-size: 14px;
     padding: 8px 10px;
@@ -284,31 +362,55 @@ export default {
 }
 
 @media (max-width: 992px) {
-  .nav-container {
-    flex-wrap: wrap;
+  .nav-links {
+    display: none;
   }
-  .userDiv {
-    order: -1;
-    width: 100%;
-    justify-content: flex-end;
-    margin-right: 20px;
+  
+  .mobile-menu-toggle {
+    display: block;
+  }
+  
+  .mobile-menu {
+    display: flex;
+  }
+  
+  .functional-area {
+    gap: 10px;
+  }
+  
+  .username {
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
 @media (max-width: 768px) {
-  .header {
-    height: auto;
-    padding: 10px 0;
+  .language-dropdown {
+    display: none;
   }
-  .nav-container {
-    flex-direction: column;
-    align-items: center;
+  
+  .functional-area {
+    gap: 5px;
   }
-  .el-col {
-    margin: 5px 0;
+  
+  .username {
+    display: none;
   }
-  .main-content {
-    margin-top: 220px;
+}
+
+@media (max-width: 480px) {
+  .nav-wrapper {
+    padding: 0 10px;
+  }
+  
+  .accessibility-tools {
+    display: none;
+  }
+  
+  .logoDiv {
+    width: 50px;
+    height: 50px;
   }
 }
 </style>

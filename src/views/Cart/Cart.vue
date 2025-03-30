@@ -1,15 +1,47 @@
 <template>
-  <div class="outside">
-    <div class="foot">
-      <div class="totalPrice">
-        <p>{{ $t('cart.checklist') }}:{{totalNum}}</p>
-        <span>{{ $t('cart.total') }}:${{totalPrice}}</span>
-        <el-button type="danger" round class="tBtn" @click="selectStock">{{ $t('cart.checkout') }}</el-button>
+  <div class="cart-container">
+    <h2 class="cart-title">{{ $t('cart.title') }}</h2>
+    
+    <div v-if="!cartList || cartList.length === 0" class="cart-empty">
+      <h3>{{ $t('cart.empty') }}</h3>
+    </div>
+    
+    <div v-else class="cart-content">
+      <CartList 
+        :cartList="cartList" 
+        @sumPrice="sumPrice" 
+        @synchronization="synchronization"
+      ></CartList>
+      
+      <div class="pagination-container">
+        <MyPage 
+          :total="total" 
+          :pageSize="pageSize" 
+          @changePage="changePage" 
+          :current-page="currentPage"
+        ></MyPage>
       </div>
     </div>
-    <h3 v-if="!cartList" style="color: black;">{{ $t('cart.empty') }}</h3>
-    <CartList :cartList="cartList" @sumPrice="sumPrice" @synchronization="synchronization"></CartList>
-    <MyPage :total="total" :pageSize="pageSize" @changePage="changePage" class="page" :current-page="currentPage"></MyPage>
+
+    <div class="checkout-bar" :class="{ 'has-items': cartList && cartList.length > 0 }">
+      <div class="checkout-details">
+        <div class="checkout-items">
+          <p>{{ $t('cart.checklist') }}:</p>
+          <div class="items-list">{{totalNum}}</div>
+        </div>
+        <div class="checkout-total">
+          <p>{{ $t('cart.total') }}:</p>
+          <span class="total-amount">${{totalPrice}}</span>
+        </div>
+      </div>
+      <el-button 
+        type="primary" 
+        class="checkout-btn" 
+        :disabled="!cartList || cartList.length === 0"
+        @click="selectStock">
+        {{ $t('cart.checkout') }}
+      </el-button>
+    </div>
   </div>
 </template>
 
@@ -51,7 +83,7 @@ export default {
     },
 
     totalNum: function() {
-      return this.gList.join(",");
+      return this.gList.join(", ");
     },
 
     totalId: function()  {
@@ -221,47 +253,155 @@ export default {
 </script>
 
 <style scoped>
-  .outside {
-    width: 85%;
-    position:absolute;
+  /* 基础容器样式 */
+  .cart-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    min-height: calc(100vh - 200px);
+    padding-bottom: 80px; /* 为底部结算栏腾出空间 */
   }
 
-  .foot {
+  .cart-title {
+    margin-bottom: 24px;
+    color: #333;
+    font-size: 24px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 12px;
+  }
+
+  /* 空购物车样式 */
+  .cart-empty {
+    text-align: center;
+    padding: 40px 0;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin: 20px 0;
+  }
+
+  .cart-empty h3 {
+    color: #666;
+    font-size: 18px;
+  }
+
+  /* 购物车内容区域 */
+  .cart-content {
+    margin-bottom: 80px;
+  }
+
+  /* 分页容器 */
+  .pagination-container {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+  }
+
+  /* 结算栏样式 */
+  .checkout-bar {
     position: fixed;
-    width: 80%;
-    height: 50px;
-    bottom: 2px;
+    bottom: 20px;
     left: 50%;
-    margin-left:-40%;
-    background-color: rgb(255, 255, 255);
-    border: 1px solid #9b9b9b;
-    border-radius: 30px;
-    z-index: 9;
+    transform: translateX(-50%);
+    width: calc(100% - 40px);
+    max-width: 1160px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
   }
-  
-  .totalPrice p{
-    position: absolute;
+
+  .checkout-details {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin-right: 20px;
+  }
+
+  .checkout-items, .checkout-total {
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  .checkout-items p, .checkout-total p {
+    font-size: 16px;
+    color: #555;
+    margin: 0;
+    margin-right: 10px;
+  }
+
+  .items-list {
+    font-size: 14px;
+    color: #333;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 400px;
+  }
+
+  .total-amount {
     font-size: 20px;
-    color: red;
-    left: 5%;
-    margin-top: -0.3%;
+    font-weight: bold;
+    color: #e53935; /* 深红色，比原先的红色对比度更高 */
   }
 
-  .totalPrice span {
-    position: absolute;
-    font-size: 20px;
-    color: red;
-    right: 20%;
+  /* 高对比度模式适配 */
+  @media (forced-colors: active) {
+    .checkout-bar {
+      border: 2px solid CanvasText;
+    }
+    
+    .total-amount {
+      color: CanvasText;
+    }
+    
+    .checkout-btn {
+      forced-color-adjust: none;
+      color: Canvas;
+      background-color: ButtonText;
+      border-color: ButtonText;
+    }
   }
 
-  .tBtn {
-    position: absolute;
-    top: 15%;
-    right: 10%;
+  .checkout-btn {
+    padding: 10px 30px;
+    font-size: 16px;
+    border-radius: 4px;
   }
 
-  .page {
-    position: absolute;
-    left: 45%;
+  /* 响应式设计 */
+  @media (max-width: 768px) {
+    .cart-container {
+      padding: 15px;
+      padding-bottom: 100px;
+    }
+    
+    .checkout-bar {
+      flex-direction: column;
+      padding: 12px;
+      bottom: 10px;
+    }
+    
+    .checkout-details {
+      width: 100%;
+      margin-right: 0;
+      margin-bottom: 10px;
+    }
+    
+    .checkout-btn {
+      width: 100%;
+    }
+    
+    .items-list {
+      max-width: 250px;
+    }
   }
 </style>
