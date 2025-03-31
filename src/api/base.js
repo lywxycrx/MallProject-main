@@ -37,6 +37,8 @@ const base ={
     changeOrder: '/api/changeOrder',                // 更改订单状态
     myOrders: '/api/myOrders',                      // 获取个人订单
     searchMyorders: '/api/searchMyorders',          // 搜索个人订单
+    addOrderItem: '/api/addOrderItem',
+    searchOrderItem: '/api/searchOrderItem',
 
     
 

@@ -572,8 +572,10 @@ router.get("/addOrder", (req, res) => {
     var address = req.query.address;
     var time = new Date();
     var subtotal = req.query.subtotal;
-    const sql = "insert into orders values (null,?,?,?,?,?,'0',?,null,null,null,null,null)"
-    var arr = [uid, detail, prcie, address, time.toLocaleDateString(), subtotal]
+    var idList = req.query.gid;
+    var ids = idList.join(",")
+    const sql = "insert into orders values (null,?,?,?,?,?,?,'0',?,null,null,null,null,null)"
+    var arr = [uid, ids, detail, prcie, address, time.toLocaleDateString(), subtotal]
     sqlFn(sql, arr, result => {
         if (result.affectedRows > 0) {
             res.send({
@@ -584,6 +586,73 @@ router.get("/addOrder", (req, res) => {
             res.send({
                 status: 500,
                 msg: "结算失败"
+            })
+        }
+    })
+    
+    // const itemSql = 'insert into order_item values (null,?,?,?)'
+    // var queryList = [uid, null, null]
+    // var loopIndex = 0
+    // let items = detail.split(',')
+    // for(let item of items){
+    //     queryList[1] = idList[loopIndex]
+    //     queryList[2] = item.split('×')[1]
+    //     sqlFn(itemSql, queryList, result => {
+    //         if (result.affectedRows > 0) {
+    //             console.log("添加成功")
+    //         } else {
+    //             console.log("添加失败")
+    //         }
+    //     })
+    //     loopIndex++
+    // }
+    
+})
+
+router.get("/addOrderItem", (req, res) => {
+    var uid = req.query.uid;
+    var idList = req.query.idList;
+    var detail = req.query.detail;
+    const itemSql = 'insert into order_item values (null,?,?,?)'
+    var queryList = [uid, null, null]
+    var loopIndex = 0
+    let items = detail.split(',')
+    for(let item of items){
+        queryList[1] = idList[loopIndex]
+        queryList[2] = item.split('×')[1]
+        sqlFn(itemSql, queryList, result => {
+            if (result.affectedRows > 0) {
+                res.send({
+                    status: 200,
+                    msg: "添加成功"
+                })
+            } else {
+                res.send({
+                    status: 500,
+                    msg: "添加失败"
+                })
+            }
+        })
+        loopIndex++
+    }
+})
+
+//搜索订单条目
+
+router.get("/searchOrderItem", (req, res) => {
+    var uid = req.query.uid
+    var gid = req.query.gid
+    const sql = 'select * from order_item where uid = ? and gid = ?'
+    sqlFn(sql, [uid, gid], result => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                msg: "查询到购买记录"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "未查询到购买记录"
             })
         }
     })

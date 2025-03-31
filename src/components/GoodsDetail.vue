@@ -92,7 +92,8 @@
                 v-show="state != 1" 
                 icon="el-icon-edit" 
                 @click="addComment" 
-                class="add-comment-btn">
+                class="add-comment-btn"
+                v-if="bought">
                 {{ $t('goods.addComment') }}
               </el-button>
             </div>
@@ -147,7 +148,8 @@ export default {
       state: store.state.loginModule.userinfo.type,
       isAble: false,
       CarouselList: [],
-      isLoggedIn: false
+      isLoggedIn: false,
+      bought: false
     }
   },
 
@@ -168,7 +170,9 @@ export default {
         this.btnStatus = false;
         this.updateButtonText();
       }
-    })      
+    })
+
+    this.isBought()
 
     this.$api.goodsDetail({
       gid: this.gid
@@ -182,6 +186,23 @@ export default {
   },
 
   methods: {
+
+    //检测用户是否购买过此商品
+    isBought(){
+      this.$api.searchOrderItem({
+        uid: store.state.loginModule.userinfo.uid,
+        gid: this.gid
+      }).then(res => {
+        if(res.data.status === 200){
+          this.bought = true
+          console.log("买过")
+        }else{
+          this.bought = false
+          console.log("没买过")
+        }
+      })
+    },
+
     // 更新按钮文本，根据当前状态和语言
     updateButtonText() {
       if(this.goodsData && this.goodsData.stock === 0) {

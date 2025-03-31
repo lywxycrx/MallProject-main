@@ -169,6 +169,20 @@ const api = {
         })
     },
 
+    //添加订单条目
+    addOrderItem(params){
+        return axios.get(base.addOrderItem, {
+            params 
+        })
+    },
+    
+    //查找订单条目
+    searchOrderItem(params){
+        return axios.get(base.searchOrderItem, {
+            params 
+        })
+    },
+
 // =================================== 商品部分 ===================================
 
     // 商品详情

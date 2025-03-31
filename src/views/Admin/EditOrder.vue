@@ -41,11 +41,11 @@
         label="Customer names"
         width="140">
       </el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         prop="detail"
         label="Details"
         width="230">
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column
         prop="price"
         label="Total price"
@@ -71,7 +71,7 @@
       </el-table-column>
       <el-table-column
         label="Operations"
-        width="580">
+        width="380">
             <template slot-scope="scope">
               <el-button
                 size="mini"
@@ -124,7 +124,8 @@
                 size="mini"
                 type="danger"
                 @click="handleDelete(scope.$index, scope.row)"
-                icon="el-icon-delete">
+                icon="el-icon-delete"
+                v-show="deleteType">
                 Delete
               </el-button>
             </template>
@@ -206,6 +207,7 @@
         abnormalType: true,
         solveType: false,
         cancelType: false,
+        deleteType: false,
         statusMap: {
           0: "Pending",
           1: "Shipped",
@@ -278,6 +280,7 @@
           this.abnormalType = true
           this.solveType = false
           this.cancelType = false
+          this.deleteType = false
           this.showOrders(1, this.type)
         }else if(this.activeName === 'Shipped'){
           this.type = 1
@@ -286,6 +289,7 @@
           this.abnormalType = false
           this.solveType = false
           this.cancelType = false
+          this.deleteType = false
           this.showOrders(1, this.type)
         }else if(this.activeName === 'Completed'){
           this.type = 2
@@ -294,6 +298,7 @@
           this.abnormalType = false
           this.solveType = false
           this.cancelType = false
+          this.deleteType = true
           this.showOrders(1, this.type)
         }
         else if(this.activeName === 'Holding'){
@@ -303,6 +308,7 @@
           this.abnormalType = false
           this.solveType = true
           this.cancelType = true
+          this.deleteType = false
           this.showOrders(1, this.type)
         }else if(this.activeName === 'Cancelled'){
           this.type = 4
@@ -311,6 +317,7 @@
           this.abnormalType = false
           this.solveType = false
           this.cancelType = false
+          this.deleteType = true
           this.showOrders(1, this.type)
         }
       },
@@ -325,7 +332,7 @@
 
 
       changeStatus(index, row, bType){
-        console.log('删除', index, row)
+        // console.log('删除', index, row)
         const numType = Object.keys(this.statusMap).find(key => this.statusMap[key] === bType);
         this.$confirm('This will change the status of the order to '+ bType + ', continue or not', 'hint', {
           confirmButtonText: 'Confirm',
@@ -343,6 +350,23 @@
               })
               this.showOrders(1, this.type)                  // 更新视图
             }
+          }).then(() => {
+            if(numType == 2){
+            console.log("add item")
+            this.$api.addOrderItem({
+              uid: row.uid,
+              idList: row.idList,
+              detail: row.detail
+            }).then(res => {
+              console.log(res)
+              if(res.data.status === 200) {
+                console.log('Change successfully')
+              }
+              else{
+                console.log(res)
+              }
+            })
+          }
           })
         }).catch(() => {
           this.$message({
@@ -350,6 +374,7 @@
             message: 'Cancelled'
           });          
         });
+        
       },
 
       handleDetails(row){
