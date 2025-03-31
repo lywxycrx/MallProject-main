@@ -71,7 +71,7 @@
       </el-table-column>
       <el-table-column
         label="Operations"
-        width="420">
+        width="580">
             <template slot-scope="scope">
               <el-button
                 size="mini"
@@ -94,7 +94,7 @@
                 @click="changeStatus(scope.$index, scope.row, 'Holding')"
                 icon="el-icon-warning"
                 v-show="abnormalType">
-                设为Holding
+                Hold
               </el-button>
               <el-button
                 size="mini"
@@ -102,7 +102,15 @@
                 @click="changeStatus(scope.$index, scope.row, 'Pending')"
                 icon="el-icon-check"
                 v-show="solveType">
-                解决Holding
+                Unhold
+              </el-button>
+              <el-button
+                size="mini"
+                type="warning"
+                @click="handleCancel(scope.row)"
+                icon="el-icon-close"
+                v-show="cancelType">
+                Cancel
               </el-button>
               <el-button
                 size="mini"
@@ -190,13 +198,14 @@
           time: '',
           status: '',
           detail: [],
-          dates: ['暂无', '暂无', '暂无', '暂无']
+          dates: ['None yet', 'None yet', null, null]
         },     // 当前行的数据对象
 
         dType: true,    // 控制配送按钮是否显示
         sType: null,    // 控制完成按钮是否显示
         abnormalType: true,
         solveType: false,
+        cancelType: false,
         statusMap: {
           0: "Pending",
           1: "Shipped",
@@ -268,6 +277,7 @@
           this.sType = false
           this.abnormalType = true
           this.solveType = false
+          this.cancelType = false
           this.showOrders(1, this.type)
         }else if(this.activeName === 'Shipped'){
           this.type = 1
@@ -275,6 +285,7 @@
           this.sType = true
           this.abnormalType = false
           this.solveType = false
+          this.cancelType = false
           this.showOrders(1, this.type)
         }else if(this.activeName === 'Completed'){
           this.type = 2
@@ -282,6 +293,7 @@
           this.sType = false
           this.abnormalType = false
           this.solveType = false
+          this.cancelType = false
           this.showOrders(1, this.type)
         }
         else if(this.activeName === 'Holding'){
@@ -290,6 +302,7 @@
           this.sType = false
           this.abnormalType = false
           this.solveType = true
+          this.cancelType = true
           this.showOrders(1, this.type)
         }else if(this.activeName === 'Cancelled'){
           this.type = 4
@@ -297,6 +310,7 @@
           this.sType = false
           this.abnormalType = false
           this.solveType = false
+          this.cancelType = false
           this.showOrders(1, this.type)
         }
       },
@@ -406,6 +420,32 @@
         });
       },
 
+      handleCancel(row){
+        console.log("取消订单")
+        this.$confirm(this.$t('orders.confirmMessages.cancel'), {
+          confirmButtonText: this.$t('common.confirm'),
+          cancelButtonText: this.$t('common.cancel'),
+          type: 'warning'
+        }).then(() => {
+          this.$api.changeOrder({
+            oid: row.oid,
+            type: 4
+          }).then(res => {
+            if(res.data.status === 200) {
+                this.$message({
+                type: 'success',
+                message: this.$t('orders.successMessages.cancel')
+              })
+              this.showOrders(1, this.type)                  // 更新视图
+            }
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: this.$t('orders.cancelMessages.cancel')
+          });          
+        });
+      }
     },
 
     created() {

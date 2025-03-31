@@ -108,8 +108,9 @@ export default {
       }).then(res => {
         if(res.status == 200){
           this.cartList = res.data.data
-          console.log(this.cartList)
-          for(let i = 0; i < this.cartList.length; i++){
+          // console.log(this.cartList)
+          if(this.cartList != undefined){
+            for(let i = 0; i < this.cartList.length; i++){
             let status = this.cartList[i].isEnabled
             console.log(status)
             if(status != 0){
@@ -128,6 +129,8 @@ export default {
               })
             }
           }
+          }
+          
           if(this.disabled != ''){
             alert(this.disabled)
           }
@@ -222,6 +225,10 @@ export default {
               })
               setTimeout(() => {
                 this.reload()
+                this.$message({
+                type: 'success',
+                message: this.$t('cart.messages.settlementSuccess')
+              })
               }, 700);
             }
           })
