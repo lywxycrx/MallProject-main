@@ -640,24 +640,31 @@ router.get("/addOrderItem", (req, res) => {
     var idList = req.query.idList;
     var detail = req.query.detail;
     const itemSql = 'insert into order_item values (null,?,?,?)'
+    
     var queryList = [uid, null, null]
     var loopIndex = 0
+    let ids = idList.split(',')
     let items = detail.split(',')
     for(let item of items){
-        queryList[1] = idList[loopIndex]
+        if(ids.length > 1){
+            queryList[1] = ids[loopIndex]
+        }
+        else{
+            queryList[1] = idList
+        }
         queryList[2] = item.split('×')[1]
         sqlFn(itemSql, queryList, result => {
-            if (result.affectedRows > 0) {
-                res.send({
-                    status: 200,
-                    msg: "添加成功"
-                })
-            } else {
-                res.send({
-                    status: 500,
-                    msg: "添加失败"
-                })
-            }
+            // if (result.affectedRows > 0) {
+            //     res.send({
+            //         status: 200,
+            //         msg: "添加成功"
+            //     })
+            // } else {
+            //     res.send({
+            //         status: 500,
+            //         msg: "添加失败"
+            //     })
+            // }
         })
         loopIndex++
     }

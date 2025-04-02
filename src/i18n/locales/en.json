@@ -95,6 +95,10 @@
       "cancelTime": "Cancel Time",
       "type": "Type",
       "notAvailable": "Not available",
+      "notShipped": "Not shipped",
+      "notCompleted": "Not completed",
+      "notResolved": "Not resolved",
+      "noRating": "No rating yet",
       "table": {
         "item": "Item",
         "quantity": "Quantity",

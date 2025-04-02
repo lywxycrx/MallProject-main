@@ -57,7 +57,7 @@
       </el-table-column>
       <el-table-column
         :label="$t('orders.table.operation')"
-        width="240">
+        width="220">
             <template slot-scope="scope">
               <el-button
                 size="mini"
@@ -92,12 +92,18 @@
       <h3>{{ $t('orders.details.orderNumber') }}: {{ rowData.oid }}</h3>
       <p>{{ $t('orders.details.shippingAddress') }}: {{ rowData.address }}</p>
       <p>{{ $t('orders.details.creatingTime') }}: {{ rowData.time }}</p>
-      <p>{{ $t('orders.details.shippingTime') }}: {{ rowData.dates[0] }}</p>
-      <p>{{ $t('orders.details.completedTime') }}: {{ rowData.dates[1] }}</p>
+      <p>{{ $t('orders.details.shippingTime') }}: {{ rowData.dates[0] }}<span v-if="rowData.dates[0] == null">{{ $t('orders.details.notShipped') }}</span></p>
+      <p v-if="rowData.dates[4] == null">{{ $t('orders.details.completedTime') }}: {{ rowData.dates[1] }}<span v-if="rowData.dates[1] == null">{{ $t('orders.details.notCompleted') }}</span></p>
       <p v-if="rowData.dates[2] != null">{{ $t('orders.details.problemTime') }}: {{ rowData.dates[2] }}</p>
-      <p v-if="rowData.dates[2] != null">{{ $t('orders.details.solveTime') }}: {{ rowData.dates[3] }}</p>
+      <p v-if="rowData.dates[2] != null">{{ $t('orders.details.solveTime') }}: {{ rowData.dates[3] }}<span v-if="rowData.dates[3] == null">{{ $t('orders.details.notResolved') }}</span></p>
       <p v-if="rowData.dates[4] != null">{{ $t('orders.details.cancelTime') }}: {{ rowData.dates[4] }}</p>
-      <p>{{ $t('orders.details.type') }}: {{ rowData.status }}</p>
+      <p>{{ $t('orders.details.type') }}: 
+        <span v-if="type == 0">{{ $t('orders.status.pending') }}</span>
+        <span v-else-if="type == 1">{{ $t('orders.status.delivering') }}</span>
+        <span v-else-if="type == 2">{{ $t('orders.status.completed') }}</span>
+        <span v-else-if="type == 3">{{ $t('orders.status.abnormal') }}</span>
+        <span v-else>{{ $t('orders.status.cancelled') }}</span>
+      </p>
 
       <table border="1" style="width: 100%; border-collapse: collapse;">
         <thead>
@@ -152,8 +158,9 @@
           time: '',
           status: '',
           detail: [],
-          dates: [this.$t('orders.details.notAvailable'), this.$t('orders.details.notAvailable'), 
-                 this.$t('orders.details.notAvailable'), this.$t('orders.details.notAvailable')]
+          // dates: [this.$t('orders.details.notAvailable'), this.$t('orders.details.notAvailable'), 
+          //        this.$t('orders.details.notAvailable'), this.$t('orders.details.notAvailable')]
+          dates: [null, null, null, null, null]
         },     // 当前行的数据对象
 
         dType: false,   // 控制删除按钮是否显示
@@ -236,7 +243,7 @@
           this.myOrders(1, this.type)
         }else if(this.activeName === 'Completed'){
           this.type = 2
-          this.dType = true
+          this.dType = false
           this.CancelType = false
           this.myOrders(1, this.type)
         }
@@ -322,17 +329,23 @@
         this.rowData.detail = this.rowData.detail.concat(checklist)
 
         // 重置日期数组
-        this.rowData.dates = [
-          this.$t('orders.details.notAvailable'), 
-          this.$t('orders.details.notAvailable'), 
-          this.$t('orders.details.notAvailable'), 
-          this.$t('orders.details.notAvailable')
-        ];
+        // this.rowData.dates = [
+        //   this.$t('orders.details.notAvailable'), 
+        //   this.$t('orders.details.notAvailable'), 
+        //   this.$t('orders.details.notAvailable'), 
+        //   this.$t('orders.details.notAvailable')
+        // ];
         
-        let i = 0
-        while(row[`date${i+1}`] != null){
-          this.rowData.dates[i] = row[`date${i+1}`].split("T")[0]
-          console.log(i++)
+        // let i = 0
+        // while(row[`date${i+1}`] != null){
+        //   this.rowData.dates[i] = row[`date${i+1}`].split("T")[0]
+        //   console.log(i++)
+        // }
+        this.rowData.dates = [null, null, null, null, null]
+        for(let i = 0; i < this.rowData.dates.length; i++){
+          if(row[`date${i+1}`] != null){
+            this.rowData.dates[i] = row[`date${i+1}`].split("T")[0]
+          }
         }
 
         this.dialogVisible = true;

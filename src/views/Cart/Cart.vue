@@ -273,7 +273,7 @@ export default {
 
   .cart-title {
     margin-bottom: 24px;
-    color: #333;
+    color: #7b7b7b;
     font-size: 24px;
     border-bottom: 1px solid #eee;
     padding-bottom: 12px;

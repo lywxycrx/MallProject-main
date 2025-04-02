@@ -15,7 +15,7 @@
           ></el-rate>
         </div>
         <div v-else>
-          <span>No rating yet</span>
+          <span>{{ $t('orders.details.noRating') }}</span>
         </div>
       </div>
     </div>
@@ -36,7 +36,7 @@
       <div class="product-info">
         <div class="price-section">
           <span class="price-label">{{ $t('goods.price') }}:</span>
-          <span class="price-value">¥ {{goodsData.price}}</span>
+          <span class="price-value">${{goodsData.price}}</span>
         </div>
         
         <div class="product-stats">
@@ -592,7 +592,7 @@ export default {
 }
 
 .price-label {
-  font-size: 16px;
+  font-size: 25px;
   color: #606266;
 }
 

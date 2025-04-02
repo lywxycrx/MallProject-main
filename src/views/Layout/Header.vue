@@ -189,7 +189,7 @@ export default {
 
 .logoDiv {
   width: 60px;
-  height: 60px;
+  height: 80px;
   background-image: url("../../assets/logo.png");
   background-size: cover;
 }

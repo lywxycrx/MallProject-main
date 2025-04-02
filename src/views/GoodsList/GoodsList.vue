@@ -83,6 +83,7 @@ export default {
 
     // 通过输入查询
     searchInput(val){
+      console.log(val)
       if (!val) {
         this.showGoods(1);
         this.currentPage = 1;
@@ -117,6 +118,8 @@ export default {
 
     // 类别查询
     cHandleClick() {
+      console.log(this.activeName)
+      console.log(this.type)
       if(this.activeName === '全部'){
         this.showGoods(1)
       }else{

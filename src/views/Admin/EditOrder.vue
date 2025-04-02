@@ -138,10 +138,10 @@
       <h3>P.O.number: {{ rowData.oid }}</h3>
       <p>Shipping Address: {{ rowData.address }}</p>
       <p>Createing Time: {{ rowData.time }}</p>
-      <p>Shipping Time: {{ rowData.dates[0] }}</p>
-      <p>Completed Time: {{ rowData.dates[1] }}</p>
+      <p>Shipping Time: {{ rowData.dates[0] }}<span v-if="rowData.dates[0] == null">Not Shipped</span></p>
+      <p>Completed Time: {{ rowData.dates[1] }}<span v-if="rowData.dates[1] == null">Not Complete</span></p>
       <p v-if="rowData.dates[2] != null">Problem Time: {{ rowData.dates[2] }}</p>
-      <p v-if="rowData.dates[2] != null">Solve Time: {{ rowData.dates[3] }}</p>
+      <p v-if="rowData.dates[2] != null">Solve Time: {{ rowData.dates[3] }}<span v-if="rowData.dates[3] == null">Not Resolved</span></p>
       <p v-if="rowData.dates[4] != null">Cancel Time: {{ rowData.dates[4] }}</p>
       <p>Type: {{ rowData.status }}</p>
 
@@ -199,7 +199,7 @@
           time: '',
           status: '',
           detail: [],
-          dates: ['None yet', 'None yet', null, null]
+          dates: ['None yet', 'None yet', null, null, null]
         },     // 当前行的数据对象
 
         dType: true,    // 控制配送按钮是否显示
@@ -410,10 +410,17 @@
         }
         this.rowData.detail = []
         this.rowData.detail = this.rowData.detail.concat(checklist)
-        let i = 0
-        while(row[`date${i+1}`] != null){
-          this.rowData.dates[i] = row[`date${i+1}`].split("T")[0]
-          console.log(i++)
+        // let i = 0
+        // while(row[`date${i+1}`] != null){
+        //   this.rowData.dates[i] = row[`date${i+1}`].split("T")[0]
+        //   console.log(i++)
+        // }
+
+        this.rowData.dates = [null, null, null, null, null]
+        for(let i = 0; i < this.rowData.dates.length; i++){
+          if(row[`date${i+1}`] != null){
+            this.rowData.dates[i] = row[`date${i+1}`].split("T")[0]
+          }
         }
         this.dialogVisible = true;
       },

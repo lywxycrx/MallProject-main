@@ -30,7 +30,7 @@
                     </el-select>
                 </el-form-item>
 
-                <el-form-item label="Rating" prop="score">
+                <!-- <el-form-item label="Rating" prop="score">
                     <el-select v-model="ruleForm.score" placeholder="Please rate">
                       <el-option label="1" value="1"></el-option>
                       <el-option label="2" value="2"></el-option>
@@ -38,7 +38,7 @@
                       <el-option label="4" value="4"></el-option>
                       <el-option label="5" value="5"></el-option>
                     </el-select>
-                </el-form-item>
+                </el-form-item> -->
 
                 <el-form-item label="Parameters" prop="parameter">
                   <el-input type="textarea"

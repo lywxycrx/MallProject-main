@@ -148,7 +148,7 @@ export default {
       margin-left: 30px;
       margin-top: 10px;
       margin-bottom: 10px;
-      height: 60px;
+      height: 80px;
       width: 60px;
       background-image: url("../../assets/logo.png");
       background-size: cover;

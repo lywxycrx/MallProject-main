@@ -95,6 +95,10 @@
       "cancelTime": "取消时间",
       "type": "类型",
       "notAvailable": "暂无",
+      "notShipped": "未发货",
+      "notCompleted": "未完成",
+      "notResolved": "未解决",
+      "noRating": "暂无评分",
       "table": {
         "item": "商品",
         "quantity": "数量",
@@ -174,7 +178,7 @@
     }
   },
   "goods": {
-    "price": "价格",
+    "price": "售价",
     "unitsSold": "已售",
     "rating": "评分",
     "inventory": "库存",

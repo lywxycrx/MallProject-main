@@ -2,18 +2,18 @@
   <div class="outDiv">
     <!-- 搜索栏区域 -->
     <div class="header">
-      <el-input placeholder="Please enter the product you are looking for" @change="searchInput" v-model="input" clearable></el-input>
+      <el-input placeholder="Please enter the product you are looking for" @change="(event) => searchInput(event, 'search')" v-model="input" clearable></el-input>
       <el-button type="primary">Search</el-button>
       <el-button type="primary" @click="addGoods">Add product</el-button>
     </div>
 
       <el-tabs v-model="activeName" @tab-click="cHandleClick">
-        <el-tab-pane label="All" name="All"></el-tab-pane>
-        <el-tab-pane label="Latest" name="0"></el-tab-pane>
-        <el-tab-pane label="Popular" name="1"></el-tab-pane>
-        <el-tab-pane label="Recommended" name="2"></el-tab-pane>
-        <el-tab-pane label="Sale" name="3"></el-tab-pane>
-        <el-tab-pane label="Hot" name="4"></el-tab-pane>
+        <el-tab-pane label="All" name="ALL"></el-tab-pane>
+        <el-tab-pane label="Latest" name="1"></el-tab-pane>
+        <el-tab-pane label="Popular" name="2"></el-tab-pane>
+        <el-tab-pane label="Recommended" name="3"></el-tab-pane>
+        <el-tab-pane label="Sale" name="4"></el-tab-pane>
+        <!-- <el-tab-pane label="Hot" name="5"></el-tab-pane> -->
         <el-tab-pane label="Limited Stock" name="5"></el-tab-pane>
       </el-tabs>
 
@@ -53,11 +53,11 @@
         label="Sales"
         width="80">
       </el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         prop="score"
         label="Rating"
         width="80">
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column
         label="Operations"
         width="380">
@@ -111,7 +111,7 @@
         pageSize: 1,
         input: '',
 
-        activeName: 'All',
+        activeName: 'ALL',
         dialogVisible: false,
         currentPage: 1, // 页面改变时的变量
         type: 'name',
@@ -137,13 +137,13 @@
 
 
       // 通过输入查询
-      searchInput(val){
+      searchInput(val, Operate){
        if (!val) {
         this.showGoods(1);
         this.currentPage = 1;
         return;
       }
-      if(/^[0-9]+$/.test(val)){
+      if((/^[0-9]+$/.test(val))&&(Operate=='search')){
         this.type = 'gid'
       }
       this.$api
@@ -154,7 +154,7 @@
         .then((res) => {
           console.log("搜索---", res.data);
           this.currentPage = 1;
-          if (res.data.status === 200) {
+          if (res.status === 200) {
             this.tableData = res.data.data
             this.total = res.data.total;
             this.pageSize = res.data.pageSize;;
@@ -171,19 +171,19 @@
 
 
       // 改变传入的type值。调用输入查询方法
-      getSearch(val) {
-        this.type = 'name'
-        this.searchInput(val)
-      },
+      // getSearch(val) {
+      //   //this.type = 'name'
+      //   this.searchInput(val, 'search')
+      // },
 
 
       // 类别查询
       cHandleClick() {
-        if(this.activeName === '全部'){
+        if(this.activeName === 'ALL'){
           this.showGoods(1)
         }else{
           this.type = 'type';
-          this.searchInput(this.activeName);
+          this.searchInput(this.activeName, 'change');
           this.type = 'name'
         }
       },
@@ -232,8 +232,6 @@
       },
 
       handleEnable(index, row){
-        console.log(this.tableData)
-        console.log(row.isEnabled)
         this.$api.enableGoods(row)
         this.showGoods(1)
       },
