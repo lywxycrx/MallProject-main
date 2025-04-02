@@ -181,7 +181,12 @@ router.get('/getSearch', (req, res) => {
 //  获取商品详情
 router.get('/goodsDetail', (req, res) => {
     var gid = req.query.gid;
-    const sql = "select * from goods where gid =" + gid;
+    const sql = //"select * from goods where gid =" + gid;
+    `SELECT g.*, AVG(c.rate) AS rating
+    FROM goods g
+    LEFT JOIN comment c ON g.gid = c.gid
+    WHERE g.gid = ${gid}
+    GROUP BY g.gid;`
     sqlFn(sql, null, (result) => {
         if (result.length > 0) {
             res.send({
@@ -202,7 +207,11 @@ router.get('/goodsDetail', (req, res) => {
 //  显示评论列表
 router.get('/showComments', (req, res) => {
     var gid = req.query.gid;
-    const sql = "select * from comment where gid =" + gid;
+    const sql = //"select * from comment where gid =" + gid;
+    `select c.*, u.name as username
+    from comment c
+    LEFT JOIN users u ON c.uid = u.uid
+    WHERE c.gid = ${gid}`
     sqlFn(sql, null, (result) => {
         if (result.length > 0) {
             res.send({
@@ -227,18 +236,35 @@ router.get("/addComments", (req, res) => {
     var gid = req.query.gid;
     var content = req.query.content || "";
     var time = new Date();
-    const sql = "insert into comment values (null,?,?,?,?)"
-    var arr = [gid, uid, content, time.toLocaleDateString()];
-    sqlFn(sql, arr, result => {
-        if (result.affectedRows > 0) {
-            res.send({
-                status: 200,
-                msg: "添加成功"
-            })
-        } else {
+    var rating = req.query.rating;
+    // var commentExisit = false
+    var sql = "insert into comment values (null,?,?,?,?,?,?,?)"
+    var arr = [gid, uid, content, time.toLocaleDateString(), null, null, rating];
+    sqlFn('select * from comment where uid = ? and gid = ?', [uid, gid], result => {
+        
+        if((result[0] != undefined) && (result[0].time2 != null)){
             res.send({
                 status: 500,
-                msg: "添加失败"
+                msg: "添加评论不能超过两条"
+            })
+        }
+        else{
+            if(result.length > 0){
+                sql = "update comment set content2 = ?, time2 = ?, rate = ? where uid = ? and gid = ?"
+                arr = [content, time.toLocaleDateString(), rating, uid, gid]
+            }
+            sqlFn(sql, arr, result => {
+                if (result.affectedRows > 0) {
+                    res.send({
+                        status: 200,
+                        msg: "添加成功"
+                    })
+                } else {
+                    res.send({
+                        status: 500,
+                        msg: "添加失败"
+                    })
+                }
             })
         }
     })

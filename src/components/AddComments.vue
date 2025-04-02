@@ -7,13 +7,16 @@
             :before-close="handleClose">
             
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-                <el-form-item label="内容" prop="content">
+                <el-form-item :label="$t('comment.content')" prop="content">
                   <el-input type="textarea" v-model="ruleForm.content"></el-input>
                 </el-form-item>
+                <el-form-item :label="$t('comment.rating')" prop="content">
+                    <rating @rating-selected="onRatingSelected"></rating>
+                </el-form-item>
             </el-form>
-
+            
             <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="submit('ruleForm')">Publish</el-button>
+                <el-button type="primary" @click="submit('ruleForm')">{{$t('comment.publish')}}</el-button>
             </span>
         </el-dialog>
     </div>
@@ -21,10 +24,14 @@
 
 <script>
 import store from '../store/index'
+import Rating from './Rating.vue'
 
 export default {
     inject: ['reload'],
     name: 'Addcomments',
+    components: {
+        Rating
+    },
     props: {
         dialogVisible: {
             type: Boolean,
@@ -44,7 +51,8 @@ export default {
     data() {
         return {
             ruleForm: {
-                content:''
+                content:'',
+                rating: 0,
             },
 
             rules: {
@@ -64,7 +72,10 @@ export default {
             this.$emit('changeDialog')
         },
     
-    
+        onRatingSelected(rating) {
+            this.rating = rating;
+            console.log(this.rating)
+        },
         submit(formName) {
             this.$refs[formName].validate((valid) => {
                 if(valid) {
@@ -72,22 +83,41 @@ export default {
                     let content = this.ruleForm.content;
                     let gid = this.gid
                     let uid = store.state.loginModule.userinfo.uid
-
-                    this.$api.addComments({gid, uid, content})
+                    let rating = this.rating
+                    this.$api.addComments({gid, uid, content, rating})
                     .then((res) => {
-                    if(res.status == 200){
-                        this.$message({
-                        message: 'Publish Successfully',
-                        type: 'success'
-                        });
-                        setTimeout(() => {
-                            this.reload()
-                        }, 700);
-                    }else {
-                        this.$message.error('Failed to publish');
-                        return false; 
+                        console.log('res: ', res)
+                        if(res.data.status == 200){
+                            this.$message({
+                                message: this.$t('comment.publishSuccessfully'),
+                                type: 'success'
+                            });
+                            setTimeout(() => {
+                                this.reload()
+                                this.$message({
+                                message: this.$t('comment.publishSuccessfully'),
+                                type: 'success'
+                            });
+                            }, 700);
+                        }else {
+                            this.$message({
+                                message: this.$t('comment.publishFailed'),
+                                type: 'error',
+                                iconClass: 'el-icon-warning'
+                            });
+                            setTimeout(() => {
+                                this.reload()
+                                this.$message({
+                                    message: this.$t('comment.publishFailed'),
+                                    type: 'error',
+                                    iconClass: 'el-icon-warning'
+                                });
+                            }, 700);
+                            return false; 
                         }
-                    });
+                    }).catch((err) => {
+                        console.log(err)
+                    })
                 }else {
                     return false
                 }

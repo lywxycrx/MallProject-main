@@ -1,7 +1,7 @@
 <template>
     <div class="list">
       <!-- 绑定数据 -->
-      <ListItem v-for="item in commentList" :key="item.id" :cItem="item"></ListItem>    
+      <ListItem v-for="item in commentList" :key="item.id" :cItem="item" @addComment="addComment"></ListItem>    
     </div>
 </template>
   
@@ -37,6 +37,12 @@
 
     mounted() {
       // console.log('commentList:::',this.commentList)
+    },
+
+    methods: {
+      addComment(){
+        this.$emit('addComment')
+      }
     }
   }
   </script>

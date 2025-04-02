@@ -5,13 +5,18 @@
       <h1 class="product-title">{{goodsData.name}}</h1>
       
       <div class="product-rating">
-        <el-rate
-          v-model="goodsData.score"
-          disabled
-          show-score
-          text-color="#ff9900"
-          score-template="{value}"
-        ></el-rate>
+        <div v-if="goodsData.rating !== null">
+          <el-rate
+            v-model="goodsData.rating"
+            disabled
+            show-score
+            text-color="#ff9900"
+            score-template="{value}"
+          ></el-rate>
+        </div>
+        <div v-else>
+          <span>No rating yet</span>
+        </div>
       </div>
     </div>
     
@@ -99,7 +104,7 @@
             </div>
             
             <Dialog :dialogVisible="dialogVisible" :gid="gid" @changeDialog="changeDialog"></Dialog>
-            <CommentList :commentList="commentList"></CommentList>
+            <CommentList :commentList="commentList"  @addComment="addComment"></CommentList>
           </div>
         </el-tab-pane>
       </el-tabs>
@@ -186,7 +191,6 @@ export default {
   },
 
   methods: {
-
     //检测用户是否购买过此商品
     isBought(){
       this.$api.searchOrderItem({
@@ -195,10 +199,8 @@ export default {
       }).then(res => {
         if(res.data.status === 200){
           this.bought = true
-          console.log("买过")
         }else{
           this.bought = false
-          console.log("没买过")
         }
       })
     },

@@ -33,7 +33,7 @@
       "address": "地址",
       "contact": "联系电话",
       "mail": "邮箱",
-      "feedback": "提供反馈"
+      "feedback": "联系我们"
     },
     "feedback": {
       "title": "反馈",
@@ -201,5 +201,17 @@
   "accessibility": {
     "highContrast": "高对比度",
     "highContrastTooltip": "切换高对比度模式以提高可见性"
+  },
+  "comment":{
+    "content": "内容",
+    "rating": "评分",
+    "publish": "发布",
+    "followUp": "追评",
+    "followUp:": "追评：",
+    "after": "",
+    "days": "天后",
+    "publishSuccessfully": "发布成功!",
+    "publishFailed": "您对每件商品最多只能添加两条评论"
   }
+
 }

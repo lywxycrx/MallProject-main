@@ -33,7 +33,7 @@
       "address": "Address",
       "contact": "Contact number",
       "mail": "Mail",
-      "feedback": "Give feedback"
+      "feedback": "Contact us"
     },
     "feedback": {
       "title": "Feedback",
@@ -201,5 +201,17 @@
   "accessibility": {
     "highContrast": "High Contrast",
     "highContrastTooltip": "Toggle high contrast mode for better visibility"
+  },
+  "comment":{
+    "content": "Content",
+    "rating": "Rating",
+    "publish": "Publish",
+    "followUp": "Follow up",
+    "followUp:": "follow up:",
+    "after": "After",
+    "days": "days",
+    "publishSuccessfully": "Publish Successfully!",
+    "publishFailed": "You can only add two reviews per product"
   }
+  
 }
