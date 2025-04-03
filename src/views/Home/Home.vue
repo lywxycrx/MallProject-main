@@ -2,13 +2,11 @@
   <div class="outDiv">
     <el-carousel :interval="4000" type="card" height="300px">
       <el-carousel-item v-for="item in 6" :key="item">
-        <!-- <h3 class="medium">{{ item }}</h3> -->
+        <img height="300" width="700" style="border: none;" @click="itemClick(item)">
       </el-carousel-item>
     </el-carousel>
-    <div class="test">
-    </div>
-    <div class="test2">
-    </div>
+    <div class="test" @click="itemClick('watch')" style="cursor: pointer;"></div>
+    <div class="test2" @click="itemClick('watch')"></div>
     <h2 class="section-title">{{ $t('home.specials') }}</h2>
     <div class="lowDiv">
       <LowPrice></LowPrice>
@@ -116,6 +114,21 @@ export default {
           }) 
         }
       })
+    },
+    itemClick(item) {
+      console.log(item)
+      let Gid = 0
+      if(item == 'watch'){
+        Gid = 44
+      }else if(item%2 != 0){
+        Gid = 57
+      }else{
+        Gid = 56
+      }
+      let routeData = this.$router.resolve({
+        path: '/GoodsDetail/' + Gid,
+      })
+      window.open(routeData.href, '_blank') 
     },
   }
 }
@@ -227,7 +240,11 @@ export default {
     background-size: cover;
     height: 360px;
     width: 180px;
+    border-width: 100px;
+    border-color: black;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+    cursor: pointer;
+    z-index: 2
   }
 
   .test2 {
@@ -238,6 +255,8 @@ export default {
     width: 180px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
     margin-left: 85%;
+    cursor: pointer;
+    z-index: 2
   }
 
   .outDiv {

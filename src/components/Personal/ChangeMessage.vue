@@ -7,7 +7,7 @@
         :before-close="handleDialogClose"
         width="70%"> 
              <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-                <el-form-item label="姓名" prop="name">
+                <el-form-item :label="$t('personal.edit.name')" prop="name">
                 <el-input v-model="ruleForm.name"></el-input>
                 </el-form-item>
 
@@ -22,8 +22,8 @@
         :append-to-body="true"
         :before-close="handleDialogClose"
         width="70%"> 
-             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-                <el-form-item label="性别" prop="sex">
+             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="110px" class="demo-ruleForm">
+                <el-form-item :label="$t('personal.edit.gender')" prop="sex">
                 <el-input v-model="ruleForm.sex"></el-input>
                 </el-form-item>
 
@@ -38,8 +38,8 @@
         :append-to-body="true"
         :before-close="handleDialogClose"
         width="70%"> 
-             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-                <el-form-item label="地址" prop="address">
+             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="110px" class="demo-ruleForm">
+                <el-form-item :label="$t('personal.edit.address')" prop="address">
                 <el-input v-model="ruleForm.address"></el-input>
                 </el-form-item>
 
@@ -55,7 +55,7 @@
         :before-close="handleDialogClose"
         width="70%"> 
              <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-                <el-form-item label="手机号" prop="phone">
+                <el-form-item :label="$t('personal.edit.email')" prop="phone">
                 <el-input v-model="ruleForm.phone"></el-input>
                 </el-form-item>
 

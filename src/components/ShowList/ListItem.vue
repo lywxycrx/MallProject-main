@@ -1,7 +1,7 @@
 <template>
   <div class="imgItem" v-if="imgItem.isEnabled == 0">
       <div class="imgDiv">
-        <img :src="imgItem.img" @click="itemClick">
+        <img :src="imgItem.img" @click="itemClick" style="cursor: pointer;">
       </div>
 
        <div class="imgInfo" >

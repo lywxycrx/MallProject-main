@@ -78,6 +78,21 @@ export default {
     align-items: center;
     width: 100%;
     padding: 8px 0;
+    flex: 1;
+  }
+
+  .item-checkbox {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .item-checkbox .el-checkbox__input {
+    border: 2px solid #ff4d4f;
+  }
+
+  .item-checkbox.is-checked .el-checkbox__input {
+    background-color: #ff4d4f;
   }
 
   .item-checkbox {
@@ -88,6 +103,9 @@ export default {
     margin-left: 12px;
     flex-shrink: 0;
     transition: all 0.2s ease;
+    position: absolute;
+    margin-left: 85%;
+    margin-top: 3%;
   }
   
   .delete-btn:hover {

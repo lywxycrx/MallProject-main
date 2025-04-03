@@ -99,6 +99,7 @@
       "notCompleted": "Not completed",
       "notResolved": "Not resolved",
       "noRating": "No rating yet",
+      "productDescription": "Product description: ",
       "table": {
         "item": "Item",
         "quantity": "Quantity",
@@ -129,12 +130,12 @@
     "account": "Account",
     "name": "Name",
     "gender": "Gender",
-    "phone": "Phone number",
+    "email": "Email",
     "address": "Address",
     "edit": {
       "name": "Edit Name",
       "gender": "Edit Gender",
-      "phone": "Edit Phone",
+      "email": "Edit Email",
       "address": "Edit Address"
     }
   },

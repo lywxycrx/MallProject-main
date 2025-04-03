@@ -13,7 +13,7 @@
     <div class="item-info">
       <el-link @click="itemClick">
       <div class="item-title">{{itemInfo.name}}</div>
-        <div class="item-desc">Product description: {{itemInfo.introduction}}</div>
+        <div class="item-desc"><b>{{$t('orders.details.productDescription')}}</b> {{itemInfo.introduction}}</div>
         <div class="info-bottom">
           <div class="item-price left">${{itemInfo.price}}</div>
         </div>

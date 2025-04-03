@@ -29,7 +29,7 @@
         <div class="userDiv">
           <div class="uImg"></div>
           Hello, {{userinfo.name}}
-          <li class="el-icon-switch-button" @click="exit"></li>
+          <li class="el-icon-switch-button" @click="exit" style="cursor: pointer;"></li>
         </div>
       </el-row>
       </div>

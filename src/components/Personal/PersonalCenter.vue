@@ -3,7 +3,7 @@
     <el-tabs>
       <el-tab-pane :label="$t('personal.tabs.info')">
         <el-row :gutter="20">
-          <el-col :span="4">
+          <el-col :span="6">
             <div class="grid-content" v-if="!!userData[0]">
               {{ $t('personal.account') }}: {{userData[0].uid}}  
             </div>
@@ -17,20 +17,24 @@
             </div>
           </el-col>
 
-          <el-col :span="8">
+          <!-- <el-col :span="8">
             <div class="grid-content" v-if="!!userData[0]">{{ $t('personal.gender') }}:{{userData[0].sex}}
               <el-button class="editBtn" icon="el-icon-edit" @click="changeSex"></el-button>
             </div>
-          </el-col>
+          </el-col> -->
         </el-row>
 
         <el-row :gutter="200"> 
           <el-col :span="8">
             <div class="grid-content" v-if="!!userData[0]">
-              {{ $t('personal.phone') }}: {{userData[0].phone}}
+              {{ $t('personal.email') }}: {{userData[0].phone}}
               <el-button class="editBtn" icon="el-icon-edit" @click="changePhone"></el-button>
             </div>
           </el-col>
+          
+        </el-row>
+          
+        <el-row :gutter="200">
           <el-col :span="8">
             <div class="grid-content" v-if="!!userData[0]">{{ $t('personal.address') }}:{{userData[0].address}}
               <el-button class="editBtn" icon="el-icon-edit" @click="changeAddress"></el-button>
