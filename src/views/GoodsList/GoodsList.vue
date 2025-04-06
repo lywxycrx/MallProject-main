@@ -298,7 +298,7 @@ export default {
   width: 90%;
   margin: auto;
   flex-grow: 1; /* 让其随内容高度增长 */
-  background: rgb(240, 239, 239);
+  background: rgba(237, 206, 8, 0.119);
 }
 
 .itemDiv {
