@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 头部导航栏 -->
-    <div class="header">
+    <div class="header" :class="{ 'high-contrast': highContrastMode }">
       <div class="nav-wrapper">
         <!-- Logo区域 -->
         <div class="logo-area">
@@ -10,18 +10,18 @@
         
         <!-- 导航链接区域 -->
         <div class="nav-links">
-          <el-link :class="{ active: isActive('/home') }" @click="linkHome">{{ $t('header.home') }}</el-link>
-          <el-link :class="{ active: isActive('/goodsList') }" @click="linkGoods">{{ $t('header.mall') }}</el-link>
-          <el-link :class="{ active: isActive('/cart') }" @click="linkCart">{{ $t('header.cart') }}</el-link>
-          <el-link :class="{ active: isActive('/myOrders') }" @click="linkOrders">{{ $t('header.myOrders') }}</el-link>
-          <el-link :class="{ active: isActive('/center') }" @click="linkCenter">{{ $t('header.personalCenter') }}</el-link>
+          <el-link :class="{ active: isActive('/home'), 'high-contrast': highContrastMode }" @click="linkHome">{{ $t('header.home') }}</el-link>
+          <el-link :class="{ active: isActive('/goodsList'), 'high-contrast': highContrastMode }" @click="linkGoods">{{ $t('header.mall') }}</el-link>
+          <el-link :class="{ active: isActive('/cart'), 'high-contrast': highContrastMode }" @click="linkCart">{{ $t('header.cart') }}</el-link>
+          <el-link :class="{ active: isActive('/myOrders'), 'high-contrast': highContrastMode }" @click="linkOrders">{{ $t('header.myOrders') }}</el-link>
+          <el-link :class="{ active: isActive('/center'), 'high-contrast': highContrastMode }" @click="linkCenter">{{ $t('header.personalCenter') }}</el-link>
         </div>
         
         <!-- 功能区域：语言切换、辅助工具和用户信息 -->
         <div class="functional-area">
           <!-- Language switch drop-down menu -->
           <el-dropdown @command="handleLanguageChange" trigger="click" class="language-dropdown">
-            <span class="language-selector">
+            <span class="language-selector" :class="{ 'high-contrast': highContrastMode }">
               {{ currentLanguageDisplay }}
               <i class="el-icon-arrow-down el-icon--right"></i>
             </span>
@@ -38,29 +38,29 @@
           <div class="userDiv">
             <div v-if="isLoggedIn" class="user-info">
               <div class="uImg"></div>
-              <span class="username">{{ $t('common.hello') }}, {{ userinfo.name }}</span>
-              <li class="el-icon-switch-button logout-icon" @click="exit"></li>
+              <span class="username" :class="{ 'high-contrast': highContrastMode }">{{ $t('common.hello') }}, {{ userinfo.name }}</span>
+              <li class="el-icon-switch-button logout-icon" :class="{ 'high-contrast': highContrastMode }" @click="exit"></li>
             </div>
-            <div v-else @click="exit" class="login-text">
+            <div v-else @click="exit" class="login-text" :class="{ 'high-contrast': highContrastMode }">
               {{ $t('common.clickToLogin') }}
             </div>
           </div>
         </div>
         
         <!-- 移动端菜单按钮 -->
-        <div class="mobile-menu-toggle" @click="toggleMobileMenu">
+        <div class="mobile-menu-toggle" @click="toggleMobileMenu" :class="{ 'high-contrast': highContrastMode }">
           <i class="el-icon-menu"></i>
         </div>
       </div>
       
       <!-- 移动端菜单 -->
       <div class="mobile-menu" v-show="mobileMenuVisible">
-        <el-link :class="{ active: isActive('/home') }" @click="linkHome">{{ $t('header.home') }}</el-link>
-        <el-link :class="{ active: isActive('/goodsList') }" @click="linkGoods">{{ $t('header.mall') }}</el-link>
-        <el-link :class="{ active: isActive('/cart') }" @click="linkCart">{{ $t('header.cart') }}</el-link>
-        <el-link :class="{ active: isActive('/myOrders') }" @click="linkOrders">{{ $t('header.myOrders') }}</el-link>
-        <el-link :class="{ active: isActive('/center') }" @click="linkCenter">{{ $t('header.personalCenter') }}</el-link>
-        <div class="mobile-language">
+        <el-link :class="{ active: isActive('/home'), 'high-contrast': highContrastMode }" @click="linkHome">{{ $t('header.home') }}</el-link>
+        <el-link :class="{ active: isActive('/goodsList'), 'high-contrast': highContrastMode }" @click="linkGoods">{{ $t('header.mall') }}</el-link>
+        <el-link :class="{ active: isActive('/cart'), 'high-contrast': highContrastMode }" @click="linkCart">{{ $t('header.cart') }}</el-link>
+        <el-link :class="{ active: isActive('/myOrders'), 'high-contrast': highContrastMode }" @click="linkOrders">{{ $t('header.myOrders') }}</el-link>
+        <el-link :class="{ active: isActive('/center'), 'high-contrast': highContrastMode }" @click="linkCenter">{{ $t('header.personalCenter') }}</el-link>
+        <div class="mobile-language" :class="{ 'high-contrast': highContrastMode }">
           <span @click="handleLanguageChange('zh')">中文</span> | 
           <span @click="handleLanguageChange('en')">English</span>
         </div>
@@ -347,6 +347,69 @@ export default {
 .mobile-language span {
   cursor: pointer;
   padding: 5px;
+}
+
+/* 高对比度模式样式 */
+.header.high-contrast {
+  background-color: #000;
+  border-bottom-color: #fff;
+}
+
+.el-link.high-contrast {
+  color: #fff;
+  background-color: transparent;
+}
+
+.el-link.high-contrast:hover {
+  color: #ffff00;
+  background-color: #333;
+}
+
+.el-link.active.high-contrast {
+  color: #000;
+  background-color: #ffff00;
+}
+
+.language-selector.high-contrast {
+  color: #fff;
+}
+
+.language-selector.high-contrast:hover {
+  color: #ffff00;
+  background-color: #333;
+}
+
+.username.high-contrast {
+  color: #fff;
+}
+
+.logout-icon.high-contrast {
+  color: #fff;
+}
+
+.logout-icon.high-contrast:hover {
+  color: #ffff00;
+}
+
+.login-text.high-contrast {
+  color: #ffff00;
+}
+
+.login-text.high-contrast:hover {
+  color: #ff0;
+  text-decoration: underline;
+}
+
+.mobile-menu-toggle.high-contrast {
+  color: #fff;
+}
+
+.mobile-language.high-contrast {
+  color: #fff;
+}
+
+.mobile-language.high-contrast span:hover {
+  color: #ffff00;
 }
 
 /* 响应式调整 */
