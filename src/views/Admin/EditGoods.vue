@@ -60,7 +60,7 @@
       </el-table-column> -->
       <el-table-column
         label="Operations"
-        width="380">
+        width="430">
             <template slot-scope="scope">
               <el-button size="mini" 
                 @click="handleDetail(scope.$index, scope.row)">
@@ -225,8 +225,8 @@
 
       getStatusText(status) {
       const statusMap = {
-          0: '禁用',
-          1: '启用'
+          0: 'Disable',
+          1: 'Enable'
         };
         return statusMap[status] || '未知状态';
       },
