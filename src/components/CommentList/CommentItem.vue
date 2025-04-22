@@ -9,7 +9,7 @@
               text-color="#ff9900"
               score-template="{value}"
             ></el-rate>
-            <el-button type="danger" class="delete-button" @click="handleDelete" v-if="isMyComment">{{ $t('orders.actions.delete') }}</el-button>
+            <el-button type="danger" class="delete-button" @click="handleDelete" v-if="(isMyComment)||(state == 1)">{{ $t('orders.actions.delete') }}</el-button>
         </div>
         <div class="box">
             <p>{{cItem.content}}</p>
@@ -43,7 +43,7 @@ export default {
 
     data() {
         return {
-            
+            state: store.state.loginModule.userinfo.type,
         };
     },
 

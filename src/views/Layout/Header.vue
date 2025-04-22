@@ -405,11 +405,12 @@ export default {
 }
 
 .mobile-language.high-contrast {
-  color: #fff;
+  color: #f88383;
 }
 
 .mobile-language.high-contrast span:hover {
   color: #ffff00;
+  background-color: #000;
 }
 
 /* 响应式调整 */
