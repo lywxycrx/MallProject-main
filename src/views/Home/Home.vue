@@ -15,10 +15,10 @@
     <div class="belowDiv">
       <ShowRecommend></ShowRecommend>
     </div>
-    <el-footer class="page-footer" v-if="isLogin">
-        <i class="el-icon-location footer-item">   {{ $t('home.footer.address') }}: XXXXXX-XXXXX-No.666</i>
-        <i class="el-icon-phone footer-item">   {{ $t('home.footer.contact') }}: 1999911</i>
-        <li class="el-icon-s-promotion footer-item">   {{ $t('home.footer.mail') }}: @554893.qq.com</li>
+    <el-footer class="page-footer">
+        <i class="el-icon-location footer-item">   {{ $t('home.footer.address') }}: 410 Terry Avenue North, Seattle, Macao, 98109</i>
+        <i class="el-icon-phone footer-item">   {{ $t('home.footer.contact') }}: 1 206 2661000</i>
+        <li class="el-icon-s-promotion footer-item">   {{ $t('home.footer.mail') }}: 2943234@mall.com</li>
         <el-button type="primary" round @click="dialog" icon="el-icon-upload" class="fbbtn">{{ $t('home.footer.feedback') }}</el-button>
     </el-footer>
 
