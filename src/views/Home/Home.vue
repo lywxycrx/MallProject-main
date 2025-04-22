@@ -119,12 +119,11 @@ mounted() {
           })
           .then((res) => {
             if(res.status == 200){
-              this.$message({
-                type: 'success',
-                message: this.$t('home.feedback.successMessage')
-              })
+              this.dialogVisible = false
+              //将数据清空
+              this.ruleForm.content = ''
             }
-          }) 
+          })
         }
       })
     },
@@ -332,5 +331,15 @@ mounted() {
 
   .fbbtn {
     z-index: 99999;
+  }
+
+  /* 提示信息样式 */
+  .el-message {
+    z-index: 99999;
+  }
+  /* 提示信息位置 */
+  .el-message {
+    top: 200px;
+    right: 20px;
   }
 </style>
