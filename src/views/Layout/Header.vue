@@ -19,7 +19,7 @@
         
         <!-- 功能区域：语言切换、辅助工具和用户信息 -->
         <div class="functional-area">
-          <!-- 语言切换下拉菜单 -->
+          <!-- Language switch drop-down menu -->
           <el-dropdown @command="handleLanguageChange" trigger="click" class="language-dropdown">
             <span class="language-selector" :class="{ 'high-contrast': highContrastMode }">
               {{ currentLanguageDisplay }}
@@ -405,11 +405,12 @@ export default {
 }
 
 .mobile-language.high-contrast {
-  color: #fff;
+  color: #f88383;
 }
 
 .mobile-language.high-contrast span:hover {
   color: #ffff00;
+  background-color: #000;
 }
 
 /* 响应式调整 */

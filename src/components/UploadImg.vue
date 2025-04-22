@@ -68,9 +68,8 @@ export default {
   methods: {
     async handleRemove(file, fileList) {
       console.log(file, fileList);
-      // 当删除文件后，重置 hasT
       if (this.hasT && this.type == 'Thumbnail') {
-        this.hasT = false; // 允许再次添加
+        this.hasT = false;
       }
       if (this.type == 'Carousel'){
         try {
@@ -82,13 +81,11 @@ export default {
             },
             body: JSON.stringify({ url }),
           });
-
         } catch (error) {
           console.error('Error while deleting a file:', error);
           this.$message.error('Error while deleting a file');
         }
       }
-      
     },
 
     handlePictureCardPreview(file) {

@@ -9,7 +9,7 @@
     </div>
 
     <el-tabs v-model="activeName" @tab-click="cHandleClick">
-      <el-tab-pane :label="$t('goodsList.tabs.all')" name="全部"></el-tab-pane>
+      <el-tab-pane :label="$t('goodsList.tabs.all')" name="ALL"></el-tab-pane>
       <el-tab-pane :label="$t('goodsList.tabs.new')" name="1"></el-tab-pane>
       <el-tab-pane :label="$t('goodsList.tabs.popular')" name="2"></el-tab-pane>
       <el-tab-pane :label="$t('goodsList.tabs.recommend')" name="3"></el-tab-pane>
@@ -41,7 +41,7 @@ export default {
     return {
       imgList: [],
       input: '',
-      activeName: '全部',
+      activeName: 'ALL',
       type: 'name',         // 查询时的字段
 
       total: 5,
@@ -69,7 +69,7 @@ export default {
 
   methods: {
     showGoods(page) {
-      console.log('showgoods执行=================')
+      console.log('showgoods run=================')
       this.$api.showGoods({
         page,
       }).then(res => {
@@ -81,7 +81,7 @@ export default {
       })
     },
 
-    // 通过输入查询
+    // search by input
     searchInput(val){
       console.log(val)
       if (!val) {
@@ -95,7 +95,7 @@ export default {
           type: this.type
         })
         .then((res) => {
-          console.log("搜索---", res.data);
+          console.log("Search---", res.data);
           this.currentPage = 1;
           if (res.data.status === 200) {
             this.imgList = res.data.data
@@ -110,17 +110,15 @@ export default {
         });
     },
 
-    // 改变传入的type值。调用输入查询方法
+    // change the vlaue of type
     getSearch(val) {
       this.type = 'name'
       this.searchInput(val)
     },
 
-    // 类别查询
+    // filtering by category
     cHandleClick() {
-      console.log(this.activeName)
-      console.log(this.type)
-      if(this.activeName === '全部'){
+      if(this.activeName === 'ALL'){
         this.showGoods(1)
       }else{
         this.type = 'type';

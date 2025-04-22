@@ -212,9 +212,9 @@
     "rating": "Rating",
     "publish": "Publish",
     "followUp": "Follow up",
-    "followUp:": "follow up:",
-    "after": "After",
-    "days": "days",
+    "followUp:": " follow up:",
+    "after": "After ",
+    "days": " days",
     "publishSuccessfully": "Publish Successfully!",
     "publishFailed": "You can only add two reviews per product"
   }

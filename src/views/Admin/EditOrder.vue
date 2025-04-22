@@ -2,7 +2,7 @@
   <div class="outDiv">
     <!-- 搜索栏区域 -->
     <div class="header">
-      <el-input placeholder="Please enter the order you want to query(支持订单编号和商品查询,,,最后调)" 
+      <el-input placeholder="Please enter the order you want to query" 
       @change="searchInput" v-model="input" clearable style="margin-right: 10px;"></el-input>
       <el-button class="sbtn" type="primary">Search</el-button>
 
@@ -419,7 +419,9 @@
         this.rowData.dates = [null, null, null, null, null]
         for(let i = 0; i < this.rowData.dates.length; i++){
           if(row[`date${i+1}`] != null){
-            this.rowData.dates[i] = row[`date${i+1}`].split("T")[0]
+            let date = new Date(row[`date${i+1}`]);
+            date.setHours(date.getHours() + 8);
+            this.rowData.dates[i] = date.toISOString().split("T")[0]
           }
         }
         this.dialogVisible = true;

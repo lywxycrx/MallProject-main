@@ -95,7 +95,9 @@
   .item-title {
     overflow: hidden;
     white-space: nowrap;
-  }
+    font-size: 15px; /* 调整字体大小 */
+    font-weight: bold; /* 设置加粗 */
+}
 
   .item-desc {
     overflow: hidden;
@@ -143,12 +145,13 @@
 
   .info-bottom .item-price {
     color: orangered;
-    margin-top: 30%;
+    margin-top: 50%;
     /* margin-bottom: 50%; */
     /* margin-right: 10%; */
   }
 
   .numSelect {
-    margin-top: 8%;
+    margin-top: 6%;
+    margin-left: 2%
   }
 </style>

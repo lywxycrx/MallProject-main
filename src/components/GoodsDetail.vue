@@ -7,7 +7,7 @@
       <div class="product-rating">
         <div v-if="goodsData.rating !== null">
           <el-rate
-            v-model="goodsData.rating"
+            v-model="formattedRating"
             disabled
             show-score
             text-color="#ff9900"
@@ -125,7 +125,10 @@ export default {
   },
   
   computed: {
-    ...mapGetters(['highContrastMode'])
+    ...mapGetters(['highContrastMode']),
+    formattedRating() {
+      return parseFloat(this.goodsData.rating).toFixed(1);
+    }
   },
   
   mounted() {

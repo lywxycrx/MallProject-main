@@ -148,7 +148,7 @@ router.get('/specialGoods', (req, res) => {
 }),
 
 
-// 获取搜索结果
+// Get search results
 router.get('/getSearch', (req, res) => {
     const page = req.query.page || 1;
     var type = req.query.type;
@@ -170,7 +170,7 @@ router.get('/getSearch', (req, res) => {
             } else {
                 res.send({
                     status: 500,
-                    msg: "暂无数据"
+                    msg: "No data yet"
                 })
             }
         })
@@ -178,7 +178,7 @@ router.get('/getSearch', (req, res) => {
 }),
 
 
-//  获取商品详情
+//  Get product details
 router.get('/goodsDetail', (req, res) => {
     var gid = req.query.gid;
     const sql = //"select * from goods where gid =" + gid;
@@ -229,23 +229,20 @@ router.get('/showComments', (req, res) => {
 })
 
 
-// 发布评论
+// Post a comment
 router.get("/addComments", (req, res) => {
-    // 获取参数
     var uid = req.query.uid
     var gid = req.query.gid;
     var content = req.query.content || "";
     var time = new Date();
     var rating = req.query.rating;
-    // var commentExisit = false
     var sql = "insert into comment values (null,?,?,?,?,?,?,?)"
     var arr = [gid, uid, content, time.toLocaleDateString(), null, null, rating];
     sqlFn('select * from comment where uid = ? and gid = ?', [uid, gid], result => {
-        
         if((result[0] != undefined) && (result[0].time2 != null)){
             res.send({
                 status: 500,
-                msg: "添加评论不能超过两条"
+                msg: "No more than two comments can be added"
             })
         }
         else{
@@ -822,42 +819,38 @@ router.get('/searchOrder', (req, res) => {
     })
 })
 
-// 变更订单状态
+// Change order status
 router.get("/changeOrder", (req, res) => {
     var oid = req.query.oid;
     var type = req.query.type;
     const changeDate = new Date().toLocaleDateString()
-    
     var sql = "update orders set type = type + 1 where oid = " + oid;
     if(type == 3){
         sql = "update orders set type = 3 where oid = " + oid;
     }else if(type == 0){
         sql = "update orders set type = 0 where oid = " + oid;
-        type = 4 //将日期类型设置为解决问题的日期
+        type = 4 //Set the date type to the solve date
     }else if(type == 4){
         sql = "update orders set type = 4 where oid = " + oid;
-        type = 5 //将日期类型设置为取消的日期
+        type = 5 //Set the date type to the canceled date
     }
     sqlFn(sql, null, result => {
         if (result.affectedRows > 0) {
             res.send({
                 status: 200,
-                msg: "修改成功"
+                msg: "Modification successful"
             })
         } else {
             res.send({
                 status: 500,
-                msg: "修改失败"
+                msg: "Modification failed"
             })
         }
     })
-
     const dateSql = `update orders set date${type} = ? where oid = ?`
-
     sqlFn(dateSql, [changeDate, oid], result => {
         console.log(result)
     })
-    
 })
 
 
@@ -1148,9 +1141,6 @@ var storage = diskStorage({
     destination: function (req, file, cb) {
         cb(null, `./upload/${ req.query.type }/`)
     },
-    // filename: function (req, file, cb) {
-    //     cb(null, Date.now() + "-" + file.originalname)
-    // }
     filename: function (req, file, cb) {
         const type = req.query.type
         const gid = req.query.gid
@@ -1161,15 +1151,14 @@ var storage = diskStorage({
                 cb(null, `${type}-${gid}-${result[0].CarouselSerial}.${fomate}`)
                 const update = `update goods set CarouselSerial = CarouselSerial + 1 where gid = ${gid}`
                 sqlFn(update, null, (result) => {
-                    console.log("轮播图添加成功")
+                    console.log("The carousel was added successfully")
                 })
             })
         }else if(type=="Thumbnail"){
             cb(null, `${req.query.type}-${req.query.gid}.${fomate}`)
         }else{
-            throw new Error('系统错误')
+            throw new Error('System error')
         }
-        
     }
 })
 
@@ -1189,10 +1178,10 @@ var upload = multer({
 
 router.post('/upload', upload.single('file'), function (req, res, next) {
     var file = req.file;
-    console.log('文件类型：%s', file.mimetype);
-    console.log('原始文件名：%s', file.originalname);
-    console.log('文件大小：%s', file.size);
-    console.log('文件保存路径：%s', file.path);
+    console.log('File type: %s', file.mimetype);
+    console.log('Original file name: %s', file.originalname);
+    console.log('File size: %s', file.size);
+    console.log('File save path: %s', file.path);
     res.json({
         res_code: '0',
         name: file.originalname,
@@ -1201,37 +1190,31 @@ router.post('/upload', upload.single('file'), function (req, res, next) {
 });
 
 router.get('/getCarouselImages/:prefix', (req, res) => {
-    const prefix = req.params.prefix; // 获取 URL 参数
-    const directoryPath = path.join(process.cwd(), 'upload/Carousel'); // 使用 process.cwd() 获取当前工作目录
-    
+    const prefix = req.params.prefix;
+    const directoryPath = path.join(process.cwd(), 'upload/Carousel');
     fs.readdir(directoryPath, (err, files) => {
       if (err) {
         console.log(err)
-        return res.status(500).send('无法读取目录');
+        return res.status(500).send('Unable to read directory');
       }
-      
-      // 过滤出以传入的前缀开头的文件名
       const filteredFiles = files.filter(file => file.startsWith(`Carousel-${prefix}`));
-      res.json(filteredFiles); // 返回 JSON 格式的文件名数组
+      res.json(filteredFiles);
     });
   });
+
 import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 router.delete('/deleteCarousel', (req, res) => {
-  const filePath = req.body.url // 从请求中获取文件路径
-  console.log(filePath)
-
-  // 确保路径是有效的
+  const filePath = req.body.url
   const fullPath = path.resolve(__dirname, filePath);
-  
   fs.unlink(filePath, (err) => {
     if (err) {
         console.log('err', err)
-      return res.status(500).json({ message: '文件删除失败', error: err });
+      return res.status(500).json({ message: 'File deletion failed', error: err });
     }
-    res.json({ message: '文件删除成功' });
+    res.json({ message: 'File deleted successfully' });
   });
 });
 

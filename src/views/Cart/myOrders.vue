@@ -344,7 +344,9 @@
         this.rowData.dates = [null, null, null, null, null]
         for(let i = 0; i < this.rowData.dates.length; i++){
           if(row[`date${i+1}`] != null){
-            this.rowData.dates[i] = row[`date${i+1}`].split("T")[0]
+            let date = new Date(row[`date${i+1}`]);
+            date.setHours(date.getHours() + 8);
+            this.rowData.dates[i] = date.toISOString().split("T")[0]
           }
         }
 

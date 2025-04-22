@@ -32,7 +32,7 @@
       <el-table-column
         prop="content"
         label="Comment"
-        width="500">
+        width="250">
       </el-table-column>
       <el-table-column
         prop="time"
@@ -40,8 +40,18 @@
         width="100">
       </el-table-column>
       <el-table-column
+        prop="content2"
+        label="Follow up"
+        width="250">
+      </el-table-column>
+      <el-table-column
+        prop="time2"
+        label="Follow up Time"
+        width="100">
+      </el-table-column>
+      <el-table-column
         label="Operation"
-        width="200">
+        width="250">
             <template slot-scope="scope">
               <el-button size="mini" 
                 @click="handleDetail(scope.$index, scope.row)">

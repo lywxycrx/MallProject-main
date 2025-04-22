@@ -10,12 +10,15 @@ const client = createConnection({
     port:'3306'
 })
 
-//封装数据库操作语句 sql语句 参数数组arr  callback成功函数结果
+//Encapsulate database operation statements
+// sql: statement
+// arr: parameter array   
+// callback: success function result
 function sqlFn(sql, arr, callback) {
     client.query(sql, arr, function (error, result) {
         if (error) {
             console.log(error);
-            console.log('数据库语句错误');
+            console.log('Database statement error');
             return;
         }
         callback(result)

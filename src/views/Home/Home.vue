@@ -48,6 +48,7 @@
 import LowPrice from './LowPrice.vue'
 import ShowRecommend from './ShowRecommend.vue'
 import { mapGetters } from 'vuex';
+import store from '../../store/index'
 
 export default {
   components: {
@@ -59,9 +60,21 @@ export default {
     ...mapGetters(['highContrastMode'])
   },
   
+mounted() {
+    // 检查是否登录
+    if (this.$store.state.loginModule.userinfo.token) {
+      this.isLogin = true;
+    } else {
+      this.isLogin = false;
+    }
+  },
+
   data() {
     return {
       dialogVisible: false,
+
+      // 是否登录
+      isLogin: false,
 
       ruleForm: {
         content: ''
@@ -106,12 +119,11 @@ export default {
           })
           .then((res) => {
             if(res.status == 200){
-              this.$message({
-                type: 'success',
-                message: this.$t('home.feedback.successMessage')
-              })
+              this.dialogVisible = false
+              //将数据清空
+              this.ruleForm.content = ''
             }
-          }) 
+          })
         }
       })
     },
@@ -319,5 +331,15 @@ export default {
 
   .fbbtn {
     z-index: 99999;
+  }
+
+  /* 提示信息样式 */
+  .el-message {
+    z-index: 99999;
+  }
+  /* 提示信息位置 */
+  .el-message {
+    top: 200px;
+    right: 20px;
   }
 </style>
