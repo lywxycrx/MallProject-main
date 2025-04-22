@@ -16,7 +16,7 @@
     style="width: 100%">
       <el-table-column
         prop="cid"
-        label="编号(最后调整看叫什么)"
+        label="Comment ID"
         width="110">
       </el-table-column>
       <el-table-column
@@ -32,7 +32,7 @@
       <el-table-column
         prop="content"
         label="Comment"
-        width="250">
+        width="150">
       </el-table-column>
       <el-table-column
         prop="time"
@@ -42,12 +42,12 @@
       <el-table-column
         prop="content2"
         label="Follow up"
-        width="250">
+        width="150">
       </el-table-column>
       <el-table-column
         prop="time2"
         label="Follow up Time"
-        width="100">
+        width="150">
       </el-table-column>
       <el-table-column
         label="Operation"
