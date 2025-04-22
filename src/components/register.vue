@@ -70,31 +70,31 @@ export default {
 
         rules: {
           uid: [
-            { required: true, message: '请输入您的账号', trigger: 'blur' },
+            { required: true, message: 'Please enter your account number', trigger: 'blur' },
             // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
           ],
           pwd: [
-            { required: true, message: '请输入密码', trigger: 'blur' },
-            { min: 8, max: 16, message: '长度在 8 到 16 个字符', trigger: 'blur' }
+            { required: true, message: 'Please enter password', trigger: 'blur' },
+            { min: 8, max: 16, message: '8 to 16 characters long', trigger: 'blur' }
           ],
           pwdConfirm: [
-            { required: true, message: '请确认密码', trigger: 'blur' },
-            { min: 8, max: 16, message: '长度在 8 到 16 个字符', trigger: 'blur' }
+            { required: true, message: 'Please confirm password', trigger: 'blur' },
+            { min: 8, max: 16, message: '8 to 16 characters long', trigger: 'blur' }
           ],
           name: [
-            { required: true, message: '请输入昵称', trigger: 'blur' },
+            { required: true, message: 'Please enter a nickname', trigger: 'blur' },
             // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
           ],
           address: [
-            { required: true, message: '请输入地址', trigger: 'blur' },
+            { required: true, message: 'Please enter the delivery address', trigger: 'blur' },
             // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
           ],
-          sex: [
-            { required: true, message: '请选择性别', trigger: 'blur' },
-            // { min: 4, max: 4, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-          ],
+          // sex: [
+          //   { required: true, message: '请选择性别', trigger: 'blur' },
+          //   // { min: 4, max: 4, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          // ],
           phone: [
-            { required: true, message: '请输入手机号', trigger: 'blur' },
+            { required: true, message: 'Please enter email', trigger: 'blur' },
             // { min: 4, max: 4, message: '长度在 3 到 5 个字符', trigger: 'blur' }
           ],
         }

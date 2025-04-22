@@ -128,7 +128,7 @@ router.get('/specialGoods', (req, res) => {
     const sqlLen = "select * from goods where gid";
     sqlFn(sqlLen, null, data => {
         let len = data.length;
-        const sql = "select * from goods where type = " + type +  " order by gid asc limit 5 offset " + (page - 1) * 5;
+        const sql = "select * from goods where type = " + type +  " order by gid desc limit 5 offset " + (page - 1) * 5;
         sqlFn(sql, null, result => {
             if (result.length > 0) {
                 res.send({
