@@ -101,7 +101,7 @@ router.get('/showGoods', (req, res) => {
     const sqlLen = "select * from goods where gid";
     sqlFn(sqlLen, null, data => {
         let len = data.length;
-        const sql = "select * from goods order by gid asc limit 15 offset " + (page - 1) * 15;
+        const sql = "select * from goods where type != 6 order by gid asc limit 15 offset " + (page - 1) * 15;
         sqlFn(sql, null, result => {
             if (result.length > 0) {
                 res.send({
@@ -153,12 +153,12 @@ router.get('/getSearch', (req, res) => {
     const page = req.query.page || 1;
     var type = req.query.type;
     var search = req.query.search;
-    const sqlLen = "select * from goods where concat(`" + type + "`) like '%" + search + "%'";
+    const sqlLen = "select * from goods where concat(`" + type + "`) like '%" + search + "%' and type != 6";
     sqlFn(sqlLen, null, data => {
         let len = data.length;
         const sql = 
         "select * from goods where concat(`" + type + "`) like '%" + search 
-        + "%' order by gid asc limit 15 offset " + (page - 1) * 15;
+        + "%' and type != 6 order by gid asc limit 15 offset " + (page - 1) * 15;
         sqlFn(sql, null, result => {
             if (result.length > 0) {
                 res.send({

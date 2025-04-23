@@ -42,7 +42,7 @@
 
                 <el-form-item label="Parameters" prop="parameter">
                   <el-input type="textarea"
-                  maxlength="100"
+                  maxlength="500"
                   show-word-limit  
                   v-model="ruleForm.parameter"></el-input>
                 </el-form-item>

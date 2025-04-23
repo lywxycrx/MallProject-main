@@ -118,6 +118,7 @@
         rowData:{},     // 当前行的数据对象
         update: true,
         currentId: 1,
+        isNew: true,
       }
     },
 
@@ -198,21 +199,27 @@
 
       // 添加时打开弹出
       addGoods(){
-        this.$api.addGoods({method: 'init'}).then(res => {
-          if(res.status == 200){
-            this.currentId = res.data.result.insertId;
-            console.log('当前id', this.currentId)
-            this.title = 'Add product'
-            this.update=false
-            this.$refs.dialog.dialogVisible = true;
-          }else {
-            this.$message({
-              type: 'error',
-              message: 'Failed to add product'
-            })
-          }
-        })
-        
+        if(this.isNew == true){
+          this.$api.addGoods({method: 'init'}).then(res => {
+            if(res.status == 200){
+              this.currentId = res.data.result.insertId;
+              console.log('当前id', this.currentId)
+              this.title = 'Add product'
+              this.update=false
+              this.$refs.dialog.dialogVisible = true;
+            }else {
+              this.$message({
+                type: 'error',
+                message: 'Failed to add product'
+              })
+            }
+            this.isNew = false;
+          })
+        }else{
+          this.title = 'Add product'
+              this.update=false
+              this.$refs.dialog.dialogVisible = true;
+        }
       },
       
 
