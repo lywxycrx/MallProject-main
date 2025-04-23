@@ -108,6 +108,12 @@ export default {
       if (!isLt2M) {
         this.$message.error('The size of the uploaded avatar image can not exceed 3MB.');
       }
+      if (isPNG) {
+        this.$emit('update-image-type', 'png');
+      } else if (isJPG) {
+        this.$emit('update-image-type', 'jpg');
+      }
+      
       return (isPNG || isJPG) && isLt2M;
     },
 

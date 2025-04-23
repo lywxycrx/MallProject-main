@@ -324,7 +324,8 @@ router.get('/changeMessage', (req, res) => {
 
 
 // 商品更新
-router.get("/updateGoods", (req, res) => {
+router.get("/updateGoods",updateGoods)
+function updateGoods(req, res) {
     var gid = req.query.gid;
     var name = req.query.name;
     var price = req.query.price
@@ -332,7 +333,8 @@ router.get("/updateGoods", (req, res) => {
     var score = req.query.score;
     var parameter = req.query.parameter;
     var introduction = req.query.introduction;
-    var img = req.query.img;
+    var img = req.query.imgUrl;
+    console.log(img)
     var stock = req.query.stock
     var sql = "update goods set name=?, type=?, price=?, stock=?, score=?, parameter=?,introduction=?,img=? where gid=?";
     var arr = [name, type, price, stock, score, parameter, introduction, img, gid];
@@ -349,34 +351,58 @@ router.get("/updateGoods", (req, res) => {
             })
         }
     })
-})
+}
+
+
 
 
 // 添加商品
 router.get("/addGoods", (req, res) => {
-    var name = req.query.name;
-    var price = req.query.price;
-    var type = req.query.type;
-    var score = req.query.score;
-    var parameter = req.query.parameter;
-    var introduction = req.query.introduction;
-    var img = req.query.imgUrl;
-    var stock = req.query.stock;
-    const sql = "insert into goods values (null,?,?,?,?,0,?,?,?,?,0,0)"
-    var arr = [type, img, name, price, score, parameter, introduction, stock];
-    sqlFn(sql, arr, result => {
-        if (result.affectedRows > 0) {
-            res.send({
-                status: 200,
-                msg: "添加成功"
-            })
-        } else {
-            res.send({
-                status: 500,
-                msg: "添加失败"
-            })
+    const initSql = "insert into goods values (null,6,0,0,0,0,0,0,0,0,0,0)"
+    console.log(req.query.method)
+    if (req.query.method == 'init') {
+        sqlFn(initSql, null, result => {
+            if (result.affectedRows > 0) {
+                
+                res.send({
+                    status: 200,
+                    msg: "添加成功",
+                    result: result
+                })
+            } else {
+                console.log("初始化失败")
+            }
         }
-    })
+        )
+    }else{
+        //修改商品信息
+        console.log("update")
+        updateGoods(req, res)
+    }
+    
+    // var name = req.query.name;
+    // var price = req.query.price;
+    // var type = req.query.type;
+    // var score = req.query.score;
+    // var parameter = req.query.parameter;
+    // var introduction = req.query.introduction;
+    // var img = req.query.imgUrl;
+    // var stock = req.query.stock;
+    // const sql = "insert into goods values (null,?,?,?,?,0,?,?,?,?,0,0)"
+    // var arr = [type, img, name, price, score, parameter, introduction, stock];
+    // sqlFn(sql, arr, result => {
+    //     if (result.affectedRows > 0) {
+    //         res.send({
+    //             status: 200,
+    //             msg: "添加成功"
+    //         })
+    //     } else {
+    //         res.send({
+    //             status: 500,
+    //             msg: "添加失败"
+    //         })
+    //     }
+    // })
 })
 
 
@@ -1155,6 +1181,7 @@ var storage = diskStorage({
                 })
             })
         }else if(type=="Thumbnail"){
+            console.log(req.query.gid)
             cb(null, `${req.query.type}-${req.query.gid}.${fomate}`)
         }else{
             throw new Error('System error')
@@ -1203,6 +1230,7 @@ router.get('/getCarouselImages/:prefix', (req, res) => {
   });
 
 import { fileURLToPath } from 'url';
+import e from 'express';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 

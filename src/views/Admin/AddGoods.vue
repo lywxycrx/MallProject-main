@@ -60,7 +60,7 @@
                     <img :src="existingThumbnail" alt="Existing Image" height="130" width="130"/>
                     Replacement of thumbnails (up to one)
                   </span>
-                  <UploadImg type="Thumbnail" :gid="ruleForm.gid" @sendImg = "sendImg"></UploadImg>
+                  <UploadImg type="Thumbnail" :gid="ruleForm.gid" @sendImg = "sendImg" @update-image-type="forwardImageType"></UploadImg>
                   
                   <span slot="footer" class="dialog-footer">
                       <el-button type="primary">Confirm</el-button>
@@ -99,6 +99,7 @@
 </template>
 
 <script>
+import { number } from 'echarts';
 import UploadImg from '../../components/UploadImg.vue'
 
 export default {
@@ -120,7 +121,11 @@ export default {
       update: {
         type: Boolean,
         required: true
-    }
+      },
+      addpid: {
+        type: Number,
+        default: 0
+      }
     },
 
     data() {
@@ -128,6 +133,7 @@ export default {
         dialogVisible: false,
         dialogVisibleImg: false,    // 上传图片弹窗
         imgUrl: '',
+        fomate: '', // 图片格式
 
         ruleForm: {
           gid: '',
@@ -174,7 +180,11 @@ export default {
         }
       };
     },
-
+    // mounted() {
+    //   console.log('mounted')
+    //   this.ruleForm.gid = this.addpid
+    //   console.log(this.ruleForm.gid)
+    // },
     watch: {
       rowData(val) {
         console.log('触发监听器', val)
@@ -200,7 +210,11 @@ export default {
         
         this.fetchCarousel()
         console.log(this.CarouselList)
-      } 
+      },
+      addpid(newVal) {
+        console.log('addpid changed to:', newVal);
+        this.ruleForm.gid = this.addpid
+      }
     },
 
     methods: {
@@ -213,6 +227,10 @@ export default {
       sendImg(val, type) {
         console.log('显示图片路径', val)
         this.imgUrl = val
+      },
+      forwardImageType(imageType) {
+        console.log("fomate: ", imageType)
+        this.fomate = imageType
       },
 
       fetchCarousel() {
@@ -233,13 +251,15 @@ export default {
         this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log('进入提交阶段')
-          let {gid, name, price, type, score, parameter, introduction, img, stock} = this.ruleForm;
+          let {gid, name, price, type, score, parameter, introduction, stock} = this.ruleForm;
+          let imgUrl = `http://localhost:8888/Thumbnail/Thumbnail-${gid}.${this.fomate}`
+          console.log('img:', imgUrl)
           if (this.title === 'Edit product') {
-            if(this.imgUrl != ''){        // 判断是否重新上传图片，若重新上传则重新赋值图片地址
-              console.log(this.imgUrl)
-              img = this.imgUrl;
-            }
-            this.$api.updateGoods({gid, name, price, type, score, parameter, introduction, img, stock})
+            // if(this.imgUrl != ''){        // 判断是否重新上传图片，若重新上传则重新赋值图片地址
+            //   console.log(this.imgUrl)
+            //   img = this.imgUrl;
+            // }
+            this.$api.updateGoods({gid, name, price, type, score, parameter, introduction, imgUrl, stock})
             .then((res) => {
               if(res.status == 200){
                 this.$message({
@@ -258,8 +278,10 @@ export default {
               }
             })
           }else{
-            let imgUrl = this.imgUrl;
-            this.$api.addGoods({gid, name, price, type, score, parameter, introduction, imgUrl, stock})
+            console.log('添加商品')
+            console.log(this.addpid)
+            let imgUrl = `http://localhost:8888/Thumbnail/Thumbnail-${this.addpid}.${this.fomate}`//this.imgUrl;
+            this.$api.addGoods({gid, name, price, type, score, parameter, introduction, imgUrl, stock, method: 'add'})
             .then((res) => {
               if(res.status == 200){
                 this.$message({
@@ -277,7 +299,6 @@ export default {
           return false;
         }
         });
-
       },  
     }
 }

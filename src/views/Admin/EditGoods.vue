@@ -87,9 +87,8 @@
             </template>
         </el-table-column>
     </el-table>
-
     <MyPage :total="total" :pageSize="pageSize" @changePage="changePage" class="page" :current-page="currentPage"></MyPage>
-    <Dialog ref="dialog" :title="title" :rowData="rowData" :update="update"></Dialog>
+    <Dialog ref="dialog" :title="title" :rowData="rowData" :update="update" :addpid="currentId"></Dialog>
   </div>
 </template>
 
@@ -117,7 +116,8 @@
         type: 'name',
         title: 'Add product',
         rowData:{},     // 当前行的数据对象
-        update: true
+        update: true,
+        currentId: 1,
       }
     },
 
@@ -176,7 +176,6 @@
       //   this.searchInput(val, 'search')
       // },
 
-
       // 类别查询
       cHandleClick() {
         if(this.activeName === 'ALL'){
@@ -199,9 +198,21 @@
 
       // 添加时打开弹出
       addGoods(){
-        this.title = 'Add product'
-        this.update=false
-        this.$refs.dialog.dialogVisible = true;
+        this.$api.addGoods({method: 'init'}).then(res => {
+          if(res.status == 200){
+            this.currentId = res.data.result.insertId;
+            console.log('当前id', this.currentId)
+            this.title = 'Add product'
+            this.update=false
+            this.$refs.dialog.dialogVisible = true;
+          }else {
+            this.$message({
+              type: 'error',
+              message: 'Failed to add product'
+            })
+          }
+        })
+        
       },
       
 
