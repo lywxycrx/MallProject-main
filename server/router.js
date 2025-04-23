@@ -1224,7 +1224,7 @@ router.get('/getCarouselImages/:prefix', (req, res) => {
         console.log(err)
         return res.status(500).send('Unable to read directory');
       }
-      const filteredFiles = files.filter(file => file.startsWith(`Carousel-${prefix}`));
+      const filteredFiles = files.filter(file => file.includes(`-${prefix}-`));
       res.json(filteredFiles);
     });
   });
