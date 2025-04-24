@@ -145,7 +145,7 @@
     "confirmPassword": "再次输入",
     "confirmButton": "确认修改",
     "rules": {
-      "length": "密码长度8-24位",
+      "length": "密码长度8-16位",
       "content": "必须包含大写字母、小写字母、数字，不含特殊字符",
       "email": "密码不能包含邮箱地址"
     },

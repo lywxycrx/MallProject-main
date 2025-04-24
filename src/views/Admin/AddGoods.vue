@@ -139,6 +139,7 @@ export default {
           gid: '',
           name: '',
           type: '',
+          img: '',
           score: '',
           stock: '',
           price: '',
@@ -189,6 +190,7 @@ export default {
       rowData(val) {
         console.log('触发监听器', val)
         this.ruleForm = val;
+        console.log(this.ruleForm)
         // try{
         //   this.existingThumbnail = 'http://localhost:8888/Thumbnail/Thumbnail-' + this.ruleForm.gid + '.jpg'
         //   console.log(this.existingThumbnail)
@@ -252,8 +254,10 @@ export default {
         if (valid) {
           console.log('进入提交阶段')
           let {gid, name, price, type, score, parameter, introduction, stock} = this.ruleForm;
-          let imgUrl = `http://localhost:8888/Thumbnail/Thumbnail-${gid}.${this.fomate}`
-          console.log('img:', imgUrl)
+          if (this.title === 'Add product') {
+            this.ruleForm.img = `http://localhost:8888/Thumbnail/Thumbnail-${gid}.${this.fomate}`
+          }
+          let imgUrl = this.ruleForm.img;
           if (this.title === 'Edit product') {
             // if(this.imgUrl != ''){        // 判断是否重新上传图片，若重新上传则重新赋值图片地址
             //   console.log(this.imgUrl)

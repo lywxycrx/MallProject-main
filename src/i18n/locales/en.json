@@ -145,7 +145,7 @@
     "confirmPassword": "Enter again",
     "confirmButton": "Confirm modification",
     "rules": {
-      "length": "Password length 8-24 bits",
+      "length": "Password length 8-16 bits",
       "content": "Must contain uppercase letters, lowercase letters, numbers, no special characters.",
       "email": "The password cannot contain an email address"
     },

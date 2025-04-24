@@ -15,31 +15,31 @@
     style="width: 100%">
       <el-table-column
         prop="uid"
-        label="账号"
+        label="Account"
         width="110">
       </el-table-column>
       <el-table-column
         prop="pwd"
-        label="密码"
+        label="Password"
         width="110">
       </el-table-column>
       <el-table-column
         prop="name"
-        label="昵称"
+        label="Nickname"
         width="110">
       </el-table-column>
       <el-table-column
         prop="phone"
-        label="联系方式"
+        label="E-mail"
         width="200">
       </el-table-column>
       <el-table-column
         prop="address"
-        label="地址"
+        label="Address"
         width="200">
       </el-table-column>
       <el-table-column
-        label="操作"
+        label="Operation"
         width="200">
             <template slot-scope="scope">
               <el-button
@@ -47,7 +47,7 @@
                 type="danger"
                 @click="handleDelete(scope.$index, scope.row)"
                 icon="el-icon-delete">
-                删除
+                delete
               </el-button>
             </template>
         </el-table-column>

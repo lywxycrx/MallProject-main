@@ -409,7 +409,7 @@
     } 
 
   .form{
-    left: 5%;
+    left: 0%;
   }
 
   .page {

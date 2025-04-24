@@ -52,11 +52,11 @@ export default {
               npwd: [
                   { required: true, message: this.$t('password.validation.newRequired'), trigger: 'blur' },
                   { min: 8, max: 64, message: this.$t('password.validation.lengthError'), trigger: 'blur' },
-                  { pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,24}$/, message: this.$t('password.validation.formatError'), trigger: 'blur' },
+                  { pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/, message: this.$t('password.validation.formatError'), trigger: 'blur' },
               ],
               cpwd: [
                   { required: true, message: this.$t('password.validation.confirmRequired'), trigger: 'blur' },
-                  { min: 8, max: 24, message: this.$t('password.validation.lengthError'), trigger: 'blur' }
+                  { min: 8, max: 16, message: this.$t('password.validation.lengthError'), trigger: 'blur' }
               ],
           }
       }

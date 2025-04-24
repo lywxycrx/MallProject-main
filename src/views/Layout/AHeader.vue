@@ -86,7 +86,7 @@ export default {
       ...mapMutations('loginModule', ['clearUser']),
       exit() {
         console.log('退出');
-         this.$confirm('Do you exit the system?', 'Hint', {
+         this.$confirm('Exit the system?', 'Hint', {
           confirmButtonText: 'Confirm',
           cancelButtonText: 'Cancel',
           type: 'warning'

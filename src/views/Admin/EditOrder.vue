@@ -6,13 +6,7 @@
       @change="searchInput" v-model="input" clearable style="margin-right: 10px;"></el-input>
       <el-button class="sbtn" type="primary">Search</el-button>
 
-      <download-excel
-          class = "export-excel-wrapper"
-          :data = this.tableData
-          :fields = this.fields
-          name = "商品订单表">
-          <el-button type="primary" class="ebtn" size="small">Export Orders</el-button>
-      </download-excel>
+
     </div>
 
     <el-tabs v-model="activeName" @tab-click="cHandleClick">
